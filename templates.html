@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEM Tutorial - Templates</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>AEM Tutorial</h2>
+        </div>
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Introduction to AEM</a></li>
+            <li><a href="aem-architecture-stack.html" class="nav-link">AEM Architecture Stack</a></li>
+            <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
+            <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
+            <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
+            <li><a href="templates.html" class="nav-link active">Templates</a></li>
+            <li><a href="components.html" class="nav-link">Components</a></li>
+        </ul>
+    </nav>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        &#9776;
+    </div>
+
+    <main class="content">
+        <h1>Templates</h1>
+
+        <div class="card">
+            <h2>Understanding AEM Templates</h2>
+            <p>Templates in Adobe Experience Manager (AEM) define the structure and layout of a page. They act as blueprints, allowing authors to create pages with predefined structures. Templates ensure consistency in page design while enabling the flexibility to add different content components. Templates are crucial for maintaining uniformity across pages and creating a streamlined authoring experience.</p>
+        </div>
+
+        <div class="card">
+            <h2>Types of AEM Templates</h2>
+            <p>AEM offers two main types of templates that are commonly used in page creation: Static Templates and Editable Templates. Both have distinct characteristics, benefits, and use cases.</p>
+            <ul>
+                <li><strong>Static Templates:</strong> Static templates are the traditional type of templates in AEM. They are defined by a fixed structure and cannot be modified by authors directly. Static templates are used for simple sites where the layout is unlikely to change after the template is created.</li>
+                <li><strong>Editable Templates:</strong> Editable templates are more flexible and allow authors to modify the layout and structure of a page at the content level. They provide the ability to change the page layout directly within the AEM author interface, offering greater control and flexibility in content creation. <br> Editable Templates consist of three main parts:
+                    <ul>
+                        <li><code>initial:</code> Initial content is the default content that appears when a new page is created using the template. This content is optional and can be customized by authors after the page is created.</li>
+                        <li><code>structure:</code> The structure defines the layout and arrangement of components on the page. It is the skeleton of the page, setting up regions (containers) where content can be added.</li>
+                        <li><code>policies:</code> Policies define the behavior, design, and functionality of components within a template. Policies are associated with Component Groups and control what options are available to authors when using certain components.</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Difference between Static template and Editable template</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Static Template</th>
+                            <th>Editable Templates</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Creation</td>
+                            <td>Developer (Code-based)</td>
+                            <td>Author (UI-based)</td>
+                        </tr>
+                        <tr>
+                            <td>Flexibility</td>
+                            <td>Fixed, Requires code changes</td>
+                            <td>Dynamic, Modifiable in AEM UI</td>
+                        </tr>
+                        <tr>
+                            <td>Template Editor</td>
+                            <td>Not Available</td>
+                            <td>Available</td>
+                        </tr>
+                        <tr>
+                            <td>Component Policies</td>
+                            <td>Defined in code</td>
+                            <td>Configurable in the UI</td>
+                        </tr>
+                        <tr>
+                            <td>Initial content</td>
+                            <td>Hard-coded</td>
+                            <td>Editable by authors</td>
+                        </tr>
+                        <tr>
+                            <td>Use Cases</td>
+                            <td>Simple, Uniform page structures</td>
+                            <td>Complex, Customizable page structures</td>
+                        </tr>
+                        <tr>
+                            <td>Governance</td>
+                            <td>Strict, Consistent structure</td>
+                            <td>Controlled flexibility</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>How to Create a Static Template in AEM</h2>
+            <p>To create a <strong>Static Template</strong> in AEM, follow these steps:</p>
+            <ol>
+              <li>Create the Page Component
+                <ul>
+                    <li>Open AEM and go to CRXDE Lite (/crx/de).</li>
+                    <li>Navigate to the component folder <code>/apps/&lt;your-project&gt;/component/structure</code></li>
+                    <li>Create a page component with:
+                        <pre> Name -> contentpage <br> Type -> cq:Component </pre>
+                    </li>
+                    <li>Select the <code>contentpage</code> node and add the following properties:
+                        <pre> jcr:title -> "Content Page" <br> jcr:description -> "The Content Page Component" <br> sling:resourceSuperType -> "core/wcm/components/page/v3/page"</pre>
+                    </li>
+                </ul>
+              </li>
+              <li>Create the Template Node
+                <ul>
+                    <li>Navigate to the template folder: <code>/apps/&lt;your-project&gt;/templates/</code></li>
+                    <li>If the <code>templates</code> folder doesn't exist, create one under <code>/apps/&lt;your-project&gt;/</code>.</li>
+                    <li>Under <code>/apps/&lt;your-project&gt;/templates/</code>, create a new node with:
+                        <pre> Name -> my-static-template <br> Type -> cq:Template </pre>
+                    </li>
+                    <li>Add the following properties to <code>my-static-template</code> node:
+                        <pre> jcr:title -> "My Static Template" <br> jcr:description" -> "Description of the template" <br> jcr:primaryType -> "cq:Template" <br> ranking -> (Long)100 (higher values make the template appear first in the selection list) <br> allowedPaths -> ["/content/training(/.*)?"] (restricts where this template can be used) </pre>
+                    </li>
+                    <li>Under <code>my-static-template</code>, create a child node:
+                        <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                    </li>
+                    <li>Select the <code>jcr:content</code> node and add the following properties:
+                        <pre> sling:resourceType -> "training/components/structure/content-page" <br> cq:designPath → "/etc/designs/training" <br> cq:allowedParents -> ["/apps/my-site/templates/.*"]</pre>
+                    </li>
+                </ul>
+              </li>
+              <li>Define the Structure (initial content of the page)
+                <ul>
+                    <li>Inside <code>my-static-template/jcr:content</code>, create a child node:
+                        <pre> Name -> parsys <br> Type -> nt:unstructured</pre>
+                    </li>
+                    <li>Set its properties:
+                        <pre> sling:resourceType -> "wcm/foundation/components/parsys"</pre>
+                    </li>
+                    <li>This defines a paragraph system for components to be added to the page.</li>
+                </ul>
+              </li>
+              <li>Create a Page Using this Template
+                <ul>
+                    <li>Go to Sites Console <code>(/sites.html)</code> -> Navigate to your project -> Create a new page -> Select <code>My Static Template</code>.</li>
+                </ul>
+              </li>
+            </ol>
+        </div>
+
+        <!-- <div class="card">
+            <h2>Defining the Design for Your Static Template in AEM</h2>
+        </div> -->
+
+        <div class="card">
+            <h2>How to Create an Editable Template in AEM</h2>
+            <p>Creating an <strong>Editable Template</strong> in AEM involves the following steps:</p>
+            <ol>
+                <li>Ensure that your site has a folder under <code>/conf/</code> for storing template configurations as <code>/conf/training/</code></li>
+                <li>Under <code>/conf/training/</code>, create the following folders (if not already present):
+                    <ul>
+                        <li><code>settings/wcm/templates/</code> -> Stores the actual templates.</li>
+                        <li><code>settings/wcm/template-types/</code> -> Stores template types.</li>
+                        <li><code>settings/wcm/policies/</code> -> Stores policies for allowed components.</li>
+                    </ul>
+                </li>
+                <li>Create a Template Type (Blueprint for Templates):
+                    <ul>
+                        <li>Navigate to <code>/conf/my-site/settings/wcm/template-types/</code></li>
+                        <li>Create a new node with:
+                            <pre> Name -> my-template-type <br> Type -> cq:Template</pre>
+                        </li>
+                        <li>Inside <code>my-template-type</code>, create a child node:
+                            <pre> Name -> jcr:content <br> Type -> cq:Page</pre>
+                        </li>
+                        <li>Set <code>jcr:content</code> properties:
+                            <pre> jcr:title -> "My Template Type" <br> jcr:description -> "Blueprint for editable templates" <br> cq:allowedPaths -> ["/content/training(/.*)?"]</pre>
+                        </li>
+                    </ul>
+                </li>
+                <li>Create an Editable Template
+                    <ul>
+                        <li>Go to AEM Start Screen -> Tools -> General -> Templates.</li>
+                        <li>Navigate to your project folder <code>training</code>.</li>
+                        <li>Click Create</li>
+                        <li>Select the Template Type <code>my-template-type</code> and name the template <code>my-editable-template</code>.</li>
+                        <li>Open the template editor and configure the structure.</li>
+                    </ul>
+                </li>
+                <li>Define the Template Structure
+                    <ul>
+                        <li>Go to the "Structure" mode (Locks core page elements).</li>
+                        <li>Add the following core components:
+                            <ul>
+                                <li>Layout Container (wcm/foundation/components/responsivegrid)</li>
+                                <li>Header/Footer Components (Optional)</li>
+                            </ul>
+                        </li>
+                        <li>Lock/unlock sections:
+                            <ul>
+                                <li>Lock header & footer (to prevent changes).</li>
+                                <li>Keep main content editable for authors.</li>
+                            </ul>
+                        </li>
+                        <li>Save and Enable the template.</li>
+                    </ul>
+                </li>
+                <li>Configure Component Policies (Allowed Components)
+                    <ul>
+                        <li>Inside Template Editor, open the Policy Editor.</li>
+                        <li>Set allowed components (e.g., text, image, carousel).</li>
+                        <li>Define styling rules, CSS classes, and component behaviors.</li>
+                    </ul>
+                </li>
+                <li>Create a Page Using the Editable Template
+                    <ul>
+                        <li>Go to Sites Console <code>(/sites.html)</code>.</li>
+                        <li>Click Create Page -> Select <code>my-editable-template</code>.</li>
+                        <li>Customize the page using the AEM Page Editor.</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>

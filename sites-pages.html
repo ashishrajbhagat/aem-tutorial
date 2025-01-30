@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Sites & Pages</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <nav class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <ul class="nav-list">
+                <li><a href="index.html" class="nav-link">Introduction to AEM</a></li>
+                <li><a href="aem-architecture-stack.html" class="nav-link">AEM Architecture Stack</a></li>
+                <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
+                <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
+                <li><a href="sites-pages.html" class="nav-link active">Sites & Pages</a></li>
+                <li><a href="templates.html" class="nav-link">Templates</a></li>
+                <li><a href="components.html" class="nav-link">Components</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            &#9776;
+        </div>
+        <main class="content">
+            <h1>Sites & Pages</h1>
+            <div class="card">
+                <h2>AEM Sites, Pages, and Templates</h2>
+                <p>Adobe Experience Manager (AEM) Sites is a powerful platform that allows organizations to create and manage digital experiences. AEM Sites is built around the concept of creating, managing, and publishing content across multiple channels. Understanding how AEM organizes Sites, Pages, and Templates is crucial for developers working with the platform.</p>
+            </div>
+            <div class="card">
+                <h2>Understanding AEM Sites</h2>
+                <p>AEM Sites is the foundation for managing content. It enables the creation of a well-structured web environment where you can build and organize your websites. AEM Sites provides a central location to manage all your digital content and layouts.</p>
+                <p>Some key points about AEM Sites:</p>
+                <ul>
+                    <li><strong>Multisite Management:</strong> AEM Sites allows you to manage content across multiple sites, languages, and regions. It enables the creation of consistent digital experiences globally, while still supporting localization and personalization for each market.</li>
+                    <li><strong>Site Hierarchy:</strong> The structure of AEM Sites is hierarchical, where the root of the site is typically the parent node, and child nodes represent sub-sites, pages, and other content structures.</li>
+                    <li><strong>Site Configuration:</strong> You can configure site properties such as branding, language settings, and other key configurations directly within the Sites section in AEM.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>What are AEM Pages?</h2>
+                <p>Pages in AEM are individual pieces of content that are structured based on templates. Pages are often created and managed by authors to provide content for end-users, such as landing pages, blog posts, product pages, and more.</p>
+                <p>Key concepts of AEM Pages:</p>
+                <ul>
+                    <li><strong>Page Creation:</strong> In AEM, pages are created by authors through the use of templates. Once a page is created, it can be populated with content using components that define the layout and functionality of the page.</li>
+                    <li><strong>Page Types:</strong> AEM supports various types of pages, including static and dynamic pages. Static pages contain content that remains fixed unless manually updated, while dynamic pages may pull content dynamically based on context, such as a personalized homepage.</li>
+                    <li><strong>Versioning and Workflow:</strong> Pages in AEM can be versioned, allowing authors to make changes and revert to previous versions if necessary. Workflow processes can also be applied to pages, controlling the content approval and publishing processes.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>Key Differences Between AEM Sites and AEM Pages</h2>
+                <p>While both AEM Sites and AEM Pages are part of the AEM platform, their purposes differ significantly:</p>
+                <ul>
+                    <li><strong>Purpose:</strong> AEM Sites serve as a container or organizational structure for your web presence, whereas AEM Pages are individual pieces of content that make up the website and provide the user-facing experience.</li>
+                    <li><strong>Scope:</strong> Sites manage the structure, branding, and configuration for the entire website, while Pages are the building blocks of content that can be created, edited, and published.</li>
+                    <li><strong>Granularity:</strong> Sites are broader, dealing with overall site-level configurations, while Pages are more granular, focusing on specific content that will appear on the website.</li>
+                    <li><strong>Content Management:</strong> Sites are often managed by administrators or developers for configuration purposes (such as multisite management, global settings), whereas Pages are typically managed by authors to update content and design the website experience.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>Example: A Site and Its Pages</h2>
+                <p>Let’s say you're managing a global website for a company:</p>
+                <ul>
+                    <li><strong>Site:</strong> The root structure could be the company's website, "www.company.com", managed as an AEM Site. Within this site, you can manage global configurations, branding, and content structure.</li>
+                    <li><strong>Pages:</strong> Within this site, you will have multiple pages like "Home", "About Us", "Contact", "Products", and "Blog", which are AEM Pages created from templates and populated with content.</li>
+                </ul>
+                <p>The Site serves as the overarching framework, while the Pages make up the individual content experiences for the user.</p>
+            </div>
+            <div class="card">
+                <h2>How to Create an AEM Site</h2>
+                <p>Creating an AEM Site is the first step in structuring your website within AEM. Follow these steps:</p>
+                <ol>
+                    <li><strong>Access AEM Sites Console:</strong> Log into the AEM author environment and go to the Sites console. This is where you will manage and create new sites.</li>
+                    <li><strong>Click on the 'Create' Button:</strong> In the Sites console, click on the 'Create' button and select the 'Create Site' option from the dropdown menu.</li>
+                    <li><strong>Choose a Site Template:</strong> AEM will present several predefined templates for your new site. Choose the template that fits the needs of your new site. This template will define the initial layout and structure for your site.</li>
+                    <li><strong>Enter Site Details:</strong> Provide necessary details for the new site, including the name, title, language, and other configurations. These details are critical for managing and organizing your site.</li>
+                    <li><strong>Configure Site Settings:</strong> Configure any additional settings such as site properties, root node, localization, and region-specific configurations.</li>
+                    <li><strong>Create the Site:</strong> Once all settings and details are filled in, click 'Create' to initialize the site. AEM will create the site and its structure.</li>
+                    <li><strong>Review and Edit:</strong> Once the site is created, navigate through the site structure, review its layout, and make any necessary adjustments to the configurations or components.</li>
+                </ol>
+            </div>
+            <div class="card">
+                <h2>How to Create an AEM Page</h2>
+                <p>Pages are the core units of content within an AEM Site. Follow these steps to create an AEM Page:</p>
+                <ol>
+                    <li><strong>Navigate to the Site:</strong> From the Sites console, navigate to the site where you want to create the page.</li>
+                    <li><strong>Choose the Template:</strong> Once inside the site, click on the 'Create' button and select 'Create Page'. You’ll be prompted to choose a template for the page. Select an existing page template that matches your content needs. Templates define the structure and layout of your page.</li>
+                    <li><strong>Enter Page Details:</strong> Provide details for the new page, such as the page title, name, URL slug, and language settings. Make sure to set the page properties correctly to ensure it's visible and searchable.</li>
+                    <li><strong>Set Page Hierarchy:</strong> Define where the page should be placed in the site’s hierarchy. Choose the parent page and determine whether the new page will be a sub-page of an existing one.</li>
+                    <li><strong>Add Content to the Page:</strong> Once the page is created, open the page editor and begin adding content. You can add various AEM components such as text, images, carousels, forms, and navigation elements. Drag and drop the components into the desired layout sections.</li>
+                    <li><strong>Preview the Page:</strong> Before publishing the page, preview it to ensure that everything looks as expected. AEM provides a preview feature to see how the page will appear on the live website.</li>
+                    <li><strong>Publish the Page:</strong> Once you’re satisfied with the content and layout, click on 'Publish' to make the page live. The page is now available for public viewing.</li>
+                    <li><strong>Versioning and Workflow (Optional):</strong> If necessary, set up versioning for the page and use workflows for approval before publishing it. This is especially useful in collaborative environments where multiple authors or teams are involved in content creation.</li>
+                </ol>
+            </div>
+            <div class="card">
+                <h2>Managing Pages within AEM</h2>
+                <p>After creating pages, managing them is essential to ensure they remain up-to-date. Here are some management tips:</p>
+                <ul>
+                    <li><strong>Editing Pages:</strong> To edit a page, simply open it in the AEM editor, make necessary changes, and save or republish the page once the changes are complete.</li>
+                    <li><strong>Deleting Pages:</strong> If a page is no longer needed, it can be deleted from the Sites console. Be careful, as deleting a page will remove it from the site permanently unless backups are used.</li>
+                    <li><strong>Version Control:</strong> AEM allows you to version pages, so you can create multiple versions and roll back to previous ones if needed. This is useful for content updates or rollback scenarios.</li>
+                    <li><strong>Scheduling Page Publication:</strong> AEM provides the ability to schedule page publication for future dates. This is helpful for timed campaigns or promotions.</li>
+                    <li><strong>SEO and Metadata Configuration:</strong> For better search engine optimization, ensure that metadata such as page title, description, and keywords are configured correctly.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>Conclusion</h2>
+                <p>To summarize, AEM Sites are containers that hold and organize multiple Pages, which are individual pieces of content displayed to end users. Understanding the distinction between Sites and Pages in AEM is vital for effectively building and managing your digital experiences. Developers and authors must collaborate to ensure that Sites are set up with proper configurations, and Pages are designed with rich, dynamic content.</p>
+                <p>Creating and managing Sites and Pages in AEM requires an understanding of the platform's structure and features. Following the above steps will guide you through the process of building a functional, scalable website. Once your site and pages are set up, you can continue to refine, add components, and update the content to keep your digital experience fresh and relevant.</p>
+            </div>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

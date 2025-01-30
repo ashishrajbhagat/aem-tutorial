@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Introduction</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <nav class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <ul class="nav-list">
+                <li><a href="index.html" class="nav-link active">Introduction to AEM</a></li>
+                <li><a href="aem-architecture-stack.html" class="nav-link">AEM Architecture Stack</a></li>
+                <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
+                <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
+                <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
+                <li><a href="templates.html" class="nav-link">Templates</a></li>
+                <li><a href="components.html" class="nav-link">Components</a></li>
+            </ul>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            &#9776;
+        </div>
+        <main class="content">
+            <h1>Introduction to AEM</h1>
+            <div class="card">
+                <h2>What is Adobe Experience Manager?</h2>
+                <p>Adobe Experience Manager (AEM) is a comprehensive content management solution for building websites, mobile apps, and forms. It is part of the Adobe Marketing Cloud and provides tools for managing and delivering digital experiences across various channels.</p>
+            </div>
+            <div class="card">
+                <h2>How AEM is different from other CMS platforms?</h2>
+                <ul>
+                    <li><strong>Integration with Adobe Ecosystem - </strong>AEM seamlessly integrates with other Adobe tools like Adobe Analytics, Adobe Target, and Adobe Campaign, enabling powerful marketing and personalization capabilities.</li>
+                    <li><strong>Content Fragments and Experience Fragments - </strong>AEM offers modular content creation through Content Fragments and Experience Fragments, allowing content reuse across various channels.</li>
+                    <li><strong>Digital Asset Management (DAM) - </strong>Unlike many CMS platforms, AEM includes a robust DAM system to manage and organize digital assets effectively.</li>
+                    <li><strong>Cloud Scalability - </strong>AEM as a Cloud Service provides auto-scaling, continuous updates, and reduced infrastructure management compared to traditional CMS platforms.</li>
+                    <li><strong>Multi-Site and Multi-Language Support - </strong>With tools like Multi-Site Manager (MSM) and language copy, AEM simplifies the management of global and multilingual websites.</li>
+                    <li><strong>Customizable Workflows - </strong>AEM enables the creation of tailored workflows for content approval, publishing, and other business processes.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h2>Different versions of AEM</h2>
+                <div>
+                    <h3>AEM 5.x</h3>
+                    <ul>
+                        <li>The earlier versions of AEM (formerly CQ).</li>
+                        <li>Basic CMS features with limited scalability.</li>
+                        <li>Introduced foundational technologies like Apache Sling and JCR.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>AEM 6.0 to 6.5</h3>
+                    <ul>
+                        <li>Enhanced stability and features over AEM 5.x.</li>
+                        <li>Introduced editable templates, Content Fragments, and Experience Fragments.</li>
+                        <li>Stronger DAM capabilities and multi-site support.</li>
+                        <li>Focus on improving developer and authoring experiences.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>AEM 6.5</h3>
+                    <ul>
+                        <li>The most robust and widely used on-premise version.</li>
+                        <li>Added advanced features like SPA Editor, headless CMS support, and enhanced Cloud Manager integration.</li>
+                        <li>Better support for omnichannel delivery and personalization.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>AEM as a Cloud Service (AEMaaCS)</h3>
+                    <ul>
+                        <li>Introduced in 2020 as a fully cloud-native solution.</li>
+                        <li>Automatic scaling, continuous updates, and reduced maintenance overhead.</li>
+                        <li>Designed for faster deployments and better performance.</li>
+                        <li>Ideal for organizations aiming to adopt modern cloud technologies.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card">
+                <h2>AEM as a Cloud Service vs. On-Premise</h2>
+                <p>
+                    AEM as a Cloud Service offers a scalable, always-updated solution with
+                    lower maintenance overhead, while on-premise AEM provides greater
+                    control but requires more management effort. The choice depends on
+                    your organization’s needs.
+                </p>
+            </div>
+            <div class="card">
+                <h2>AEM Instances</h2>
+                <h3>Author</h3>
+                <ul>
+                    <li>This is where content is created, managed, and authored.</li>
+                    <li>Content authors use this instance to create and edit web pages, components, and assets.</li>
+                    <li>The author instance communicates with the JCR (Java Content Repository) to store and manage content.</li>
+                </ul>
+                <h3>Publish</h3>
+                <ul>
+                    <li>This is the public-facing instance where content is published to end-users.</li>
+                    <li>The publish instance retrieves content from the author instance and serves it to the website visitors.</li>
+                    <li>It is optimized for performance and scalability.</li>
+                </ul>
+            </div>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>
