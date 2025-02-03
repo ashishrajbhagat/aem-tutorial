@@ -125,7 +125,7 @@
                         <pre> Name -> my-static-template <br> Type -> cq:Template </pre>
                     </li>
                     <li>Add the following properties to <code>my-static-template</code> node:
-                        <pre> jcr:title -> "My Static Template" <br> jcr:description" -> "Description of the template" <br> jcr:primaryType -> "cq:Template" <br> ranking -> (Long)100 (higher values make the template appear first in the selection list) <br> allowedPaths -> ["/content/training(/.*)?"] (restricts where this template can be used) </pre>
+                        <pre> jcr:title -> "My Static Template" <br> jcr:description" -> "Description of the template" <br> jcr:primaryType -> "cq:Template" <br> ranking -> {Long}100 (higher values make the template appear first in the selection list) <br> allowedPaths -> ["/content/training(/.*)?"] (restricts where this template can be used) </pre>
                     </li>
                     <li>Under <code>my-static-template</code>, create a child node:
                         <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
@@ -146,12 +146,28 @@
                     <li>This defines a paragraph system for components to be added to the page.</li>
                 </ul>
               </li>
+              <li>Allow this template to be used in your project. Go to Sites Console <code>(/sites.html)</code> -> Select your Site <code>training</code> -> Click on <code>properties</code> -> Click on <code>Advanced</code> -> In Templates Settings section, click on <code>Add</code> and add <code>/apps/training/templates/.*</code> -> Save and close.</li>
               <li>Create a Page Using this Template
                 <ul>
                     <li>Go to Sites Console <code>(/sites.html)</code> -> Navigate to your project -> Create a new page -> Select <code>My Static Template</code>.</li>
                 </ul>
               </li>
             </ol>
+            <pre>
+            │── apps 
+            │ ├── &lt;your-project&gt; 
+            │ │ ├── components 
+            │ │ │ ├── structure 
+            │ │ │ │ ├── contentpage 
+            │ │ │ │ │ ├── .content.xml
+            │ │ ├── templates 
+            │ │ │ ├── my-static-template 
+            │ │ │ │ ├── .content.xml 
+            │ │ │ │ ├── jcr:content 
+            │ │ │ │ │ ├── .content.xml 
+            │ │ │ │ │ ├── parsys 
+            │ │ │ │ │ │ ├── .content.xml 
+            </pre>
         </div>
 
         <!-- <div class="card">
@@ -162,6 +178,7 @@
             <h2>How to Create an Editable Template in AEM</h2>
             <p>Creating an <strong>Editable Template</strong> in AEM involves the following steps:</p>
             <ol>
+                <li>Ensure a page component exists under: <pre>/apps/my-site/components/structure/content-page</pre>. If not, create it by following similar steps as Static Template</li>
                 <li>Ensure that your site has a folder under <code>/conf/</code> for storing template configurations as <code>/conf/training/</code></li>
                 <li>Under <code>/conf/training/</code>, create the following folders (if not already present):
                     <ul>
@@ -170,17 +187,85 @@
                         <li><code>settings/wcm/policies/</code> -> Stores policies for allowed components.</li>
                     </ul>
                 </li>
-                <li>Create a Template Type (Blueprint for Templates):
+                <li>Use existing Template Type or Create a new Template Type (Blueprint for Templates):
                     <ul>
                         <li>Navigate to <code>/conf/my-site/settings/wcm/template-types/</code></li>
                         <li>Create a new node with:
                             <pre> Name -> my-template-type <br> Type -> cq:Template</pre>
                         </li>
-                        <li>Inside <code>my-template-type</code>, create a child node:
-                            <pre> Name -> jcr:content <br> Type -> cq:Page</pre>
+                        <li>Inside <code>my-template-type</code>, create these child node:
+                            <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                            <pre> Name -> initial <br> Type -> cq:Page</pre>
+                            <pre> Name -> structure <br> Type -> cq:Page</pre>
+                            <pre> Name -> policies <br> Type -> cq:Page</pre>
                         </li>
                         <li>Set <code>jcr:content</code> properties:
-                            <pre> jcr:title -> "My Template Type" <br> jcr:description -> "Blueprint for editable templates" <br> cq:allowedPaths -> ["/content/training(/.*)?"]</pre>
+                            <pre> jcr:title -> "My Template Type" <br> jcr:description -> "Blueprint for editable templates"</pre>
+                        </li>
+                        <li>Inside <code>initial</code>, create a child node:
+                            <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                        </li>
+                        <li>Set <code>initial/jcr:content</code> properties:
+                            <pre> sling:resourceType -> "training/components/structure/content-page"</pre>
+                        </li>
+                        <li>Inside <code>initial/jcr:content</code>, create these child node:
+                            <pre> Name -> root<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Set <code>initial/jcr:content/root</code> properties:
+                            <pre> sling:resourceType -> "training/components/container"</pre>
+                            If you don't have <code>training/components/container</code> component in your project, then provide <code>core/wcm/components/container/v1/container</code>.
+                        </li>
+                        <li>Inside <code>initial/jcr:content/root</code>, create a child node:
+                            <pre> Name -> responsivegrid<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Set <code>initial/jcr:content/root/responsivegrid</code> properties:
+                            <pre> sling:resourceType -> "wcm/foundation/components/responsivegrid" <br> editable -> {Boolean}true</pre>
+                        </li>
+                        <li>Inside <code>initial/jcr:content/root/responsivegrid</code>, create a child node:
+                            <pre> Name -> cq:responsive<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Inside <code>structure</code>, create a child node:
+                            <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                        </li>
+                        <li>Set <code>structure/jcr:content</code> properties:
+                            <pre> sling:resourceType -> "training/components/structure/content-page"</pre>
+                            <pre> cq:deviceGroups -> ["mobile/groups/responsive"]</pre>
+                        </li>
+                        <li>Inside <code>structure/jcr:content</code>, create these child node:
+                            <pre> Name -> root<br> Type -> nt:unstructured</pre>
+                            <pre> Name -> cq:responsive<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Set <code>structure/jcr:content/root</code> properties:
+                            <pre> sling:resourceType -> "training/components/container"</pre>
+                            If you don't have <code>training/components/container</code> component in your project, then provide <code>core/wcm/components/container/v1/container</code>.
+                        </li>
+                        <li>Inside <code>structure/jcr:content/root</code>, create a child node:
+                            <pre> Name -> responsivegrid<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Set <code>structure/jcr:content/root/responsivegrid</code> properties:
+                            <pre> sling:resourceType -> "wcm/foundation/components/responsivegrid" <br> editable -> {Boolean}true</pre>
+                        </li>
+                        <li>Inside <code>structure/jcr:content/root/responsivegrid</code>, create a child node:
+                            <pre> Name -> cq:responsive<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Inside <code>structure/jcr:content/cq:responsive</code>, create a child node:
+                            <pre> Name -> breakpoints<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Inside <code>structure/jcr:content/cq:responsive/breakpoints</code>, create these child node:
+                            <pre> Name -> phone<br> Type -> nt:unstructured</pre>
+                            <pre> Name -> tablet<br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Set <code>structure/jcr:content/cq:responsive/breakpoints/phone</code> properties:
+                            <pre> title -> "Smaller Screen" <br> width -> {Long}700</pre>
+                        </li>
+                        <li>Set <code>structure/jcr:content/cq:responsive/breakpoints/tablet</code> properties:
+                            <pre> title -> "Tablet" <br> width -> {Long}1200</pre>
+                        </li>
+                        <li>Inside <code>policies</code>, create a child node:
+                            <pre> Name -> jcr:content <br> Type -> nt:unstructured</pre>
+                        </li>
+                        <li>Set <code>policies/jcr:content</code> properties:
+                            <pre> sling:resourceType -> "wcm/core/components/policies/mappings"</pre>
                         </li>
                     </ul>
                 </li>
@@ -190,6 +275,7 @@
                         <li>Navigate to your project folder <code>training</code>.</li>
                         <li>Click Create</li>
                         <li>Select the Template Type <code>my-template-type</code> and name the template <code>my-editable-template</code>.</li>
+                        <li>To define the template thumbnail, Edit the template properties and generate / upload / select an image and save it.</li>
                         <li>Open the template editor and configure the structure.</li>
                     </ul>
                 </li>
@@ -225,7 +311,46 @@
                         <li>Customize the page using the AEM Page Editor.</li>
                     </ul>
                 </li>
-            </ol>
+            </ol>            
+            <p>This is how template and template type structure will look like in CRXDE:</p>
+            <div class="two-col">
+                <img src="images/template-structure.png" alt="Template Structure">
+                <img src="images/template-type-structure.png" alt="Template Type Structure">
+            </div>
+            <p>This is how the structure will be in repository:</p>
+            <pre>
+            │── apps 
+            │ ├── &lt;your-project&gt; 
+            │ │ ├── components 
+            │ │ │ ├── structure 
+            │ │ │ │ ├── contentpage 
+            │ │ │ │ │ ├── .content.xml
+            │── conf 
+            │ ├── &lt;your-project&gt;
+            │ │ ├── settings 
+            │ │ │ ├── wcm
+            │ │ │ │ ├── policies
+            │ │ │ │ ├── template-types
+            │ │ │ │ │ ├── my-template-type
+            │ │ │ │ │ │ ├── initial
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── policies
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── structure
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── thumbnail.png
+            │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ ├── templates
+            │ │ │ │ │ ├── my-editable-template
+            │ │ │ │ │ │ ├── initial
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── policies
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── structure
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── thumbnail.png
+            │ │ │ │ │ │ ├── .content.xml
+            </pre>
         </div>
     </main>
     <script src="js/script.js"></script>
