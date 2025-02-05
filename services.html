@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEM Tutorial - Services</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>AEM Tutorial</h2>
+        </div>
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Introduction to AEM</a></li>
+            <li><a href="apache-felix.html" class="nav-link">Apache Felix</a></li>
+            <li><a href="apache-jackrabbit.html" class="nav-link">Apache Jackrabbit</a></li>
+            <li><a href="apache-sling.html" class="nav-link">Apache Sling</a></li>
+            <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
+            <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
+            <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
+            <li><a href="templates.html" class="nav-link">Templates</a></li>
+            <li><a href="components.html" class="nav-link">Components</a></li>
+            <li><a href="sightly.html" class="nav-link">Sightly</a></li>
+            <li><a href="models.html" class="nav-link">Models</a></li>
+            <li><a href="jcr-and-sling-api.html" class="nav-link">JCR and Sling API</a></li>
+            <li><a href="servlets.html" class="nav-link">Servlets</a></li>
+            <li><a href="services.html" class="nav-link active">Services</a></li>
+            <li><a href="r6-annotation.html" class="nav-link">R6 Annotation</a></li>
+        </ul>
+    </nav>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        &#9776;
+    </div>
+
+    <main class="content">
+        <h1>Services</h1>
+
+        <div class="card">
+            <h2>Introduction to AEM Services</h2>
+            <p>AEM Services are reusable components that encapsulate business logic and provide functionalities to different parts of an AEM application. Services are Java classes registered as OSGi components, which provide modular and reusable functionalities across various parts of the application.</p>
+            <ul>
+                <li>They help in separating business logic from the presentation layer.</li>
+                <li>They ensure better maintainability and scalability.</li>
+                <li>They can be consumed by different servlets, components, and workflows.</li>
+            </ul>
+            <p>Using services in AEM enhances modularity, improves code reusability, and ensures a cleaner architecture.</p>
+            <ul>
+                <li>Encapsulates logic for reuse across components.</li>
+                <li>Improves separation of concerns.</li>
+                <li>Facilitates easy testing and maintenance.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Difference between OSGi Services and Servlets in AEM</h2>
+            <p>While both OSGi Services and Servlets are used in AEM, they serve different purposes.</p>
+            <ul>
+                <li><strong>OSGi Services:</strong> Provide reusable business logic that can be consumed by other services, servlets, or components.</li>
+                <li><strong>Servlets:</strong> Handle HTTP requests and responses but usually rely on services for business logic.</li>
+                <li>OSGi Services improve code modularity, whereas Servlets mainly focus on request handling.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Creating an OSGi Service</h2>
+            <p>OSGi services in AEM allow developers to create reusable business logic that can be accessed across different parts of an application.</p>
+            <p>Follow these steps to create an OSGi service in AEM:</p>
+            <ul>
+                <li>Create a Java interface for the service.</li>
+                <li>Implement the interface in a service class.</li>
+                <li>Use the <code>@Component</code> annotation to register the service.</li>
+                <li>Use <code>@Activate</code> and <code>@Deactivate</code> methods for service lifecycle management.</li>
+                <li>Consume the service in a Servlet, Model, or other AEM components.</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>Defining an interface and implementing the service</h2>
+            <p>The interface defines the contract for the OSGi service, and the implementation provides the actual logic.</p>
+            <ol>
+                <li>Create an interface
+                    <pre>
+package com.example.core.services;
+
+public interface GreetingService {
+    String getGreeting();
+}</pre>
+                </li>
+                <li>Implement the interface in a service class
+                    <pre>
+package com.example.core.services.impl;
+
+import com.example.core.services.GreetingService;
+import org.osgi.service.component.annotations.Component;
+
+@Component(service = GreetingService.class)
+public class GreetingServiceImpl implements GreetingService {
+    @Override
+    public String getGreeting() {
+        return "Hello from OSGi Service!";
+    }
+}</pre>
+                </li>
+            </ol>
+        </div>
+        
+        <div class="card">
+            <h2>Registering a service using @Component annotation</h2>
+            <p>The <code>@Component</code> annotation is used to declare an OSGi service in AEM.</p>
+            <ul>
+                <li>Use <code>@Component(service = InterfaceName.class)</code> to register the service.</li>
+                <li>It allows AEM to recognize and manage the service dynamically.</li>
+                <li>Ensures proper dependency injection for consuming the service.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>
+@Component(service = GreetingService.class, immediate = true, enabled = true)
+public class GreetingServiceImpl implements GreetingService {
+    public String getGreeting() {
+        return "Hello, AEM Developer!";
+    }
+}</pre>
+        <ul>
+            <li><code>immediate</code> is about when the service gets activated after registration (either immediately or lazily).</li>
+            <li><code>enabled</code> is about whether the service is allowed to be activated at all. Default value is true.</li>
+        </ul>
+        </div>
+        
+        <div class="card">
+            <h2>Using @Activate, @Modified and @Deactivate methods</h2>
+            <p>The <code>@Activate</code>, <code>@Modified</code> and <code>@Deactivate</code> annotations manage the service lifecycle.</p>
+            <ul>
+                <li><code>@Activate</code> is executed when the service starts, used for initialization.</li>
+                <li><code>@Modified</code> is executed when when a component's configuration has been modified after the component has been activated.</li>
+                <li><code>@Deactivate</code> is executed when the service stops, used for cleanup.</li>
+                <li>These methods ensure proper resource management in OSGi services.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>
+@Component(service = GreetingService.class)
+public class GreetingServiceImpl implements GreetingService {
+
+    @Activate
+    protected void activate() {
+        System.out.println("GreetingService Activated");
+    }
+
+    @Modified
+    protected void modified() {
+        System.out.println("GreetingService Modified");
+    }
+
+    @Deactivate
+    protected void deactivate() {
+        System.out.println("GreetingService Deactivated");
+    }
+
+    @Override
+    public String getGreeting() {
+        return "Hello from OSGi Service!";
+    }
+}</pre>
+        </div>
+
+        <div class="card">
+            <h2>Types of OSGi Services in AEM</h2>
+            <p>OSGi services in AEM can be classified into different types based on their functionality. Below are some of the common types of OSGi services:</p>
+            
+            <h3>1. Simple OSGi Service - A basic service example</h3>
+            <p>A simple OSGi service is a basic service with no complex logic, used for small tasks such as providing utility methods or configuration.</p>
+            <p><strong>Example:</strong></p>
+            <pre>
+@Component(service = SimpleService.class)
+public class SimpleServiceImpl implements SimpleService {
+    @Override
+    public String getMessage() {
+        return "Hello from Simple OSGi Service!";
+    }
+}</pre>
+            <p>This service can be consumed anywhere in AEM by injecting it into components that need it.</p>
+
+            <h3>2. Factory Configuration Service - Creating multiple instances dynamically</h3>
+            <p>Factory configuration services allow you to create multiple instances of a service dynamically based on unique configurations.</p>
+            <p><strong>Example:</strong></p>
+            <pre>
+@Component(configurationPolicy = ConfigurationPolicy.FACTORY, immediate = true, service = MyFactoryService.class)
+public class MyFactoryServiceImpl implements MyFactoryService {
+
+    private String id;
+
+    @Activate
+    @Modified
+    protected void activate(ComponentContext context) {
+        id = (String) context.getProperties().get("id");
+        System.out.println("Factory Service activated with id: " + id);
+    }
+
+    @Deactivate
+    protected void deactivate() {
+        System.out.println("Factory Service deactivated for id: " + id);
+    }
+}</pre>
+            <p>Each instance of this service can have a different configuration based on the "id" property.</p>
+
+            <h3>3. Scheduler Service - Scheduling tasks in AEM</h3>
+            <p>Scheduler services allow you to schedule tasks to run at specified intervals or on certain conditions in AEM.</p>
+            <p><strong>Example:</strong></p>
+            <pre>
+@Component(service = ScheduledTask.class)
+@Designate(ocd = ScheduledTask.class)
+public class ScheduledTask {
+
+    @Activate
+    @Modified
+    protected void activate() {
+        // Schedule task logic here
+        System.out.println("Scheduled task executed!");
+    }
+}</pre>
+            <p>This service can execute tasks like cleanup, email notifications, or data synchronization at regular intervals.</p>
+
+            <h3>4. Event Listener Service - Listening to repository changes</h3>
+            <p>Event Listener services in AEM allow you to listen for repository changes, such as node modifications or content updates, and perform actions based on those events.</p>
+            <p><strong>Example:</strong></p>
+            <pre>
+@Component(service = EventListener.class)
+public class EventListenerService implements EventListener {
+
+    public void onEvent(Event event) {
+        // Handle the event (e.g., content modification)
+        System.out.println("Event received: " + event.getPath());
+    }
+}</pre>
+            <p>This service can listen to content creation, modification, or deletion and perform relevant actions like logging or triggering workflows.</p>
+
+            <h3>5. HTTP Client Service - Calling external APIs</h3>
+    <p>HTTP Client services in AEM allow you to interact with external APIs by making HTTP requests and handling responses.</p>
+    <p><strong>Example:</strong></p>
+    <pre>
+@Component(service = HttpClientService.class)
+public class HttpClientServiceImpl implements HttpClientService {
+
+    private HttpClient httpClient;
+
+    @Activate
+    protected void activate() {
+        httpClient = HttpClients.createDefault();
+    }
+
+    public String makeApiCall(String url) throws IOException {
+        HttpGet request = new HttpGet(url);
+        HttpResponse response = httpClient.execute(request);
+        return EntityUtils.toString(response.getEntity());
+    }
+}</pre>
+    <p>This service can be used to call external REST APIs and retrieve data in AEM components or services.</p>
+        </div>
+
+        <div class="card">
+            <h2>Consuming OSGi Services in AEM</h2>
+            <p>OSGi services can be consumed in AEM components, Sling models, Servlets, and workflows using the <code>@Reference</code> annotation. This enables you to easily access and use services that are registered in the OSGi container.</p>
+
+            <h3>Injecting services using @Reference annotation</h3>
+            <p>The <code>@Reference</code> annotation is used to inject OSGi services into AEM components. This is one of the simplest ways to access a registered service in AEM.</p>
+            <p><strong>Example:</strong></p>
+            <pre>
+@Component(service = MyComponent.class)
+public class MyComponent {
+
+    @Reference
+    private MyService myService;
+
+    public void printMessage() {
+        System.out.println(myService.getMessage());
+    }
+}</pre>
+            <p>The <code>@Reference</code> annotation automatically injects the instance of <code>MyService</code> into the component when it is activated.</p>
+
+            <h3>Using services in Sling Models:</h3>
+            <p>OSGi services can be used inside Sling models to handle complex logic or fetch data from external sources.</p>
+            <p><strong>Example:</strong> Injecting a service into a Sling model using <code>@Reference</code>.</p>
+            <pre>
+@Model(adaptables = Resource.class)
+public class MySlingModel {
+
+    @OsgiService
+    private MyService myService;
+
+    public String getMessage() {
+        return myService.getMessage();
+    }
+}</pre>
+            <p>In Sling Models, the <code>@OsgiService</code> annotation ensures that the service is automatically injected and can be used within these components.</p>
+            
+            <h3>Using services in Servlets:</h3>
+            <p>OSGi services can also be used Servlets to handle complex logic or fetch data from external sources.</p>
+            <p><strong>Example:</strong> Injecting a service into a Servlet to handle requests and provide data.</p>
+            <pre>
+@Component(service = MyServlet.class, immediate = true)
+public class MyServlet extends SlingAllMethodsServlet {
+
+    @Reference
+    private MyService myService;
+
+    @Override
+    protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response) throws IOException {
+        String message = myService.getMessage();
+        response.getWriter().write(message);
+    }
+}</pre>
+            <p>In Servlets, the <code>@Reference</code> annotation ensures that the service is automatically injected and can be used within these components.</p>
+
+            <h3>Using services inside Workflow processes</h3>
+            <p>In AEM workflows, services can be injected into workflow process steps to handle complex business logic or external integrations.</p>
+            <p><strong>Example:</strong> Using a service inside a custom workflow process step.</p>
+            <pre>
+@Component(service = WorkflowProcess.class, immediate = true)
+public class MyWorkflowProcess implements WorkflowProcess {
+
+    @Reference
+    private MyService myService;
+
+    @Override
+    public void execute(WorkItem workItem, WorkflowSession workflowSession, MetaDataMap metaDataMap) throws WorkflowException {
+        String message = myService.getMessage();
+        System.out.println("Workflow Process executed: " + message);
+    }
+}</pre>
+            <p>The service is injected using <code>@Reference</code>, and you can use it within the <code>execute()</code> method to carry out the necessary tasks in the workflow process.</p>
+        </div>
+
+        <div class="card">
+            <h2>Common Use Cases of AEM Services</h2>
+            <p>AEM services are highly useful in various scenarios ranging from accessing content stored in JCR to calling external APIs and sending emails. Below are some common use cases where AEM services can be leveraged effectively.</p>
+
+            <h3>Fetching Data from JCR</h3>
+            <p>OSGi services in AEM are often used to fetch data stored in the JCR repository. This can be done by injecting services that interact with the JCR to retrieve content.</p>
+            <p><strong>Example:</strong> Fetching content from the JCR using an OSGi service.</p>
+            <pre>
+@Component(service = JcrService.class)
+public class JcrService {
+
+    @Activate
+    public void fetchData() {
+        Session session = resourceResolver.adaptTo(Session.class);
+        try {
+            Node node = session.getNode("/content/myPage");
+            String title = node.getProperty("jcr:title").getString();
+            System.out.println("Title: " + title);
+        } catch (RepositoryException e) {
+            e.printStackTrace();
+        }
+    }
+}</pre>
+            <p>The example above demonstrates how to fetch data from the JCR repository using an OSGi service. You can use this technique to retrieve content dynamically in your AEM applications.</p>
+
+            <h3>Calling External REST APIs</h3>
+            <p>In AEM, you can call external REST APIs to fetch data or interact with third-party services using HTTP client services. This can be done using AEM's <code>HttpClient</code> service or through custom OSGi services.</p>
+            <p><strong>Example:</strong> Calling an external REST API using the HttpClient service.</p>
+            <pre>
+@Component(service = ApiService.class)
+public class ApiService {
+
+    public void fetchExternalData() throws IOException {
+        String jsonData = "";
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            HttpGet request = new HttpGet("https://api.example.com/data");
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                HttpEntity entity = response.getEntity();
+                if (entity != null) {
+                    jsonData = EntityUtils.toString(entity);
+                }
+            }
+        } catch (IOException e) {
+            LOG.error("Error fetching data from URL: {}", providerApiUrl, e);
+        }
+    }
+}</pre>
+            <p>This example shows how an OSGi service can be used to call an external REST API and retrieve the response using the HttpClient service.</p>
+
+            <h3>Sending Emails in AEM</h3>
+            <p>In AEM, sending emails can be done using the built-in <code>EmailService</code> or custom OSGi services. You can automate sending notifications or alerts through email from within AEM components.</p>
+            <p><strong>Example:</strong> Sending an email using the EmailService in AEM.</p>
+            <pre>
+@Component(service = EmailService.class)
+public class EmailService {
+
+    public boolean sendEmail(List<String> toReceipientsEmailList, List<String> ccReceipientsEmailList, String emailTemplatePath, Map<String, String> mailTokens) {
+        ResourceResolver resourceResolver = resourceResolverUtils.getServiceResourceResolver();
+        try {
+            final MailTemplate mailTemplate = MailTemplate.create(emailTemplatePath,
+                    resourceResolver.adaptTo(Session.class));
+            if (mailTemplate != null) {
+                final HtmlEmail email = mailTemplate.getEmail(StrLookup.mapLookup(mailTokens), HtmlEmail.class);
+                if (toReceipientsEmailList != null && !toReceipientsEmailList.isEmpty()) {
+                    email.addTo(toReceipientsEmailList.stream().toArray(String[]::new));
+                }
+                if (ccReceipientsEmailList != null && !ccReceipientsEmailList.isEmpty()) {
+                    email.addCc(ccReceipientsEmailList.stream().toArray(String[]::new));
+                }
+                MessageGateway<HtmlEmail> messageGateway = messageGatewayService.getGateway(HtmlEmail.class);
+                messageGateway.send(email);
+                return true;
+            }
+        } catch (EmailException | IOException | MessagingException ex) {
+            logger.error("Exception in SMTP2GOEmailServiceImpl.sendEmail: {}", "{}", ex);
+            return false;
+        } finally {
+        	resourceResolverUtils.closeServiceResourceResolver(resourceResolver);
+        }
+        return false;
+    }
+}</pre>
+            <p>In this example, the <code>EmailService</code> is used to send emails with a simple message body. You can use the service to send HTML emails, attachments, or send bulk notifications.</p>
+
+            <h3>Custom Logging Using Services</h3>
+            <p>Custom logging in AEM can be handled using OSGi services that wrap around logging frameworks like SLF4J or Logback. This allows you to configure and log events from AEM components efficiently.</p>
+            <p><strong>Example:</strong> Creating a custom logging service.</p>
+            <pre>
+@Component(service = LoggingService.class)
+public class LoggingService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoggingService.class);
+
+    public void logInfo(String message) {
+        LOG.info("INFO: {}", message);
+    }
+
+    public void logDebug(String message) {
+        LOG.debug("DEBUG: {}", message);
+    }
+
+    public void logError(String message, Throwable throwable) {
+        LOG.error("ERROR: {}", message, throwable);
+    }
+
+    public void logWarn(String message) {
+        LOG.warn("WARN: {}", message);
+    }
+
+    public void logTrace(String message) {
+        LOG.trace("TRACE: {}", message);
+    }
+}</pre>
+            <p>This example demonstrates how to create a custom logging service that uses SLF4J for logging purposes. You can extend this service to log messages at different levels (info, debug, error) throughout your AEM components.</p>
+        </div>
+
+        <div class="card">
+            <h2>System User</h2>
+            <p>A System User in AEM is a special type of user <code>rep:SystemUser</code> introduced in AEM 6.1 to securely access JCR resources and services without using administrative sessions, reducing security risks. System Users are needed in AEM to replace deprecated admin sessions, ensuring secure and restricted access to JCR resources without hardcoding credentials or using excessive administrative privileges.</p>
+            <h3>Why we need System User?</h3>
+            <ul>
+                <li>Secure access to JCR resources without admin privileges.</li>
+                <li>Assigning permissions for specific service-level operations.</li>
+                <li>Avoiding hardcoded credentials in code.</li>
+                <li>Mapping service users to system users for controlled access.</li>
+                <li>Enhancing security by restricting access based on user roles.</li>
+            </ul>
+            <h3>Create System User</h3>
+            <ol>
+                <li>Go to CRX Explorer <code>http://localhost:4502/crx/explorer/index.jsp</code>.</li>
+                <li>Click on User Administration.</li>
+                <li>Click on Create system User from Top Bar.
+                    <ul>
+                        <li><strong>UserId - </strong><code>testSystemUser</code> (User Id of system user you want to assign)</li>
+                        <li><strong>Intermediate Path - </strong><code>/home/users/system</code></li>
+                    </ul>
+                    <em>Note:- Path where you want to store system user. If no path is provided it will store user at some arbitrary node. This field is optional, but it is always advisable to provide path so that it will be easy to track user.</em>
+                </li>
+                <li>Click on <strong>Green check box</strong>.</li>
+                <li>Your system user is successfully created.</li>
+                <li>You can also view system user details from CRX DE at this path <code>/home/user/system</code>.</li>
+            </ol>
+            <h3>Define Service User Mapper in AEM</h3>
+            <p>For defining a service user mapper, a new configuration can be created using Apache sling Service User Mapper Service Amendment.</p>
+            <h4>Define the configration for System User Mapping via code:</h4>
+            <ol>
+                <li>Create Service User Mapping OSGI configuration to access resource using service user.
+                    <pre>org.apache.sling.serviceusermapping.impl.ServiceUserMapperImpl.&lt;custom_name&gt;.xml</pre>
+                </li>
+                <li>Provide below service mapping details:
+                    <pre>&lt;bundleId&gt;:&lt;subServiceName&gt;=&lt;systemUser&gt;</pre>
+                </li>
+                <li>Paste below content inside org.apache.sling.serviceusermapping.impl.ServiceUserMapperImpl.training.xml file
+                    <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+   xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="sling:OsgiConfig"
+    service.ranking="100"
+    user.mapping="[training.core:testSystemUser=testSystemUser]"/&gt;
+                    </pre>
+                </li>
+            </ol>
+            <h4>Define the configuration via AEM Console:</h4>
+            <ol>
+                <li>Go to Felix Console configurations <code>http://localhost:4502/system/console/configMgr</code>.</li>
+                <li>Search for <strong>service user mapper</strong> configuration.</li>
+                <li>Click on Plus sign against <strong>Apache Sling Service User Mapper Service Amendment</strong> to create new factory configuration.</li>
+                <li>Enter Service Mapping Details. Enter entry in form of: <code>BundleId:subserviceName=userName</code>. For example: <code>training.core:testSystemUser=testSystemUser</code></li>
+            </ol>
+            <h3>Allow Permissions to System User</h3>
+            <p>Lets consider we want this system user for content editing usage.</p>
+            <ol>
+                <li>Navigate to User Admin Console <code>localhost:4502/useradmin</code>.</li>
+                <li>Search for your user <code>testSystemUser</code>.</li>
+                <li>Select your user and go to Permissions Tab.</li>
+                <li>Provide full access to <code>/content</code> folder. By selecting all check box against content row. You can ignore replicate checkbox as we don't want this user for replication.</li>
+                <li>Click on <code>Save</code>.</li>
+            </ol>
+            <p><em>Note: </em><strong>System User </strong>is a special user <code>rep:SystemUser</code> created in the JCR repository with restricted permissions, meant for backend service access while <strong>Service User </strong>is a logical mapping in AEM that associates a service (or subservice) to a System User using the Service User Mapper. In other words, A Service User is just a mapping (defined in Felix Console) that allows a specific System User to be used by a service. The actual user in the repository is always a System User.</p>
+        </div>
+
+        <div class="card">
+            <h2>Services vs. Models in AEM</h2>
+            <p>Both Services and Models are used in AEM to manage backend logic and content retrieval, but they serve different purposes and are used in different scenarios.</p>
+        
+            <ul>
+                <li><strong>Services:</strong> Used to encapsulate reusable business logic that can be accessed by different components, servlets, and workflows. Services help interact with external systems, process data, or perform complex operations.</li>
+                <li><strong>Models:</strong> Primarily used for mapping JCR content to Java objects. They simplify access to AEM’s content structure and are mainly used in component-based development.</li>
+            </ul>
+        
+            <h3>When to Use a Service:</h3>
+            <ul>
+                <li>When you need shared business logic across different parts of the application.</li>
+                <li>When integrating with external APIs, databases, or third-party systems.</li>
+                <li>When processing complex data transformation or manipulation.</li>
+            </ul>
+        
+            <h3>When to Use a Model:</h3>
+            <ul>
+                <li>When you need to bind AEM content (JCR nodes) to Java objects for easy access in components.</li>
+                <li>When working with Sling models to expose structured data for components.</li>
+                <li>When simplifying content retrieval in HTL templates.</li>
+            </ul>
+        </div>        
+        
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>

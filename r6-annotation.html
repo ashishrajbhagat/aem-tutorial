@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEM Tutorial - R6 Annotation</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>AEM Tutorial</h2>
+        </div>
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Introduction to AEM</a></li>
+            <li><a href="apache-felix.html" class="nav-link">Apache Felix</a></li>
+            <li><a href="apache-jackrabbit.html" class="nav-link">Apache Jackrabbit</a></li>
+            <li><a href="apache-sling.html" class="nav-link">Apache Sling</a></li>
+            <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
+            <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
+            <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
+            <li><a href="templates.html" class="nav-link">Templates</a></li>
+            <li><a href="components.html" class="nav-link">Components</a></li>
+            <li><a href="sightly.html" class="nav-link">Sightly</a></li>
+            <li><a href="models.html" class="nav-link">Models</a></li>
+            <li><a href="jcr-and-sling-api.html" class="nav-link">JCR and Sling API</a></li>
+            <li><a href="servlets.html" class="nav-link">Servlets</a></li>
+            <li><a href="services.html" class="nav-link">Services</a></li>
+            <li><a href="r6-annotation.html" class="nav-link active">R6 Annotation</a></li>
+        </ul>
+    </nav>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        &#9776;
+    </div>
+
+    <main class="content">
+        <h1>R6 Annotation</h1>
+
+        <div class="card">
+            <h2>R6 Annotations</h2>
+            <p>R6 annotations allow us to add configurations to OSGi services using the <code>@Designate</code> annotation. The <code>@Designate</code> annotation requires an <code>ocd</code> (Object Class Definition) property to declare the service configuration.</p>
+            <p><strong>Example:</strong> Declaring an OSGi service with <code>@Designate</code> annotation.</p>
+            <pre>@Designate(ocd = PracticeServiceOCDConfiguration.class)</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Steps to Create OCD Configurations</h2>
+            <p>Follow these steps to create Object Class Definition (OCD) configurations and use them in OSGi services.</p>
+            <ul>
+                <li>Create a configuration interface using the <code>@interface</code> annotation.</li>
+                <li>Use the <code>@ObjectClassDefinition</code> annotation to define the configuration.</li>
+                <li>Define configuration properties using <code>@AttributeDefinition</code> annotation with name, description, and type.</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>Creating an OCD Configuration Interface</h2>
+            <p>Define the service configuration using an interface with the <code>@ObjectClassDefinition</code> annotation.</p>
+<pre>
+package com.training.core.config;
+
+import org.osgi.service.metatype.annotations.AttributeDefinition;
+import org.osgi.service.metatype.annotations.AttributeType;
+import org.osgi.service.metatype.annotations.ObjectClassDefinition;
+
+@ObjectClassDefinition(name = "My OCD Service", description = "Configuration for My OCD Service")
+public @interface MyOCDService {
+
+    @AttributeDefinition(name = "String Example", description = "Description of String type", type = AttributeType.STRING)
+    String variable1() default "Default Value";
+
+    @AttributeDefinition(name = "Array of String Example", description = "Description of Array of String type", type = AttributeType.STRING)
+    String[] variable2() default {"value1", "value2", "value3"};
+
+    @AttributeDefinition(name = "Boolean Example", description = "Description of Boolean type", type = AttributeType.BOOLEAN)
+    boolean variable3() default true;
+
+    @AttributeDefinition(name = "Password Example", description = "Description of Password type", type = AttributeType.PASSWORD)
+    String variable4() default StringUtils.EMPTY;
+
+    @AttributeDefinition(name = "Integer Example", description = "Description of Integer type", type = AttributeType.INTEGER)
+    int variable5();
+}</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Creating an OSGi Service to Consume OCD Configuration</h2>
+            <p>Next, create an OSGi service that consumes the configuration values.</p>
+            <p><strong>Example:</strong> Service Interface</p>
+            <pre>
+package com.training.core.config;
+
+public interface MyService {
+
+    String getVariable1();
+    String[] getVariable2();
+    boolean getVariable3();
+    String getVariable4();
+    int getVariable5();
+
+}</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Implementing the OSGi Service</h2>
+            <p>Implement the service and use the <code>@Activate</code> method to load configuration values.</p>
+<pre>
+package com.training.core.config.Impl;
+
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.metatype.annotations.Designate;
+
+@Component(service = MyService.class, immediate = true)
+@Designate(ocd = MyOCDService.class)
+public class MyServiceImpl implements MyService {
+
+    private String variable1;
+    private String[] variable2;
+    private boolean variable3;
+    private String variable4;
+    private int variable5;
+
+    @Activate
+    protected void activate(PracticeServiceOCDConfiguration config) {
+        this.variable1 = config.variable1();
+        this.variable2 = config.variable2();
+        this.variable3 = config.variable3();
+        this.variable4 = config.variable4();
+        this.variable5 = config.variable5();
+    }
+
+    @Override
+    public String getVariable1() {
+        return variable1;
+    }
+
+    @Override
+    public String[] getVariable2() {
+        return variable2;
+    }
+
+    @Override
+    public boolean getVariable3() {
+        return variable3;
+    }
+
+    @Override
+    public String getVariable4() {
+        return variable4;
+    }
+
+    @Override
+    public int getVariable5() {
+        return variable5;
+    }
+}</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Consuming the OSGi Service in a Servlet</h2>
+            <p>Create a Sling Servlet that consumes the OSGi service using the <code>@Reference</code> annotation.</p>
+<pre>
+package com.training.core.Servlet;
+
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.servlets.HttpConstants;
+import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+
+import javax.servlet.Servlet;
+import java.io.IOException;
+
+@Component(
+    service = Servlet.class,
+    property = {
+        "sling.servlet.methods=" + HttpConstants.METHOD_GET,
+        "sling.servlet.paths=" + "/bin/practice/ocd"
+    }
+)
+public class SlingServletByPathForOCD extends SlingSafeMethodsServlet {
+
+    @Reference
+    private MyService myService;
+
+    @Override
+    protected void doGet(final SlingHttpServletRequest req, final SlingHttpServletResponse resp) throws IOException {
+        resp.setContentType("text/plain");
+        resp.getWriter().write("Variable 1: " + myService.getVariable1() + ", Variable 2: " + myService.getVariable2()[0] + ", Variable 3: " + myService.getVariable3() + ", Variable 4: " + myService.getVariable4() + ", variable5: " + myService.getVariable5());
+    }
+}</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Verifying the OSGi Service and Servlet</h2>
+            <p>Follow these steps to verify that your OSGi service and servlet are successfully installed and active in AEM.</p>
+            <ul>
+                <li>Go to <code>http://localhost:4502/system/console/components</code> to check if the service and servlet are active.</li>
+                <li>Check the service configuration at <code>http://localhost:4502/system/console/configMgr</code>.</li>
+                <li>Test the servlet by visiting <code>http://localhost:4502/bin/practice/ocd</code> in the browser.</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>Run Mode Configurations</h2>
+            <p>Run mode configurations allow us to declare environment-specific properties. If no run mode configuration is defined, default values from the Java class are used.</p>
+            <p><strong>Example:</strong> Naming convention for run mode configuration files:</p>
+            <pre>com.training.core.config.Impl.MyServiceImpl.xml</pre>
+            <p>Paste the below code to this file:</p>
+            <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"
+    jcr:primaryType="sling:OsgiConfig"
+    variable1="New Value"
+    variable2="[New Value1,New Value2]"
+    variable3="{Boolean}true"
+    variable4="Value4"
+    variable5="10"/&gt;</pre>
+        </div>
+        
+        <div class="card">
+            <h2>Configuration File Location</h2>
+            <p>Configuration files stored inside the <code>apps/training/config</code> folder are available for all AEM instances.</p>
+            <p><strong>Example:</strong> Verifying the latest run mode configurations:</p>
+            <ul>
+                <li>Visit <code>http://localhost:4502/system/console/configMgr</code> to see the configurations.</li>
+                <li>Test the servlet at <code>http://localhost:4502/bin/practice/ocd</code> to check if it reads values from the configuration.</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>Declarative Services (SCR)</h2>
+            <p>Declarative Services (DS) in OSGi help manage the lifecycle and dependencies of components in AEM. Over time, the way services are declared has evolved from XML-based SCR configurations to the modern R6 annotations.</p>
+            
+            <h3>SCR (Service Component Runtime)</h3>
+            <ul>
+                <li>Before OSGi R6, services were defined using XML configuration files under <code>/OSGI-INF</code>.</li>
+                <li>Developers had to create separate XML descriptors for each service.</li>
+                <li>More complex and error-prone due to manual configuration.</li>
+            </ul>
+            <pre>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;component name="com.example.MyService" immediate="true"&gt;
+    &lt;implementation class="com.example.impl.MyServiceImpl" /&gt;
+    &lt;service&gt;
+        &lt;provide interface="com.example.MyService" /&gt;
+    &lt;/service&gt;
+    &lt;reference name="AnotherService" interface="com.example.AnotherService" /&gt;
+&lt;/component&gt;
+            </pre>
+        </div>
+
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>

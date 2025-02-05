@@ -13,12 +13,20 @@
             </div>
             <ul class="nav-list">
                 <li><a href="index.html" class="nav-link active">Introduction to AEM</a></li>
-                <li><a href="aem-architecture-stack.html" class="nav-link">AEM Architecture Stack</a></li>
+                <li><a href="apache-felix.html" class="nav-link">Apache Felix</a></li>
+                <li><a href="apache-jackrabbit.html" class="nav-link">Apache Jackrabbit</a></li>
+                <li><a href="apache-sling.html" class="nav-link">Apache Sling</a></li>
                 <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
                 <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
                 <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
                 <li><a href="templates.html" class="nav-link">Templates</a></li>
                 <li><a href="components.html" class="nav-link">Components</a></li>
+                <li><a href="sightly.html" class="nav-link">Sightly</a></li>
+                <li><a href="models.html" class="nav-link">Models</a></li>
+                <li><a href="jcr-and-sling-api.html" class="nav-link">JCR and Sling API</a></li>
+                <li><a href="servlets.html" class="nav-link">Servlets</a></li>
+                <li><a href="services.html" class="nav-link">Services</a></li>
+                <li><a href="r6-annotation.html" class="nav-link">R6 Annotation</a></li>
             </ul>
         </nav>
         <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -80,12 +88,105 @@
             </div>
             <div class="card">
                 <h2>AEM as a Cloud Service vs. On-Premise</h2>
-                <p>
-                    AEM as a Cloud Service offers a scalable, always-updated solution with
-                    lower maintenance overhead, while on-premise AEM provides greater
-                    control but requires more management effort. The choice depends on
-                    your organization’s needs.
-                </p>
+                <p>AEM as a Cloud Service offers a scalable, always-updated solution with lower maintenance overhead, while on-premise AEM provides greater control but requires more management effort. The choice depends on your organization's needs.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>AEM as a Cloud Service</th>
+                                <th>AEM On Premise</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Content Publish/Unpublish</strong></td>
+                                <td>Utilizes preferred Sling Content Distribution and optionally replication agents for content publish/unpublish</td>
+                                <td>Primarily relies on Replication agents for content publish/unpublish</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CRX/DE Access</strong></td>
+                                <td>CRX/DE access is restricted on higher STAGE and PROD environments</td>
+                                <td>CRX/DE access is available on both STAGE and PROD environments</td>
+                            </tr>
+                            <tr>
+                                <td><strong>OSGi Configuration</strong></td>
+                                <td>Allows creation of secrets and environment variables as part of the Cloud Manager, used as OSGi configuration</td>
+                                <td>Permits creation of secrets and environment variables as part of OSGi configuration</td>
+                            </tr>
+                            <tr>
+                                <td><strong>License Cost</strong></td>
+                                <td>License cost depends on infrastructure and usage</td>
+                                <td>License cost includes AEM instance and infrastructure hardware</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Environment</strong></td>
+                                <td>Local AEM SDK is not a replica of the cloud service</td>
+                                <td>AEM Jar is a replica of the On Premise instance</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Deployment Architecture</strong></td>
+                                <td>Recommends using Adobe CDN, enterprise-level license required for other CDNs</td>
+                                <td>No such CDN restriction</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tenancy</strong></td>
+                                <td>Follows a multi-tenant architecture for code deployment</td>
+                                <td>No specific restriction on deployment architecture</td>
+                            </tr>
+                            <tr>
+                                <td><strong>CI (Continuous Integration)</strong></td>
+                                <td>Code can only be deployed with the help of Cloud Manager</td>
+                                <td>Any custom CI tool can be used for code deployment</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Maintenance</strong></td>
+                                <td>Low maintenance cost, managed by Adobe</td>
+                                <td>High maintenance cost, managed by the client with required infrastructure</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Scaling</strong></td>
+                                <td>Allows on-demand auto-scaling due to infrastructure flexibility</td>
+                                <td>On-demand auto-scaling is not allowed due to infrastructure and licensing costs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Logs</strong></td>
+                                <td>Author, publisher, and dispatcher logs can be easily downloaded for all environments via Cloud Manager</td>
+                                <td>Requires server-specific access through tools like Putty to download logs</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Cost</strong></td>
+                                <td>Built on a microservices-based architecture, doesn't require extra costs for instance setup</td>
+                                <td>Built on a monolithic environment, involves significant effort to set up an AEM environment and its components</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Repo</strong></td>
+                                <td>Works exclusively with Adobe GIT repo</td>
+                                <td>Any code repository can be used</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Content type</strong></td>
+                                <td>Follows a strict approach to mutable and immutable content</td>
+                                <td>No such strict restriction on content management</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Run mode</strong></td>
+                                <td>Allows custom runmode on runtime</td>
+                                <td>Does not allow custom runmode on runtime</td>
+                            </tr>
+                            <tr>
+                                <td><strong>User Management</strong></td>
+                                <td>User and group management is done by the admin console</td>
+                                <td>User and group management can be handled through author user admin pages</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Publish Instance</strong></td>
+                                <td>Possible to make changes directly on publish instance</td>
+                                <td>Not possible to make changes directly on the publish instance</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="card">
                 <h2>AEM Instances</h2>
@@ -101,6 +202,12 @@
                     <li>The publish instance retrieves content from the author instance and serves it to the website visitors.</li>
                     <li>It is optimized for performance and scalability.</li>
                 </ul>
+            </div>
+
+            <div class="card">
+                <h2>AEM Architecture Stack</h2>
+                <p>The architecture stack of Adobe Experience Manager (AEM) is based on several key open-source technologies. Three of the most important components are <code>Apache Felix</code>, <code>Apache Jackrabbit</code>, and <code>Apache Sling</code>. These technologies work together to provide the foundational framework for AEM.</p>
+                <img src="images/architecture-stack.png" alt="AEM Architecture Stack">
             </div>
         </main>
         <script src="js/script.js"></script>

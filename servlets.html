@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEM Tutorial - Servlets</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>AEM Tutorial</h2>
+        </div>
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Introduction to AEM</a></li>
+            <li><a href="apache-felix.html" class="nav-link">Apache Felix</a></li>
+            <li><a href="apache-jackrabbit.html" class="nav-link">Apache Jackrabbit</a></li>
+            <li><a href="apache-sling.html" class="nav-link">Apache Sling</a></li>
+            <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
+            <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
+            <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
+            <li><a href="templates.html" class="nav-link">Templates</a></li>
+            <li><a href="components.html" class="nav-link">Components</a></li>
+            <li><a href="sightly.html" class="nav-link">Sightly</a></li>
+            <li><a href="models.html" class="nav-link">Models</a></li>
+            <li><a href="jcr-and-sling-api.html" class="nav-link">JCR and Sling API</a></li>
+            <li><a href="servlets.html" class="nav-link active">Servlets</a></li>
+            <li><a href="services.html" class="nav-link">Services</a></li>
+            <li><a href="r6-annotation.html" class="nav-link">R6 Annotation</a></li>
+        </ul>
+    </nav>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        &#9776;
+    </div>
+
+    <main class="content">
+        <h1>Servlets</h1>
+
+        <div class="card">
+            <h2>What is Servlet?</h2>
+            <p>In general, a servlet is a Java class that handles HTTP requests and generates responses. Servlets are used to extend the functionality of web servers, enabling dynamic content generation.</p>
+            <p>In AEM, servlets are used to handle specific HTTP requests, interact with AEM components, and generate dynamic content or perform backend logic. They can be mapped to specific URLs and are often used for tasks like processing form submissions, handling custom APIs, or interacting with the repository. AEM servlets are registered as OSGi components and can be configured via annotations, enabling easier integration and customization within the AEM ecosystem.</p>
+            <p><strong>Traditional Java Servlets</strong> handle HTTP requests in a generic servlet container (like Tomcat) and are configured in web.xml. They focus on basic request-response handling while <strong>AEM-specific Servlets</strong> are integrated within the AEM platform, leveraging Sling and OSGi for advanced features. They are configured using OSGi annotations, manage lifecycle via OSGi, and integrate seamlessly with AEM's repository, workflows, and security.</p>
+        </div>
+
+        <div class="card">
+            <h2>Lifecycle of an AEM Servlet</h2>
+            <p>In AEM, servlets follow a lifecycle that integrates with the OSGi framework and the Sling model for efficient resource management and content interaction.</p>
+            <ol>
+                <li><strong>Component Declaration: </strong>The servlet is defined as an OSGi component using annotations like <code>@Component</code>, <code>@Service</code>, <code>@SlingServletPaths</code>, and <code>@SlingServletResourceTypes</code>. The OSGi container treats the servlet as a service and registers it based on the path, resource type, or selector.</li>
+                <li><strong>Dependency Injection: </strong>Before initialization, the OSGi container injects required services like <code>ResourceResolverFactory</code> or <code>SlingHttpServletRequest</code> into the servlet. This ensures the servlet can interact with AEM's resource tree and repository.</li>
+                <li><strong>Activation (@Activate Method): </strong>The servlet is activated when all required dependencies are available. An optional <code>@Activate</code> method can initialize configurations or resources, setting up the servlet's functionality.</li>
+                <li><strong>Request Handling: </strong>The Sling framework routes incoming HTTP requests to the servlet based on its registered path, resource type, or selector. The servlet processes the request (via methods like <code>doGet()</code> or <code>doPost()</code>) and interacts with the JCR to dynamically serve content or execute logic.</li>
+                <li><strong>Deactivation (@Deactivate Method): </strong>The servlet is deactivated when the OSGi bundle is stopped or unregistered. The <code>@Deactivate</code> method ensures that any resources or configurations are released and cleaned up when the servlet is removed from the OSGi container. This lifecycle management enables servlets to work seamlessly within AEM’s environment, efficiently handling dynamic content and backend tasks.</li>
+            </ol>
+        </div>
+
+        <div class="card">
+            <h2>Types of Servlets</h2>
+            <p>AEM supports mainly two types of servlets based on their registration:</p>
+            <ol>
+                <li>
+                    <h3>Resource Type-based Servlets</h3>
+                    <p>These servlets are mapped to resource types rather than paths, providing better security and integration with AEM's access control.</p>
+                    <ul>
+                        <li>Follows AEM's permission model, restricting unauthorized access.</li>
+                        <li>Executes based on resource resolution, ensuring structured request handling.</li>
+                        <li>Easier to manage within AEM's security framework.</li>
+                    </ul>
+                    <pre>
+@Component(service = Servlet.class)
+@SlingServletResourceTypes(
+    resourceTypes = "example/components/content/myComponent",
+    methods = "GET",
+    extensions = "json"
+)
+public class MySlingServlet extends SlingSafeMethodsServlet {
+    ...
+}                    </pre>
+                    <pre>
+@Component(service = Servlet.class,
+        property = {
+                "sling.servlet.resourceTypes=example/components/content/myComponent",
+                "sling.servlet.methods=GET",
+                "sling.servlet.extensions=json"
+        })
+public class MySlingServlet extends SlingSafeMethodsServlet {
+    ...
+}                    </pre>
+                    <p>The first example uses @SlingServletResourceTypes, a newer and more concise way to register servlets in AEM (6.4+), specifically for resource type-based servlets. The second example uses @Component with OSGi properties, an older but more flexible approach that works for both resource type-based and path-based servlets, making it more compatible with older AEM versions.</p>
+                    <p>When testing a POST request to an AEM servlet, you may encounter authentication and 403 Forbidden errors. To resolve this we need to make some changes:
+                        <ol>
+                            <li>Configure Apache Sling Referrer Filter
+                                <ul>
+                                    <li>Navigate to <code>http://localhost:4502/system/console/configMgr</code> and locate <strong>Apache Sling Referrer Filter</strong>.</li>
+                                    <li>Enable <strong>allow empty</strong>.</li>
+                                    <li>Remove <strong>POST</strong> from the filter methods.</li>
+                                    <li>Save the changes.</li>
+                                </ul>
+                            </li>
+                            <li>Configure Adobe Granite CSRF Filter
+                                <ul>
+                                    <li>Navigate to <code>http://localhost:4502/system/console/configMgr</code> and locate <strong>Adobe Granite CSRF Filter</strong>.</li>
+                                    <li>Remove <strong>POST</strong> from the filter methods.</li>
+                                    <li>Save the changes.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </p>
+                    <h4>Allowing CSRF Token for POST Servlet in AEM</h4>
+                    <p>In AEM, CSRF protection is required for authenticated <code>POST</code>, <code>PUT</code>, and <code>DELETE</code> requests. If a CSRF token is not included, AEM rejects the request with a <code>403 Forbidden</code> response. Ways to Implement CSRF Token in POST Servlet:</p>
+                    <ol>
+                        <li>Dispatcher Configuration. For AEM Publish instances, ensure that the Dispatcher allows GET requests to the CSRF token endpoint by adding the following rule:
+                            <pre>/0120 { /type "allow" /method "GET" /url "/libs/granite/csrf/token.json" }</pre>
+                        </li>
+                        <li>Adding CSRF Token to Form Submission. Use the following HTML and JavaScript snippet to fetch and include the CSRF token in a form submission:
+                            <pre>
+&lt;form id="csrf-protected-form" action="/path/to/aem/endpoint" method="POST"&gt;
+    &lt;input type="text" name="message" placeholder="Enter your message" required&gt;
+    &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+
+&lt;script&gt;
+    document.querySelector('#csrf-protected-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const form = event.target;
+        const response = await fetch('/libs/granite/csrf/token.json');
+        const json = await response.json();
+        
+        let csrfTokenInput = form.querySelector('input[name=":cq_csrf_token"]');
+        if (!csrfTokenInput) {
+            form.insertAdjacentHTML('beforeend', `<input type="hidden" name=":cq_csrf_token" value="${json.token}">`);
+        } else {
+            csrfTokenInput.value = json.token;
+        }
+        form.submit();
+    });
+&lt;/script&gt;</pre>
+                        </li>
+                        <li>Adding CSRF Token to AJAX Requests. For AJAX requests using <code>fetch</code>, include the CSRF token in the request headers:
+                        <pre>
+&lt;script&gt;
+    async function getCsrfToken() {
+        const response = await fetch('/libs/granite/csrf/token.json');
+        const json = await response.json();
+        return json.token;
+    }
+
+    async function sendPostRequest() {
+        const csrfToken = await getCsrfToken();
+        await fetch('/path/to/aem/endpoint', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'CSRF-Token': csrfToken
+            },
+            body: JSON.stringify({ message: 'Hello AEM' })
+        });
+    }
+&lt;/script&gt;
+
+&lt;button onclick="sendPostRequest()"&gt;Send AJAX Request&lt;/button&gt;</pre>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <h3>Path-based Servlets</h3>
+                    <p>Path-based servlets are mapped to specific URLs and may have security risks if not managed properly.</p>
+                    <ul>
+                        <li>Limited to predefined paths, reducing flexibility.</li>
+                        <li>Can lead to errors if the servlet is inactive during POST requests.</li>
+                        <li>Requires exact path definitions; incorrect configurations can break functionality.</li>
+                    </ul>
+                    <pre>
+@Component(service = Servlet.class)
+@SlingServletPaths("/bin/myServlet")
+@SlingServletMethods(methods = "GET")
+public class MyPathServlet extends SlingSafeMethodsServlet {
+    ...
+}                    </pre>
+                    <pre>
+@Component(service = Servlet.class,
+        property = {
+                "sling.servlet.paths=/bin/myServlet",
+                "sling.servlet.methods=GET"
+        })
+public class MyPathServlet extends SlingAllMethodsServlet {
+    ...
+}                    </pre>
+                    <p>The first approach (@SlingServletPaths) is cleaner and recommended for AEM 6.4+, while the second (@Component with property) is more flexible and works in all AEM versions.</p>
+                    <p>When you register a servlet using a specific path in AEM, you need to ensure that the servlet path is correctly mapped within the <code>Sling Servlet/Script Resolver</code> configuration. Follow the steps below to properly configure the servlet registration based on path:</p>
+                    <ol>
+                        <li>In AEM, go to the following URL: <code>http://localhost:4502/system/console/configMgr</code>.</li>
+                        <li>Once you're in the configuration manager, search for the <strong>Servlet/Script Resolver</strong> configuration.</li>
+                        <li>You will find that the servlet path is listed inside the <strong>Execution Path</strong> field. If the path for your servlet is not listed, you need to add it manually.</li>
+                        <li>To add the servlet path, simply enter the appropriate servlet path in the <strong>Execution Path</strong> field and save the configuration.</li>
+                        <li>After configuring the execution path, verify that the servlet is registered correctly and is accessible via the defined path in your AEM instance.</li>
+                    </ol>
+                    <p><strong>Example:</strong> If you have a servlet registered for path <code>/bin/exampleServlet</code>, ensure this is reflected in the <strong>Execution Path</strong> field in the configuration manager as <code>/bin/</code></p>
+                </li>
+            </ol>
+        </div>
+
+        <div class="card">
+            <h2>Difference Between Path-Based and Resource Type-Based Servlets</h2>
+            <p>Here's a quick comparison:</p>
+            <ul>
+                <li><strong>Path-Based Servlets:</strong> Triggered by a specific URL path (e.g., /bin/myServlet). Useful for non-content-based operations.</li>
+                <li><strong>Resource Type-Based Servlets:</strong> Triggered by the resource type in the content repository (e.g., example/components/content). More aligned with AEM’s content architecture.</li>
+            </ul>
+            <h3>Preferred Option:</h3>
+            <p><strong>Resource Type-Based Servlets</strong> are generally preferred in AEM development because they:</p>
+            <ul>
+                <li>Align with AEM's content-driven architecture, making it easier to work with dynamic content.</li>
+                <li>Integrate better with AEM components and templates for consistent content rendering.</li>
+                <li>Benefit from AEM's built-in security and permission model, allowing for finer control over content access.</li>
+                <li>Provide a more scalable and flexible solution for handling resources based on their types rather than paths.</li>
+            </ul>
+            <p><strong>Path-Based Servlets</strong> might still be suitable for utility purposes or backend tasks, but for most content management use cases, resource type-based servlets are preferred. Also, path-bound servlets cannot be access-controlled using the default JCR repository ACLs.</p>
+            <p><strong><em>Note: </em></strong>To ensure a servlet is registered correctly in AEM, you must define either sling.servlet.paths or sling.servlet.resourceTypes; if neither is specified, the servlet will be ignored. When both are provided, the servlet is registered using both methods. However, if sling.servlet.paths is set, all other sling.servlet.* properties are ignored. If sling.servlet.paths is not defined, AEM automatically registers a Resource Provider for every combination of resource type, selector, extension, and method.</p>
+        </div>
+
+        <div class="card">
+            <h2>Base Classes to Extend and Methods to Override in Sling Servlets</h2>
+            <p>Sling Servlets extend specific base classes depending on the HTTP methods they need to handle.</p>
+            <ul>
+                <li><strong>Base Classes to Extend:</strong>
+                    <ul>
+                        <li><strong>SlingSafeMethodsServlet:</strong> Extends <code>HttpServlet</code> and is used for read-only HTTP methods (GET, HEAD, OPTIONS).</li>
+                        <li><strong>SlingAllMethodsServlet:</strong> Extends <code>SlingSafeMethodsServlet</code> and supports read-write HTTP methods (POST, PUT, DELETE).</li>
+                    </ul>
+                </li>
+                <li><strong>Methods to Override:</strong>
+                    <ul>
+                        <li><strong>doGet():</strong> Override this method to handle GET requests.</li>
+                        <li><strong>doPost():</strong> Override this method to handle POST requests.</li>
+                        <li><strong>doPut():</strong> Override this method to handle PUT requests.</li>
+                        <li><strong>doDelete():</strong> Override this method to handle DELETE requests.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>When creating a custom servlet, you will extend one of these base classes and override the appropriate methods to handle the necessary HTTP request types.</p>
+        </div>
+
+        <div class="card">
+            <h2>Servlet Configuration</h2>
+            <p>Sometimes, you need to configure your servlet through the OSGi console. This can be done using annotations like <code>@Designate</code> and <code>@Component</code>.</p>
+            <pre>
+@Designate(ocd = MyServletConfig.class)
+@Component(service = Servlet.class)
+@SlingServletPaths("/bin/my/configurable/servlet")
+public class MyConfigurableServlet extends SlingAllMethodsServlet {
+
+    private MyServletConfig config;
+
+    @Activate
+    @Modified
+    protected void activate(MyServletConfig config) {
+        this.config = config;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().write("Configurable value: " + config.someConfigValue());
+    }
+}            </pre>
+            <ul>
+                <li><strong>@Component:</strong> Registers the servlet as an OSGi service for AEM to manage.</li>
+                <li><strong>@Designate:</strong> Used for reading configurations or properties associated with the servlet, such as path mappings.</li>
+                <li><strong>@Activate:</strong> Invoked when the servlet is activated in the OSGi container. Typically used for initialization.</li>
+                <li><strong>@Modified:</strong> Reconfigure the servlet whenever a change in the configuration is detected.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Servlets vs. Sling Models</h2>
+            <p>Both servlets and Sling Models are used to interact with AEM's content repository, but they serve different purposes and are used in different scenarios.</p>
+            <ul>
+                <li><strong>Servlets:</strong> Primarily used for handling HTTP requests, implementing custom business logic, and returning dynamic content. Servlets allow you to directly manage the HTTP request/response cycle.</li>
+                <li><strong>Sling Models:</strong> Used for simplifying the process of binding content in the JCR to Java objects, making it easier to manage AEM's content in a component-based architecture. Models are used for rendering static content in the form of components.</li>
+            </ul>
+            <h3>When to Choose a Servlet:</h3>
+            <ul>
+                <li>When you need to implement custom logic for handling HTTP requests (e.g., handling form submissions or processing complex backend tasks).</li>
+                <li>When your application needs to interact with external systems or APIs and respond with dynamic content.</li>
+            </ul>
+            <h3>When to Choose Sling Models:</h3>
+            <ul>
+                <li>When rendering content based on a specific resource type and integrating with AEM's component architecture.</li>
+                <li>When you need to bind AEM's JCR nodes to Java objects for easy access and manipulation within components.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Servlets vs. Services in AEM</h2>
+            <p>Both Servlets and Services are essential in AEM for handling backend logic, but they serve different purposes and are used in different scenarios.</p>
+        
+            <ul>
+                <li><strong>Servlets:</strong> Used for handling HTTP requests and responses. They are mainly used to process user requests, fetch data, or perform backend actions based on incoming parameters.</li>
+                <li><strong>Services:</strong> Used to encapsulate reusable business logic that can be accessed across different components, servlets, or workflows in AEM.</li>
+            </ul>
+        
+            <h3>When to Use a Servlet:</h3>
+            <ul>
+                <li>When you need to handle custom HTTP requests (e.g., GET, POST) and return JSON, HTML, or other responses.</li>
+                <li>When processing form submissions, API calls, or AJAX requests.</li>
+                <li>When dynamically fetching and returning data from JCR or an external service.</li>
+            </ul>
+        
+            <h3>When to Use a Service:</h3>
+            <ul>
+                <li>When you need shared business logic that multiple servlets, models, or workflows can use.</li>
+                <li>When interacting with external systems (e.g., calling third-party APIs or databases).</li>
+                <li>When you want to separate logic from servlets and promote reusability.</li>
+            </ul>
+        </div>        
+
+        <div class="card">
+            <h2>Calling Other Services/Sling Models from a Servlet</h2>
+            <ul>
+                <li><strong>@Reference</strong> is used in AEM to inject OSGi services, allowing your servlet to interact with services like ResourceResolverFactory.</li>
+                <li><strong>@Inject</strong> is used for injecting other dependencies, commonly used for services in non-OSGi contexts, like Sling Models.</li>
+            </ul>
+        </div>
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>
