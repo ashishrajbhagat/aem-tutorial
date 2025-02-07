@@ -23,11 +23,14 @@
             <li><a href="components.html" class="nav-link">Components</a></li>
             <li><a href="sightly.html" class="nav-link">Sightly</a></li>
             <li><a href="models.html" class="nav-link">Models</a></li>
+            <li><a href="clientlibs.html" class="nav-link">Clientlibs</a></li>
             <li><a href="jcr-and-sling-api.html" class="nav-link">JCR and Sling API</a></li>
             <li><a href="servlets.html" class="nav-link">Servlets</a></li>
             <li><a href="services.html" class="nav-link">Services</a></li>
             <li><a href="r6-annotation.html" class="nav-link">R6 Annotation</a></li>
             <li><a href="event-handling.html" class="nav-link active">Event Handling</a></li>
+            <li><a href="scheduler-and-jobs.html" class="nav-link">Scheduler and Jobs</a></li>
+            <li><a href="workflow.html" class="nav-link">Workflow</a></li>
         </ul>
     </nav>
 
@@ -163,6 +166,91 @@ public class ResourceChangeListenerExample implements ResourceChangeListener {
                 <li>AEM uses event handlers to monitor page activations, user logins, workflow executions, and configuration updates.</li>
                 <li>OSGi-based event handlers provide real-time processing of system and content events.</li>
             </ul>
+
+            <h3>Sling Event Topics</h3>
+            
+            <ul>
+                <li><strong>Resource Events</strong>
+                    <ul>
+                        <li><strong>org/apache/sling/api/resource/Resource/ADDED</strong>: Triggered when a new resource (e.g., node or file) is added to the repository.</li>
+                        <li><strong>org/apache/sling/api/resource/Resource/CHANGED</strong>: Triggered when an existing resource is modified.</li>
+                        <li><strong>org/apache/sling/api/resource/Resource/REMOVED</strong>: Triggered when a resource is removed from the repository.</li>
+                    </ul>
+                </li>
+                
+                <li><strong>JCR Observation Events</strong>
+                    <ul>
+                        <li><strong>javax/jcr/observation/Event.NODE_ADDED</strong>: Triggered when a new node is added.</li>
+                        <li><strong>javax/jcr/observation/Event.NODE_REMOVED</strong>: Triggered when a node is removed.</li>
+                        <li><strong>javax/jcr/observation/Event.NODE_MOVED</strong>: Triggered when a node is moved.</li>
+                        <li><strong>javax/jcr/observation/Event.PROPERTY_ADDED</strong>: Triggered when a new property is added to a node.</li>
+                        <li><strong>javax/jcr/observation/Event.PROPERTY_CHANGED</strong>: Triggered when a property is changed.</li>
+                        <li><strong>javax/jcr/observation/Event.PROPERTY_REMOVED</strong>: Triggered when a property is removed.</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <h3>AEM-Specific Event Topics</h3>
+            
+            <ul>
+                <li><strong>Replication Events</strong>
+                    <ul>
+                        <li><strong>com/day/cq/replication/ReplicationAction/ActionType/ACTIVATE</strong>: Triggered when a page or asset is activated (published).</li>
+                        <li><strong>com/day/cq/replication/ReplicationAction/ActionType/DEACTIVATE</strong>: Triggered when a page or asset is deactivated (unpublished).</li>
+                        <li><strong>com/day/cq/replication/ReplicationAction/ActionType/DELETE</strong>: Triggered when a page or asset is deleted.</li>
+                    </ul>
+                </li>
+        
+                <li><strong>Workflow Events</strong>
+                    <ul>
+                        <li><strong>com/day/cq/workflow/event/WorkflowEvent/TYPE_STARTED</strong>: Triggered when a workflow instance starts.</li>
+                        <li><strong>com/day/cq/workflow/event/WorkflowEvent/TYPE_COMPLETED</strong>: Triggered when a workflow instance is completed.</li>
+                        <li><strong>com/day/cq/workflow/event/WorkflowEvent/TYPE_FAILED</strong>: Triggered when a workflow instance fails.</li>
+                        <li><strong>com/day/cq/workflow/event/WorkflowEvent/TYPE_ABORTED</strong>: Triggered when a workflow instance is aborted.</li>
+                    </ul>
+                </li>
+        
+                <li><strong>Page Events</strong>
+                    <ul>
+                        <li><strong>com/day/cq/wcm/core/page/ReplicationEvent/ACTIVATED</strong>: Triggered when a page is activated.</li>
+                        <li><strong>com/day/cq/wcm/core/page/ReplicationEvent/DEACTIVATED</strong>: Triggered when a page is deactivated.</li>
+                        <li><strong>com/day/cq/wcm/core/page/ReplicationEvent/DELETED</strong>: Triggered when a page is deleted.</li>
+                    </ul>
+                </li>
+        
+                <li><strong>Tagging Events</strong>
+                    <ul>
+                        <li><strong>com/day/cq/tagging/TagManager/ADDED</strong>: Triggered when a new tag is added.</li>
+                        <li><strong>com/day/cq/tagging/TagManager/REMOVED</strong>: Triggered when a tag is removed.</li>
+                        <li><strong>com/day/cq/tagging/TagManager/RENAMED</strong>: Triggered when a tag is renamed.</li>
+                    </ul>
+                </li>
+            </ul>
+        
+            <h3>OSGi Event Topics</h3>
+            
+            <ul>
+                <li><strong>OSGi Service Events</strong>
+                    <ul>
+                        <li><strong>org/osgi/service/event/EventConstants/SERVICE_EVENT_REGISTERED</strong>: Triggered when an OSGi service is registered.</li>
+                        <li><strong>org/osgi/service/event/EventConstants/SERVICE_EVENT_UNREGISTERING</strong>: Triggered when an OSGi service is unregistered.</li>
+                    </ul>
+                </li>
+        
+                <li><strong>Bundle Events</strong>
+                    <ul>
+                        <li><strong>org/osgi/framework/BundleEvent/INSTALLED</strong>: Triggered when an OSGi bundle is installed.</li>
+                        <li><strong>org/osgi/framework/BundleEvent/STARTED</strong>: Triggered when an OSGi bundle is started.</li>
+                        <li><strong>org/osgi/framework/BundleEvent/STOPPED</strong>: Triggered when an OSGi bundle is stopped.</li>
+                    </ul>
+                </li>
+        
+                <li><strong>Custom Event Topics</strong>
+                    <ul>
+                        <li><strong>Custom Topics</strong>: You can define your own custom event topics to listen to specific application-level events or to integrate with external systems.</li>
+                    </ul>
+                </li>
+            </ul>            
         
             <h3>Implementing an Event Handler</h3>
         
@@ -481,12 +569,6 @@ public class ResourceChangeListenerExample implements ResourceChangeListener {
                 <li>Check Event Configurations: Ensure that event configurations are correct in the Felix console (e.g., subscribing to the correct topics and managing event queues).</li>
             </ul>
         </div>
-        
-        
-        
-        
-
-
     </main>
     <script src="js/script.js"></script>
 </body>
