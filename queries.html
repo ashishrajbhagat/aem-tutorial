@@ -11,29 +11,7 @@
         <div class="logo">
             <h2>AEM Tutorial</h2>
         </div>
-        <ul class="nav-list">
-            <li><a href="index.html" class="nav-link">Introduction to AEM</a></li>
-            <li><a href="apache-felix.html" class="nav-link">Apache Felix</a></li>
-            <li><a href="apache-jackrabbit.html" class="nav-link">Apache Jackrabbit</a></li>
-            <li><a href="apache-sling.html" class="nav-link">Apache Sling</a></li>
-            <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
-            <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
-            <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
-            <li><a href="templates.html" class="nav-link">Templates</a></li>
-            <li><a href="components.html" class="nav-link">Components</a></li>
-            <li><a href="sightly.html" class="nav-link">Sightly</a></li>
-            <li><a href="models.html" class="nav-link">Models</a></li>
-            <li><a href="clientlibs.html" class="nav-link">Clientlibs</a></li>
-            <li><a href="jcr-and-sling-api.html" class="nav-link">JCR and Sling API</a></li>
-            <li><a href="servlets.html" class="nav-link">Servlets</a></li>
-            <li><a href="services.html" class="nav-link">Services</a></li>
-            <li><a href="r6-annotation.html" class="nav-link">R6 Annotation</a></li>
-            <li><a href="event-handling.html" class="nav-link">Event Handling</a></li>
-            <li><a href="scheduler-and-jobs.html" class="nav-link">Scheduler and Jobs</a></li>
-            <li><a href="workflow.html" class="nav-link">Workflow</a></li>
-            <li><a href="queries.html" class="nav-link active">Queries</a></li>
-            <li><a href="runmodes.html" class="nav-link">Runmodes</a></li>
-        </ul>
+        <ul class="nav-list" id="navList"></ul>
     </nav>
 
     <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -44,8 +22,743 @@
         <h1>Queries</h1>
 
         <div class="card">
-            <h2></h2>
+            <h2>Introduction to Queries in AEM</h2>
+            <p>Queries in AEM allow developers to search and retrieve content stored in the JCR (Java Content Repository) based on specific conditions. AEM supports various query languages such as XPath, JCR-SQL2, and Query Builder API to efficiently locate, filter, and fetch relevant content nodes from the repository.</p>
+        
+            <h3>Types of Queries in AEM</h3>
+            <ul>
+                <li><strong>XPath Queries:</strong> XML-based querying language used in older versions of AEM.</li>
+                <li><strong>JCR-SQL2:</strong> SQL-like syntax for querying the JCR, widely used in AEM.</li>
+                <li><strong>Query Builder API:</strong> Adobe-provided API to construct queries dynamically.</li>
+            </ul>
         </div>
+        
+        <div class="card">
+            <h2>Why are Queries Important?</h2>
+            <p>Queries in AEM are crucial for retrieving content efficiently, especially in large repositories. They help in:</p>
+            <ul>
+                <li>Searching for specific pages, assets, or components.</li>
+                <li>Filtering content based on metadata, tags, or properties.</li>
+                <li>Automating content retrieval for dynamic pages.</li>
+                <li>Enhancing performance by avoiding manual traversal of the JCR tree.</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>When to Use Queries vs. Resource APIs?</h2>
+            <h3>Using Queries</h3>
+            <ul>
+                <li>When searching for nodes dynamically based on multiple conditions.</li>
+                <li>When retrieving large sets of data from different parts of the repository.</li>
+                <li>When working with structured searches, filtering, and sorting.</li>
+            </ul>
+        
+            <h3>Using Resource APIs</h3>
+            <ul>
+                <li>When accessing a known path or specific resource directly.</li>
+                <li>When performance is critical, and the data structure is predictable.</li>
+                <li>When retrieving child nodes without complex filtering.</li>
+            </ul>
+        
+            <h4>Example:</h4>
+            <p><strong>Using Query:</strong> Searching for all pages under <code>/content/we-retail</code> with a specific template.</p>
+            <pre>SELECT * FROM [cq:Page] AS p WHERE ISDESCENDANTNODE([/content/we-retail]) AND p.[jcr:content/cq:template] = '/conf/we-retail/settings/wcm/templates/product-page'</pre>
+        
+            <p><strong>Using Resource API:</strong> Retrieving a page directly.</p>
+            <pre>
+Resource page = resourceResolver.getResource("/content/we-retail/home");
+PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
+Page homePage = pageManager.getContainingPage(page);
+            </pre>
+        </div>
+
+        <div class="card">
+            <h2>Query Languages in AEM</h2>
+            <p>AEM provides multiple query languages to search and retrieve content stored in the JCR. These query languages help developers fetch data efficiently based on different conditions.</p>
+            
+            <h3>Types of Query Languages</h3>
+            
+            <h4>SQL2 (JCR-SQL2)</h4>
+            <p>JCR-SQL2 is a standardized query language used to retrieve content from the JCR. It follows SQL-like syntax, making it easier for developers familiar with SQL to write queries.</p>
+            
+            <h4>XPath Queries</h4>
+            <p>XPath is an older query language used in JCR for searching nodes. Though still supported, it is less commonly used in newer AEM implementations due to the preference for JCR-SQL2.</p>
+            
+            <h4>Query Builder API</h4>
+            <p>The Query Builder API is an AEM-specific query language that provides a structured way to build queries using predicates. It is the recommended approach for querying content in AEM because of its flexibility and integration with AEM services.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Query Builder API in AEM</h2>
+            <p>The Query Builder API is a powerful tool in AEM that allows developers to search and retrieve content from the JCR (Java Content Repository) using a structured set of predicates. It is preferred over JCR-SQL2 and XPath queries because it is more readable, flexible, and provides an easy way to integrate search functionality in AEM components and services.</p>
+        
+            <h3>Query Builder JSON Format</h3>
+            <p>The Query Builder API follows a JSON-based format to define query parameters. The request parameters are key-value pairs, and the response is returned in JSON format, making it easy to process and display results.</p>
+            
+            <h4>Example Query (JSON Format)</h4>
+            <p>The below example searches for all pages under <code>/content/we-retail</code> that have the template <code>/conf/we-retail/settings/wcm/templates/content-page</code>:</p>
+            <pre>
+{
+    "path": "/content/we-retail",
+    "type": "cq:Page",
+    "property": "jcr:content/cq:template",
+    "property.value": "/conf/we-retail/settings/wcm/templates/content-page",
+    "orderby": "@jcr:content/jcr:lastModified",
+    "orderby.sort": "desc",
+    "p.limit": 10
+}</pre>
+        
+            <h3>Query Parameters and Predicates</h3>
+            <p>Query Builder API provides various predicates to filter and refine search results efficiently.</p>
+        
+            <h4>Path Predicate</h4>
+            <p>The <code>path</code> predicate restricts the search within a specific content path.</p>
+            <pre>"path": "/content/we-retail"</pre>
+            <ul>
+                <li><code>path.self=true</code> - searches the subtree including the given node</li>
+                <li><code>path.exact=true</code> - matches the exact path only</li>
+                <li><code>path.flat=true</code> - searches only the direct children</li>
+            </ul>
+        
+            <h4>Type Predicate</h4>
+            <p>The <code>type</code> predicate ensures that only nodes of a specific type (e.g., pages, assets) are returned.</p>
+            <pre>"type": "cq:Page"</pre>
+            <p>Other e.g.: <code>cq:Page</code>, <code>dam:Asset</code>, <code>nt:unstructured</code> etc.</p>
+        
+            <h4>Property Predicate</h4>
+            <p>The <code>property</code> predicate allows filtering based on a specific property and its value.</p>
+            <pre>
+"property": "jcr:content/cq:template",
+"property.value": "/conf/we-retail/settings/wcm/templates/content-page"</pre>
+            <ul>
+                <li><code>property.and=true</code> - logical AND of multiple properties. Default is logical OR.</li>
+                <li><code>property.operation</code> - "equals", "unequal", "like"</li>
+            </ul>
+        
+            <h4>Date Range Predicate</h4>
+            <p>The <code>daterange</code> predicate filters results based on a date property.</p>
+            <pre>
+"daterange.property": "jcr:content/jcr:lastModified",
+"daterange.lowerBound": "2024-01-01T00:00:00.000Z",
+"daterange.upperBound": "2024-02-01T23:59:59.999Z"</pre>
+                <ul>
+                    <li><code>daterange.lowerOperation</code> - "&gt;" (default) or "&gt;="</li>
+                    <li><code>daterange.upperOperation</code> - "&lt;" (default) or "&lt;="</li>
+                </ul>
+        
+            <h4>Full-Text Search Predicate</h4>
+            <p>The <code>fulltext</code> predicate performs a full-text search across multiple properties of a node.</p>
+            <pre>
+"fulltext": "AEM Search",
+"fulltext.relPath": "jcr:content"</pre>
+        
+            <h4>Tag Predicate</h4>
+            <p>The <code>tagid</code> predicate filters results based on assigned tags.</p>
+            <pre>"tagid": "we-retail:experience/adventure"</pre>
+        
+            <h4>Order By Predicate</h4>
+            <p>The <code>orderby</code> predicate sorts query results based on a specified property.</p>
+            <pre>
+"orderby": "@jcr:content/jcr:lastModified",
+"orderby.sort": "desc"</pre>
+        
+            <h4>Limit and Offset</h4>
+            <p>The <code>p.limit</code> and <code>p.offset</code> predicates restrict the number of results and define an offset for pagination.</p>
+            <pre>
+"p.limit": 10,
+"p.offset": 0</pre>
+        
+            <h3>Executing Query Builder API</h3>
+            <p>The Query Builder API can be executed using different methods:</p>
+            <ul>
+                <li><strong>Java API:</strong> Query Builder API can be accessed using Java services in AEM.</li>
+                <li><strong>HTTP GET Request:</strong> Developers can execute queries via HTTP requests.</li>
+                <li><strong>Sightly/HTL Integration:</strong> Query Builder API can be used to dynamically fetch and display content.</li>
+            </ul>
+        
+            <h4>Executing Query Using Java API</h4>
+            <pre>
+@Reference
+private QueryBuilder queryBuilder;
+
+public List&lt;Hit&gt; executeQuery(Session session) {
+    Map&lt;String, String&gt; queryMap = new HashMap&lt;&gt;();
+    queryMap.put("path", "/content/we-retail");
+    queryMap.put("type", "cq:Page");
+    queryMap.put("p.limit", "10");
+
+    Query query = queryBuilder.createQuery(PredicateGroup.create(queryMap), session);
+    SearchResult result = query.getResult();
+    
+    return result.getHits();
+}</pre>
+        
+            <h4>Executing Query via HTTP GET Request</h4>
+            <p>A query can be executed using an HTTP GET request:</p>
+            <pre>http://localhost:4502/bin/querybuilder.json?path=/content/we-retail&type=cq:Page&p.limit=10</pre>
+        
+            <h4>Executing Query in Sightly/HTL</h4>
+            <p>Query results can be retrieved in Sightly/HTL using a Sling Model:</p>
+            <pre>
+&lt;sly data-sly-use.query="com.example.QueryService"&gt;
+    &lt;ul&gt;
+        &lt;sly data-sly-list.page="${query.results}"&gt;
+            &lt;li>${page.title}&lt;/li&gt;
+        &lt;/sly&gt;
+    &lt;/ul&gt;
+&lt;/sly&gt;</pre>
+        
+            <h3>Query Builder Debugging</h3>
+            <p>AEM provides a Query Builder Debugger tool to test and refine queries. It is available at:</p>
+            <pre>http://localhost:4502/libs/cq/search/content/querydebug.html</pre>
+        </div>        
+        
+        <div class="card">
+            <h2>SQL2 (JCR-SQL2) Queries in AEM</h2>
+            <p>JCR-SQL2 is the standardized query language for searching and retrieving content from the Java Content Repository (JCR) in AEM. It follows SQL-like syntax and is more readable and structured compared to XPath queries.</p>
+        
+            <h3>Introduction to JCR-SQL2</h3>
+            <p>JCR-SQL2 is the latest query language for JCR-compliant repositories like Apache Jackrabbit, which AEM uses. It provides better readability, flexibility, and support for complex queries, including joins and aggregations.</p>
+        
+            <h4>Key Features of JCR-SQL2:</h4>
+            <ul>
+                <li>Follows SQL-like syntax for querying the JCR.</li>
+                <li>Supports filtering, sorting, and joins.</li>
+                <li>More structured and readable than XPath.</li>
+                <li>Recommended for complex queries in AEM.</li>
+            </ul>
+        
+            <h3>Basic SQL2 Queries</h3>
+            <p>SQL2 queries in AEM use the <code>SELECT</code> statement to fetch nodes from the repository.</p>
+            <h4>Example 1: Fetching All Pages</h4>
+            <pre>SELECT * FROM [cq:Page] WHERE ISDESCENDANTNODE('/content/we-retail')</pre>
+        
+            <h4>Example 2: Fetching Specific Properties</h4>
+            <pre>SELECT [jcr:title], [jcr:created] FROM [cq:PageContent] WHERE ISDESCENDANTNODE('/content/we-retail')</pre>
+        
+            <h3>Filtering and Conditions</h3>
+            <p>JCR-SQL2 supports filtering results based on property values.</p>
+            <h4>Example: Filtering by Template</h4>
+            <pre>
+SELECT * FROM [cq:Page] WHERE ISDESCENDANTNODE('/content/we-retail') 
+AND [cq:template] = '/conf/we-retail/settings/wcm/templates/content-page'</pre>
+        
+            <h4>Example: Filtering by Date</h4>
+            <pre>SELECT * FROM [cq:Page] WHERE [jcr:created] > CAST('2024-01-01T00:00:00.000Z' AS DATE)</pre>
+        
+            <h3>Sorting Results</h3>
+            <p>Results can be sorted using the <code>ORDER BY</code> clause.</p>
+            <h4>Example: Sorting by Last Modified Date</h4>
+            <pre>
+SELECT * FROM [cq:Page] WHERE ISDESCENDANTNODE('/content/we-retail') 
+ORDER BY [jcr:content/jcr:lastModified] DESC</pre>
+        
+            <h3>Joins in SQL2</h3>
+            <p>JCR-SQL2 allows joining different node types to retrieve related information.</p>
+            <h4>Example: Joining Pages with Metadata</h4>
+            <pre>
+SELECT page.[jcr:title], meta.[cq:tags]
+FROM [cq:Page] AS page 
+INNER JOIN [nt:unstructured] AS meta 
+ON ISCHILDNODE(meta, page)
+WHERE ISDESCENDANTNODE(page, '/content/we-retail')</pre>
+        
+            <h3>Grouping and Aggregations</h3>
+            <p>SQL2 supports aggregation functions like COUNT, MIN, MAX, etc.</p>
+            <h4>Example: Counting Pages</h4>
+            <pre>SELECT COUNT(*) FROM [cq:Page] WHERE ISDESCENDANTNODE('/content/we-retail')</pre>
+        
+            <h3>Executing SQL2 Queries</h3>
+            <p>SQL2 queries can be executed in multiple ways:</p>
+            <ul>
+                <li><strong>Java Code</strong>: Using JCR API.</li>
+                <li><strong>CRXDE Lite Console</strong>: Running queries directly in the AEM console.</li>
+            </ul>
+        
+            <h4>Executing SQL2 Query in Java</h4>
+            <pre>
+@Reference
+private ResourceResolverFactory resolverFactory;
+
+public void executeSQL2Query() throws RepositoryException {
+    ResourceResolver resolver = resolverFactory.getServiceResourceResolver(null);
+    Session session = resolver.adaptTo(Session.class);
+    
+    String query = "SELECT * FROM [cq:Page] WHERE ISDESCENDANTNODE('/content/we-retail')";
+    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    Query jcrQuery = queryManager.createQuery(query, Query.JCR_SQL2);
+    
+    QueryResult result = jcrQuery.execute();
+    NodeIterator nodes = result.getNodes();
+    
+    while (nodes.hasNext()) {
+        Node node = nodes.nextNode();
+        System.out.println("Page Path: " + node.getPath());
+    }
+}</pre>
+        
+            <h4>Executing SQL2 Query in CRXDE Lite</h4>
+            <p>To run a SQL2 query in CRXDE Lite:</p>
+            <ul>
+                <li>Go to <code>/crx/de</code> in your AEM instance.</li>
+                <li>Click on the "Tools" menu and select "Query."</li>
+                <li>Enter your SQL2 query and click "Execute."</li>
+            </ul>
+        
+            <h4>Example Query for CRXDE Lite</h4>
+            <pre>SELECT * FROM [cq:Page] WHERE ISDESCENDANTNODE('/content/we-retail')</pre>
+        </div>
+
+        <div class="card">
+            <h2>XPath Queries in AEM</h2>
+            <p>XPath is one of the query languages supported in AEM for searching and retrieving content from the JCR (Java Content Repository). Although JCR-SQL2 is the recommended query language, XPath is still used in certain scenarios. Queries written in XPath can also be converted to JCR-SQL2.</p>
+        
+            <h3>Basics of XPath in JCR</h3>
+            <p>XPath queries in AEM follow a hierarchical path-based approach to locate nodes in the repository. It is similar to XML-based XPath and is useful for navigating and filtering content.</p>
+        
+            <h4>Key Features of XPath Queries:</h4>
+            <ul>
+                <li>Used for querying hierarchical content structures.</li>
+                <li>Based on XML-like node selection.</li>
+                <li>Can be converted to JCR-SQL2.</li>
+                <li>Supports conditions, filtering, and ordering.</li>
+            </ul>
+        
+            <h3>Writing XPath Queries</h3>
+            <p>XPath queries in AEM use a path-based syntax to find nodes in the JCR repository.</p>
+        
+            <h4>Example 1: Fetching All Pages Under a Path</h4>
+            <pre>/jcr:root/content/we-retail//element(*, cq:Page)</pre>
+            <p>This query fetches all nodes of type <code>cq:Page</code> under the <code>/content/we-retail</code> path.</p>
+        
+            <h4>Example 2: Filtering by Property</h4>
+            <pre>/jcr:root/content/we-retail//*[@cq:template='/conf/we-retail/settings/wcm/templates/content-page']</pre>
+            <p>This query finds all nodes under <code>/content/we-retail</code> that use a specific template.</p>
+        
+            <h4>Example 3: Fetching Pages Created After a Certain Date</h4>
+            <pre>/jcr:root/content/we-retail//*[@jcr:created &gt; xs:dateTime('2024-01-01T00:00:00.000Z')]</pre>
+            <p>This query retrieves all pages created after January 1, 2024.</p>
+        
+            <h4>Example 4: Ordering Results</h4>
+            <pre>/jcr:root/content/we-retail//*[@cq:lastModified] order by @cq:lastModified descending</pre>
+            <p>This query fetches all nodes under <code>/content/we-retail</code> and orders them by the last modified date in descending order.</p>
+        
+            <h3>Converting XPath to SQL2</h3>
+            <p>Since XPath is no longer the recommended query language in AEM, queries should be converted to JCR-SQL2 for better performance and maintainability.</p>
+        
+            <h4>Example: Convert XPath to SQL2</h4>
+            
+            <h5>XPath Query</h5>
+            <pre>/jcr:root/content/we-retail//*[@cq:template='/conf/we-retail/settings/wcm/templates/content-page']</pre>
+        
+            <h5>Equivalent JCR-SQL2 Query</h5>
+            <pre>
+SELECT * FROM [cq:Page] WHERE ISDESCENDANTNODE('/content/we-retail') 
+AND [cq:template] = '/conf/we-retail/settings/wcm/templates/content-page'</pre>
+        
+            <h3>Executing XPath Queries in AEM</h3>
+            <ul>
+                <li><strong>CRXDE Lite:</strong> XPath queries can be executed in the <code>/crx/de</code> query tool.</li>
+                <li><strong>Java Code:</strong> Queries can be executed programmatically using JCR APIs.</li>
+            </ul>
+        
+            <h4>Executing XPath Query in Java</h4>
+            <pre>
+@Reference
+private ResourceResolverFactory resolverFactory;
+
+public void executeXPathQuery() throws RepositoryException {
+    ResourceResolver resolver = resolverFactory.getServiceResourceResolver(null);
+    Session session = resolver.adaptTo(Session.class);
+    
+    String query = "/jcr:root/content/we-retail//*[@cq:template='/conf/we-retail/settings/wcm/templates/content-page']";
+    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    Query jcrQuery = queryManager.createQuery(query, Query.XPATH);
+    
+    QueryResult result = jcrQuery.execute();
+    NodeIterator nodes = result.getNodes();
+    
+    while (nodes.hasNext()) {
+        Node node = nodes.nextNode();
+        System.out.println("Node Path: " + node.getPath());
+    }
+}</pre>
+        
+            <h4>Executing XPath Query in CRXDE Lite</h4>
+            <p>To run an XPath query in CRXDE Lite:</p>
+            <ul>
+                <li>Go to <code>/crx/de</code> in your AEM instance.</li>
+                <li>Click on "Tools" and select "Query."</li>
+                <li>Enter your XPath query and click "Execute."</li>
+            </ul>
+        
+            <h4>Example Query for CRXDE Lite</h4>
+            <pre>/jcr:root/content/we-retail//*[@cq:template='/conf/we-retail/settings/wcm/templates/content-page']</pre>
+        </div>
+
+        <div class="card">
+            <h2>Query Performance Optimization in AEM</h2>
+            <p>Optimizing queries in AEM is crucial to ensure fast and efficient content retrieval from the JCR repository. Poorly written queries can significantly impact performance, leading to slow response times and increased load on the repository. Below are key strategies for optimizing query performance in AEM.</p>
+        
+            <h3>Avoiding Unindexed Queries</h3>
+            <p>Unindexed queries are one of the primary reasons for slow performance. If a query scans a large number of nodes without using an index, it can lead to excessive CPU and memory usage.</p>
+        
+            <h4>Example of an Unindexed Query:</h4>
+            <pre>SELECT * FROM [nt:base] WHERE [propertyName] = 'value'</pre>
+            <p>This query is inefficient because it searches all nodes of type <code>nt:base</code>, which can be very slow.</p>
+        
+            <h4>How to Fix It:</h4>
+            <ul>
+                <li>Ensure the property being queried is indexed.</li>
+                <li>Use more specific node types, such as <code>cq:Page</code> instead of <code>nt:base</code>.</li>
+                <li>Use <code>ISDESCENDANTNODE</code> to restrict the search scope.</li>
+            </ul>
+        
+            <h3>Using Indexing for Better Performance</h3>
+            <p>AEM uses Oak indexes to speed up queries. If a query is slow, indexing the queried property can significantly improve performance.</p>
+        
+            <h4>Steps to Add an Index:</h4>
+            <ul>
+                <li>Navigate to <code>/oak:index</code> in CRXDE Lite.</li>
+                <li>Create a new index node under <code>/oak:index</code>.</li>
+                <li>Set <code>type</code> to <code>property</code> for single-property indexing.</li>
+                <li>Define <code>propertyNames</code> to specify the indexed property.</li>
+                <li>Save and re-index the repository.</li>
+            </ul>
+        
+            <h4>Example: Adding an Index for <code>cq:template</code></h4>
+            <pre>
++ cqTemplateIndex [nt:oak:Unstructured]
+    - type = "property"
+    - propertyNames = ["cq:template"]
+    - reindex = true</pre>
+        
+            <h3>Query Execution Plan (Using <code>EXPLAIN SELECT</code> in SQL2)</h3>
+            <p>To analyze how AEM executes a query, you can use the <code>EXPLAIN SELECT</code> statement in SQL2. This helps identify whether the query is using an index or performing a full scan.</p>
+        
+            <h4>Example: Checking Execution Plan</h4>
+            <pre>EXPLAIN SELECT * FROM [cq:Page] WHERE [cq:template] = '/conf/we-retail/settings/wcm/templates/content-page'</pre>
+            <p>If the result includes <code>traversal</code>, it means the query is scanning nodes without an index, leading to poor performance.</p>
+        
+            <h3>Best Practices for Writing Efficient Queries</h3>
+            <ul>
+                <li><strong>Use Specific Node Types:</strong> Instead of querying <code>nt:base</code>, use <code>cq:Page</code> or <code>dam:Asset</code> to narrow the search.</li>
+                <li><strong>Use ISDESCENDANTNODE:</strong> Restrict queries to a specific path to avoid unnecessary node scans.</li>
+                <li><strong>Avoid LIKE Queries:</strong> The <code>LIKE</code> operator can be slow as it prevents index usage. Use direct property matches instead.</li>
+                <li><strong>Limit Results:</strong> Use <code>LIMIT</code> and <code>OFFSET</code> to control the number of results returned.</li>
+                <li><strong>Use Query Debugging Tool:</strong> AEM provides a Query Debugger at <code>/libs/cq/search/content/querydebug.html</code> to analyze and optimize queries.</li>
+            </ul>
+        
+            <h4>Example of an Optimized Query:</h4>
+            <pre>
+SELECT * FROM [cq:Page] AS page WHERE ISDESCENDANTNODE(page, '/content/we-retail') 
+AND page.[cq:template] = '/conf/we-retail/settings/wcm/templates/content-page'</pre>
+            <p>This query is optimized because it:</p>
+            <ul>
+                <li>Uses a specific node type (<code>cq:Page</code>).</li>
+                <li>Restricts the search to a specific path (<code>ISDESCENDANTNODE</code>).</li>
+                <li>Uses an indexed property (<code>cq:template</code>).</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2>Oak Indexing in AEM</h2>
+            <p>Oak Indexing is a mechanism in AEM used to optimize query performance by allowing efficient lookup of content stored in the Java Content Repository (JCR). Since AEM uses Apache Oak as its repository, indexing is essential to avoid full repository scans, which can degrade performance.</p>
+        
+            <h3>Types of Oak Indexes</h3>
+            <p>There are different types of Oak indexes in AEM, each designed for specific use cases.</p>
+        
+            <h4>1. Property Index</h4>
+            <p>A simple index that improves query performance by indexing a specific property.</p>
+            <h4>Example:</h4>
+            <pre>
++ myPropertyIndex [nt:oak:Unstructured]
+    - type = "property"
+    - propertyNames = ["jcr:title"]
+    - unique = false
+    - reindex = true</pre>
+        
+            <h4>2. Lucene Index</h4>
+            <p>A full-text search index that allows searching content within AEM efficiently. It supports advanced search features like stemming and tokenization.</p>
+            <h4>Example:</h4>
+            <pre>
++ myLuceneIndex [oak:QueryIndexDefinition]
+    - type = "lucene"
+    - async = "async"
+    + indexRules
+    + nt:base
+        + properties
+        + title
+            - name = "jcr:title"
+            - propertyIndex = true
+            - analyzed = true</pre>
+        
+            <h4>3. Solr Index</h4>
+            <p>AEM can integrate with Apache Solr to provide an external indexing solution, useful for large-scale applications requiring distributed search.</p>
+        
+            <h3>Creating and Configuring Oak Indexes</h3>
+            <p>Oak indexes are stored under <code>/oak:index</code> in CRXDE Lite. To create a new index:</p>
+            <ul>
+                <li>Navigate to <code>/oak:index</code> in CRXDE Lite.</li>
+                <li>Create a new node of type <code>oak:QueryIndexDefinition</code>.</li>
+                <li>Set the necessary properties such as <code>type</code>, <code>propertyNames</code>, and <code>reindex</code>.</li>
+                <li>Save the changes and restart indexing if necessary.</li>
+            </ul>
+        
+            <h4>Example: Creating an Index for <code>cq:tags</code></h4>
+            <pre>
++ cqTagsIndex [nt:oak:Unstructured]
+    - type = "property"
+    - propertyNames = ["cq:tags"]
+    - reindex = true</pre>
+        
+            <h3>Understanding <code>oak:index</code> in CRXDE</h3>
+            <p>The <code>/oak:index</code> node contains all defined indexes in AEM. Each index has properties like:</p>
+            <ul>
+                <li><strong>type:</strong> Defines the index type (property, lucene, or solr).</li>
+                <li><strong>propertyNames:</strong> Specifies the properties included in the index.</li>
+                <li><strong>unique:</strong> Ensures uniqueness of a property (e.g., unique page paths).</li>
+                <li><strong>reindex:</strong> Forces a reindex operation if set to <code>true</code>. It is used when you want to rebuild an Oak index and executed when there are changes to the index configuration, such as modifications to the index properties, or when custom indexes are created or reconfigured. It also gets triggered automatically during AEM instance startup if the reindex property is set to true, ensuring that any necessary index rebuilding is carried out to reflect the latest content or schema changes.</li>
+            </ul>
+        
+            <h3>Troubleshooting Indexing Issues</h3>
+            <p>If a query is slow, or an index isn't working as expected, follow these troubleshooting steps:</p>
+            <ul>
+                <li><strong>Check Query Execution Plan:</strong> Use <code>EXPLAIN SELECT</code> in SQL2 to verify if an index is being used.</li>
+                <li><strong>Enable Debug Logs:</strong> Set the <code>org.apache.jackrabbit.oak.query.QueryEngineImpl</code> logger to DEBUG in the OSGi Console.</li>
+                <li><strong>Reindex the Repository:</strong> Set <code>reindex = true</code> for the index node and save.</li>
+                <li><strong>Check Indexing Logs:</strong> Review logs in <code>error.log</code> to identify indexing errors.</li>
+                <li><strong>Use Query Debugger:</strong> AEM provides a Query Debugger at <code>/libs/cq/search/content/querydebug.html</code> to analyze query execution.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Querying AEM Assets</h2>
+            <p>Querying AEM Assets allows you to filter and retrieve assets stored in the DAM (Digital Asset Management). This is helpful for managing content like images, videos, and documents based on metadata, folder location, tags, and modification date.</p>
+          
+            <h3>Finding Assets by Metadata Properties</h3>
+            <p>You can query assets based on metadata properties such as file format, size, description, or custom properties defined for the asset.</p>
+            <h4>Example:</h4>
+            <pre>
+type=dam:Asset
+path=/content/dam
+group.property=jcr:content/dc:description
+group.property.1_value=product image
+group.property.2_value=product picture
+group.p.or=true
+p.limit=-1</pre>
+          
+            <h3>Searching Assets in Specific Folders</h3>
+            <p>Assets can be searched within specific folders in the DAM. This allows you to query assets based on their storage location within the AEM repository.</p>
+            <h4>Example:</h4>
+            <pre>
+type=dam:Asset
+path=/content/dam/we-retail
+p.limit=-1</pre>
+          
+            <h3>Querying Assets by Tags</h3>
+            <p>Assets can be queried based on tags associated with them. This is useful for categorizing and managing assets based on topics, themes, or other metadata.</p>
+            <h4>Example:</h4>
+            <pre>
+type=dam:Asset
+path=/content/dam
+group.property=jcr:content/cq:tags
+group.property_value=summer_collection
+p.limit=-1</pre>
+          
+            <h3>Querying Assets Modified After a Specific Date</h3>
+            <p>You can filter assets by their last modified date to retrieve assets that have been recently updated or added to the DAM.</p>
+            <h4>Example:</h4>
+            <pre>
+type=dam:Asset
+path=/content/dam
+group.property=jcr:content/@jcr:lastModified
+group.property_range.lowerBound=2025-01-01T00:00:00.000+0000
+p.limit=-1</pre>
+          </div>          
+
+          <div class="card">
+            <h2>Querying AEM Pages and Content</h2>
+            <p>In AEM, querying pages and content is crucial for retrieving and managing the site's structure. You can query pages based on different attributes, such as template types, component usage, publication date, and tags.</p>
+          
+            <h3>Finding Pages by Template Type</h3>
+            <p>You can query pages based on the template type they use. This is useful for organizing content or performing operations on specific types of pages in AEM.</p>
+            <h4>Example:</h4>
+            <pre>
+type=cq:Page
+path=/content
+group.property=jcr:content/@cq:template
+group.property_value=/apps/we-retail/templates/product
+p.limit=-1</pre>
+          
+            <h3>Retrieving Pages Based on Component Usage</h3>
+            <p>Pages can be queried based on which components are used within them. This helps in tracking pages with specific components and managing their structure.</p>
+            <h4>Example:</h4>
+            <pre>
+type=cq:Page
+path=/content/we-retail
+group.property=jcr:content/@components
+group.property_value=my-component
+p.limit=-1</pre>
+          
+            <h3>Finding Pages Published in a Specific Date Range</h3>
+            <p>You can filter pages based on their publication dates. This is helpful for finding pages that were published or modified within a certain date range.</p>
+            <h4>Example:</h4>
+            <pre>
+type=cq:Page
+path=/content/we-retail
+group.property=jcr:content/@jcr:lastModified
+group.property_range.lowerBound=2025-01-01T00:00:00.000+0000
+group.property_range.upperBound=2025-02-01T00:00:00.000+0000
+p.limit=-1</pre>
+          
+            <h3>Querying Pages with Specific Tags</h3>
+            <p>Pages can be queried based on the tags associated with them. This helps you retrieve pages that belong to specific categories or topics.</p>
+            <h4>Example:</h4>
+            <pre>
+type=cq:Page
+path=/content
+group.property=jcr:content/@cq:tags
+group.property_value=technology
+p.limit=-1</pre>
+          </div>          
+
+          <div class="card">
+            <h2>Querying Users and Groups in AEM</h2>
+            <p>In AEM, users and groups can be queried based on various attributes such as permissions, membership, and user properties. This allows for efficient management and retrieval of users and groups in the system.</p>
+          
+            <h3>Retrieving Users from JCR</h3>
+            <p>You can query users based on their properties or other details stored in the JCR using the Query Builder API. This is useful when you need to list or find users in AEM.</p>
+            <h4>Example:</h4>
+            <pre>
+type=rep:User
+path=/home/users
+p.limit=-1</pre>
+          
+            <h3>Finding Users with Specific Permissions</h3>
+            <p>Users can be queried based on the permissions they have in the repository. This helps to identify users with access to specific content or features.</p>
+            <h4>Example:</h4>
+            <pre>
+type=rep:User
+path=/home/users
+group.property=rep:permissions
+group.property_value=read
+p.limit=-1</pre>
+          
+            <h3>Querying AEM Groups and Membership</h3>
+            <p>AEM allows querying groups and their members. You can find all users belonging to a particular group or find groups that a specific user is a part of using the Query Builder API.</p>
+            <h4>Example: Querying Groups for Specific Members</h4>
+            <pre>
+type=rep:Group
+path=/home/groups
+group.property=rep:members
+group.property_value=mygroup
+p.limit=-1</pre>
+          
+            <h4>Example: Querying Membership of a Specific Group</h4>
+            <pre>
+type=rep:User
+path=/home/users
+group.property=rep:groups
+group.property_value=mygroup
+p.limit=-1</pre>
+          </div>
+
+          <div class="card">
+            <h2>Query Examples and Use Cases</h2>
+            <p>Here are some common use cases for querying pages and assets in AEM. These queries are based on different criteria, including user, modification date, publication status, and component usage.</p>
+          
+            <h3>Find All Pages Created by a Specific User</h3>
+            <p>This query allows you to retrieve all pages created by a specific user, useful for auditing and tracking content ownership.</p>
+            <h4>Example:</h4>
+            <pre>
+type=cq:Page
+path=/content
+group.property=jcr:createdBy
+group.property_value=admin
+p.limit=-1</pre>
+          
+            <h3>Get the Latest Modified Assets in a Folder</h3>
+            <p>To find assets that were recently modified within a specific folder, you can filter by modification date and folder path.</p>
+            <h4>Example:</h4>
+            <pre>
+type=dam:Asset
+path=/content/dam/we-retail
+group.property=jcr:content/@jcr:lastModified
+group.property_range.lowerBound=2025-01-01T00:00:00.000+0000
+p.limit=-1</pre>
+          
+            <h3>Retrieve All Published Pages in a Site</h3>
+            <p>This query is used to retrieve all pages that are published in a specific site, filtering by publication status.</p>
+            <h4>Example:</h4>
+            <pre>
+type=cq:Page
+path=/content/we-retail
+group.property=jcr:content/@cq:lastModified
+group.property_value=published
+p.limit=-1</pre>
+          
+            <h3>Query for Pages with a Specific Component</h3>
+            <p>To find all pages containing a specific component, you can query based on the presence of the component in the page content.</p>
+            <h4>Example:</h4>
+            <pre>
+type=cq:Page
+path=/content/we-retail
+group.property=jcr:content/@cq:template
+group.property_value=we-retail/components/page/productPage
+p.limit=-1</pre>
+          </div>
+          
+          <div class="card">
+            <h2>Tools for Query Execution and Debugging</h2>
+            <p>In AEM, various tools are available to help developers execute and debug queries, analyze query performance, and troubleshoot indexing issues. These tools enhance the querying experience and provide insight into query execution and optimization.</p>
+          
+            <h3>CRXDE Lite Query Console</h3>
+            <p>The CRXDE Lite Query Console allows developers to execute and test queries directly within the CRX repository. It supports SQL2 and XPath queries, making it a quick way to validate queries and see results in real-time.</p>
+            <h4>How to Use:</h4>
+            <p>Navigate to <strong>/crx/de</strong> and use the Query Console available in the left navigation panel. You can select either SQL2 or XPath as the query language and execute queries against the repository.</p>
+          
+            <h3>AEM Query Debugger (/libs/cq/search/content/querydebug.html)</h3>
+            <p>The AEM Query Debugger helps visualize and debug queries executed within AEM. It shows the execution plan and helps developers understand how queries are being processed, including the indexes used and the result set.</p>
+            <h4>How to Use:</h4>
+            <p>To use the Query Debugger, go to <strong>/libs/cq/search/content/querydebug.html</strong> in the browser. It will display information such as query execution time, indexes used, and optimization suggestions.</p>
+          
+            <h3>Query Performance Analyzer</h3>
+            <p>The Query Performance Analyzer is a tool that allows you to analyze and optimize query performance in AEM. It identifies slow-performing queries and provides insights into areas for improvement.</p>
+            <h4>How to Use:</h4>
+            <p>This tool is accessible through the AEM Web Console and provides a report on the performance of queries executed across the system. It can help identify bottlenecks caused by inefficient queries or missing indexes.</p>
+          
+            <h3>Oak Index Analyzer (/system/console/jmx)</h3>
+            <p>The Oak Index Analyzer provides a detailed view of the indexes configured in AEM, helping you monitor and optimize indexing. It provides information on the status of each index and any issues related to indexing performance.</p>
+            <h4>How to Use:</h4>
+            <p>To access the Oak Index Analyzer, go to <strong>/system/console/jmx</strong> in AEM. This will give you access to a list of available JMX beans related to indexing, including the ability to analyze index performance and detect issues.</p>
+          </div>
+
+          <div class="card">
+            <h2>Best Practices for Queries in AEM</h2>
+            <p>Writing efficient queries is critical for the performance of your AEM instance. This section outlines best practices to follow when writing and executing queries in AEM to ensure good performance, scalability, and reliability.</p>
+          
+            <h3>When to Use Queries vs. Traversal</h3>
+            <p>Queries should be used when you need to search for specific nodes, properties, or conditions across the repository. Traversal, on the other hand, should be used when you are navigating through the repository in a hierarchical manner, such as iterating through child nodes in a specific path.</p>
+            <h4>Best Practice:</h4>
+            <p>Use queries when you need to filter, search, or retrieve data based on specific criteria. Use traversal when you need to iterate over a known set of nodes or structures in a predictable manner.</p>
+          
+            <h3>Avoiding Performance Bottlenecks</h3>
+            <p>Performance bottlenecks can arise from inefficient queries, such as those that lack proper indexing or involve complex joins. These types of queries can significantly slow down your AEM instance.</p>
+            <h4>Best Practice:</h4>
+            <p>Before running any queries, ensure that the necessary indexes are in place. Avoid using wildcards or unbound conditions, as they can result in large result sets. Also, avoid deep node traversal or expensive queries that require scanning the entire repository.</p>
+          
+            <h3>Optimizing Query Execution with Indexes</h3>
+            <p>Indexes play a key role in improving the performance of queries in AEM. Properly indexed queries will execute faster, while queries that require scanning large portions of the repository can lead to poor performance.</p>
+            <h4>Best Practice:</h4>
+            <p>Ensure that your queries are using appropriate indexes. In most cases, creating custom indexes tailored to your queries can dramatically reduce the query execution time. Regularly monitor and optimize indexes as your repository grows.</p>
+          
+            <h3>Testing Queries Before Deploying in Production</h3>
+            <p>Testing queries before deploying them to production is essential to avoid unexpected performance issues and ensure that the queries behave as expected.</p>
+            <h4>Best Practice:</h4>
+            <p>Always test your queries in a development or staging environment before deploying to production. Use tools like the Query Performance Analyzer and Oak Index Analyzer to evaluate query performance. Additionally, monitor the impact of your queries on overall system performance during peak traffic.</p>
+          </div>          
+        
     </main>
     <script src="js/script.js"></script>
 </body>
