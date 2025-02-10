@@ -31,6 +31,8 @@
             <li><a href="event-handling.html" class="nav-link">Event Handling</a></li>
             <li><a href="scheduler-and-jobs.html" class="nav-link">Scheduler and Jobs</a></li>
             <li><a href="workflow.html" class="nav-link">Workflow</a></li>
+            <li><a href="queries.html" class="nav-link">Queries</a></li>
+            <li><a href="runmodes.html" class="nav-link">Runmodes</a></li>
         </ul>
     </nav>
 
@@ -388,35 +390,42 @@ public class ApiService {
             <p>In AEM, sending emails can be done using the built-in <code>EmailService</code> or custom OSGi services. You can automate sending notifications or alerts through email from within AEM components.</p>
             <p><strong>Example:</strong> Sending an email using the EmailService in AEM.</p>
             <pre>
-@Component(service = EmailService.class)
-public class EmailService {
-
-    public boolean sendEmail(List<String> toReceipientsEmailList, List<String> ccReceipientsEmailList, String emailTemplatePath, Map<String, String> mailTokens) {
-        ResourceResolver resourceResolver = resourceResolverUtils.getServiceResourceResolver();
-        try {
-            final MailTemplate mailTemplate = MailTemplate.create(emailTemplatePath,
-                    resourceResolver.adaptTo(Session.class));
-            if (mailTemplate != null) {
-                final HtmlEmail email = mailTemplate.getEmail(StrLookup.mapLookup(mailTokens), HtmlEmail.class);
-                if (toReceipientsEmailList != null && !toReceipientsEmailList.isEmpty()) {
-                    email.addTo(toReceipientsEmailList.stream().toArray(String[]::new));
-                }
-                if (ccReceipientsEmailList != null && !ccReceipientsEmailList.isEmpty()) {
-                    email.addCc(ccReceipientsEmailList.stream().toArray(String[]::new));
-                }
-                MessageGateway<HtmlEmail> messageGateway = messageGatewayService.getGateway(HtmlEmail.class);
-                messageGateway.send(email);
-                return true;
-            }
-        } catch (EmailException | IOException | MessagingException ex) {
-            logger.error("Exception in SMTP2GOEmailServiceImpl.sendEmail: {}", "{}", ex);
-            return false;
-        } finally {
-        	resourceResolverUtils.closeServiceResourceResolver(resourceResolver);
-        }
-        return false;
+@Component(
+    service = EmailService.class,
+    property = {
+            Constants.SERVICE_ID + EQUALS + SERVICE_NAME
     }
-}</pre>
+)
+public class EmailServiceImpl implements EmailService {
+
+    protected static final String SERVICE_NAME = "Email Service";
+    private static final String TAG = EmailServiceImpl.class.getSimpleName();
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailServiceImpl.class);
+
+    @Reference
+    MessageGatewayService messageGatewayService;
+
+    @Override
+    public void sendEmail(String toEmail, String ccEmail, String fromEmail, String subject, String content) {
+        try {
+            // Setting up the email message
+            Email email = new SimpleEmail();
+            // Get the details to send email
+            email.setSubject(subject);
+            email.setMsg(content);
+            email.addTo(toEmail);
+            email.addCc(ccEmail);
+            email.setFrom(fromEmail);
+            // Inject the message gateway service and send email
+            MessageGateway&lt;Email&gt; messageGateway = messageGatewayService.getGateway(Email.class);
+            // Send the email
+            messageGateway.send(email);
+        } catch (EmailException e) {
+            LOGGER.error("{}: exception occurred: {}", TAG, e.getMessage());
+        }
+    }
+}
+</pre>
             <p>In this example, the <code>EmailService</code> is used to send emails with a simple message body. You can use the service to send HTML emails, attachments, or send bulk notifications.</p>
 
             <h3>Custom Logging Using Services</h3>
@@ -518,7 +527,7 @@ public class LoggingService {
         </div>
 
         <div class="card">
-            <h2>Services vs. Models in AEM</h2>
+            <h2>Services vs Models in AEM</h2>
             <p>Both Services and Models are used in AEM to manage backend logic and content retrieval, but they serve different purposes and are used in different scenarios.</p>
         
             <ul>
@@ -539,7 +548,7 @@ public class LoggingService {
                 <li>When working with Sling models to expose structured data for components.</li>
                 <li>When simplifying content retrieval in HTL templates.</li>
             </ul>
-        </div>        
+        </div>
         
     </main>
     <script src="js/script.js"></script>

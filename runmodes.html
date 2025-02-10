@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEM Tutorial - Runmodes</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2>AEM Tutorial</h2>
+        </div>
+        <ul class="nav-list">
+            <li><a href="index.html" class="nav-link">Introduction to AEM</a></li>
+            <li><a href="apache-felix.html" class="nav-link">Apache Felix</a></li>
+            <li><a href="apache-jackrabbit.html" class="nav-link">Apache Jackrabbit</a></li>
+            <li><a href="apache-sling.html" class="nav-link">Apache Sling</a></li>
+            <li><a href="setting-up-aem.html" class="nav-link">Setting Up AEM</a></li>
+            <li><a href="project-creation-and-deployment.html" class="nav-link">Project Creation & Deployment</a></li>
+            <li><a href="sites-pages.html" class="nav-link">Sites & Pages</a></li>
+            <li><a href="templates.html" class="nav-link">Templates</a></li>
+            <li><a href="components.html" class="nav-link">Components</a></li>
+            <li><a href="sightly.html" class="nav-link">Sightly</a></li>
+            <li><a href="models.html" class="nav-link">Models</a></li>
+            <li><a href="clientlibs.html" class="nav-link">Clientlibs</a></li>
+            <li><a href="jcr-and-sling-api.html" class="nav-link">JCR and Sling API</a></li>
+            <li><a href="servlets.html" class="nav-link">Servlets</a></li>
+            <li><a href="services.html" class="nav-link">Services</a></li>
+            <li><a href="r6-annotation.html" class="nav-link">R6 Annotation</a></li>
+            <li><a href="event-handling.html" class="nav-link">Event Handling</a></li>
+            <li><a href="scheduler-and-jobs.html" class="nav-link">Scheduler and Jobs</a></li>
+            <li><a href="workflow.html" class="nav-link">Workflow</a></li>
+            <li><a href="queries.html" class="nav-link">Queries</a></li>
+            <li><a href="runmodes.html" class="nav-link active">Runmodes</a></li>
+        </ul>
+    </nav>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+        &#9776;
+    </div>
+
+    <main class="content">
+        <h1>Runmodes</h1>
+
+        <div class="card">
+            <h2>Runmodes in AEM</h2>
+            <p>Adobe Experience Manager (AEM) uses <strong>Runmodes</strong> to enable specific configurations and functionalities based on the environment in which AEM is running. Runmodes allow administrators to configure AEM differently for development, testing, staging, and production environments. They determine the behavior of an AEM instance based on predefined settings, enabling the loading of different configurations, OSGi settings, and content packages depending on the instance type.</p>
+        
+        </div>
+
+        <div class="card">
+            <h2>Common Runmodes in AEM</h2>
+            <p>AEM supports various runmodes, including:</p>
+            <ul>
+                <li><strong>Author:</strong> Used for content creation and management.</li>
+                <li><strong>Publish:</strong> Used for serving content to end users.</li>
+                <li><strong>Development (dev):</strong> Used for local development.</li>
+                <li><strong>Testing (qa):</strong> Used for testing before deployment.</li>
+                <li><strong>Staging:</strong> Pre-production environment for validation.</li>
+                <li><strong>Production (prod):</strong> Live environment for end users.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>How to Configure Runmodes?</h2>
+        
+            <h4>1. Setting Runmodes via <code>sling.properties</code></h4>
+            <p>Runmodes can be set in the <code>crx-quickstart/conf/sling.properties</code> file:</p>
+            <pre>sling.run.modes=author,dev</pre>
+            <p>This example sets the runmodes to <strong>author</strong> and <strong>development</strong>.</p>
+        
+            <h4>2. Setting Runmodes via JVM Parameters</h4>
+            <p>Runmodes can also be configured by passing JVM arguments when starting AEM:</p>
+            <pre>java -jar aem-quickstart.jar -r author,dev</pre>
+        
+            <h4>3. Setting Runmodes via Environment Variables</h4>
+            <p>Runmodes can be defined using environment variables:</p>
+            <pre>export SLING_OPTS="-Dsling.run.modes=author,prod"</pre>
+        </div>
+
+        <div class="card">
+            <h3>Using Runmodes in AEM</h3>
+            <p>Runmodes are used to configure:</p>
+            <ul>
+                <li><strong>OSGi Configuration:</strong> Different settings for each environment.</li>
+                <li><strong>Content Packages:</strong> Installing specific content based on environment.</li>
+                <li><strong>Dispatcher Configurations:</strong> Different caching and security settings.</li>
+            </ul>
+        
+            <h3>4.1 Creating OSGi Configuration for Runmodes</h3>
+            <p>OSGi configurations can be created under <code>/apps/&lt;project&gt;/config.&lt;runmode&gt;</code>.</p>
+            <p>Example for <strong>Production (prod) Runmode:</strong></p>
+            <pre>/apps/myproject/config.prod/com.mycompany.service.MyConfig.cfg.json</pre>
+        
+            <h3>4.2 Installing Content Packages Based on Runmodes</h3>
+            <p>Content packages can be installed using runmode-specific folders:</p>
+            <pre>/apps/myproject/install.prod</pre>
+        </div>
+
+        <div class="card">
+            <h2>Checking Active Runmodes</h2>
+            <p>You can check the active runmodes in AEM by navigating to:</p>
+            <ul>
+                <li><strong>OSGi Console:</strong> <code>/system/console/status-slingsettings</code></li>
+                <li><strong>JCR Path:</strong> <code>/var/logs/error.log</code> (logs contain active runmodes)</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>Runmodes Best Practices</h2>
+            <ul>
+                <li>Always define runmodes explicitly for different environments.</li>
+                <li>Use runmodes to separate configuration from code.</li>
+                <li>Avoid using hardcoded configurations inside code.</li>
+                <li>Regularly verify active runmodes in AEM.</li>
+            </ul>
+        
+            <p><strong>Note:</strong> Runmodes help optimize AEM configurations for different environments, ensuring better scalability and maintainability.</p>
+        </div>
+        
+    </main>
+    <script src="js/script.js"></script>
+</body>
+</html>
