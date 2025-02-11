@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Dispatcher</title>
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <nav class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <ul class="nav-list" id="navList"></ul>
+        </nav>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            &#9776;
+        </div>
+        <main class="content">
+            <h1>Dispatcher</h1>
+            <div class="card">
+                <h2>Dispatcher in Adobe Experience Manager (AEM)</h2>
+                <p>The Dispatcher is a caching and load balancing tool that optimizes the performance, security, and scalability of AEM websites. Acting as a reverse proxy, it works closely with web servers like Apache HTTP Server or Microsoft IIS to serve cached content, reducing the load on AEM publish instances and improving the overall user experience.</p>
+            </div>
+            <div class="card">
+                <h3>Key Functions of Dispatcher</h3>
+                <p>The Dispatcher plays several important roles in AEM:</p>
+                <ul>
+                    <li><strong>Caching:</strong> The Dispatcher caches both static and dynamic content, reducing the load on AEM publish instances by serving content directly from the cache.</li>
+                    <li><strong>Load Balancing:</strong> Dispatcher distributes incoming requests across multiple AEM publish instances, ensuring efficient use of resources and high availability.</li>
+                    <li><strong>Security:</strong> Dispatcher filters requests to block access to sensitive areas, protects against DDoS attacks, and secures the AEM environment.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>How Dispatcher Works</h3>
+                <p>The Dispatcher sits between the client (browser) and the AEM publish instances. Here's how it functions:</p>
+                <ul>
+                    <li>If the requested content is cached: The Dispatcher serves the cached version directly, bypassing AEM publish instances.</li>
+                    <li>If the content is not cached: The Dispatcher forwards the request to the AEM publish instance, caches the response, and then serves it to the client.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Dispatcher Architecture</h3>
+                <p>The Dispatcher architecture consists of the following components:</p>
+                <ul>
+                    <li><strong>Dispatcher Module:</strong> Installed on the web server, it processes incoming requests and manages the cache.</li>
+                    <li><strong>Web Server:</strong> (e.g., Apache HTTP Server or IIS) Handles HTTP requests and works with the Dispatcher module to deliver content.</li>
+                    <li><strong>AEM Publish Instances:</strong> These generate content and serve it to the Dispatcher.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Key Concepts in Dispatcher Configuration</h3>
+                <p>The Dispatcher configuration file <code>dispatcher.any</code> contains several key components:</p>
+                <ul>
+                    <li><strong>/cache:</strong> Defines what content should be cached and how long it should be retained.</li>
+                    <li><strong>/rules:</strong> Specifies URL patterns to cache.</li>
+                    <li><strong>/statfile:</strong> Mechanism used for cache invalidation based on content changes.</li>
+                    <li><strong>/invalidate:</strong> Determines which cache entries should be invalidated when content is updated.</li>
+                    <li><strong>/allowedClients:</strong> Restricts cache access to specific IP addresses or networks.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Detailed Dispatcher Configuration</h3>
+                <h4>1. Dispatcher Caching</h4>
+                <p>Caching in Dispatcher is highly configurable. You can cache specific content types, pages, or assets based on various rules. Here are some key caching strategies:</p>
+                <ul>
+                    <li><strong>Caching Rules:</strong> Set up rules to cache HTML pages, images, CSS, JavaScript, etc.</li>
+                    <li><strong>Cache Invalidation:</strong> The Dispatcher can automatically invalidate cached content when specific resources are updated or activated in AEM.</li>
+                    <li><strong>Stat Files:</strong> The stat file mechanism checks the timestamp of the stat file and compares it with the cached content. If the stat file is newer, the cache is invalidated.</li>
+                </ul>
+                <p>Example configuration for caching HTML and images:</p>
+                <pre>
+/cache {
+    /type "allow"
+    /url "/content"
+}
+
+/rules {
+    /0001 { /type "allow" /url "/content/**/*.html" }
+    /0002 { /type "allow" /url "/content/**/*.jpg" }
+}
+
+/statfile "/tmp/statfile.txt"</pre>
+                <h4>2. Dispatcher Load Balancing</h4>
+                <p>Load balancing ensures that requests are distributed efficiently across multiple AEM publish instances. The Dispatcher can use the following strategies:</p>
+                <ul>
+                    <li><strong>Round Robin:</strong> Distributes requests evenly across all publish instances.</li>
+                    <li><strong>Sticky Connections:</strong> Ensures that a user's session is always served by the same publish instance.</li>
+                    <li><strong>Custom Health Checks:</strong> Checks the health of each AEM publish instance and only forwards requests to healthy instances.</li>
+                </ul>
+                <p>Example configuration for load balancing using the round-robin method:</p>
+                <pre>
+/farm {
+    /name "publish-farm"
+    /renders {
+        /0001 { /host "publish1.example.com" }
+        /0002 { /host "publish2.example.com" }
+    }
+    /loadbalancer {
+        /type "round-robin"
+    }
+}
+
+/health_check {
+    /interval 60
+    /timeout 10
+}</pre>
+                <h4>3. Dispatcher Security Configuration</h4>
+                <p>Dispatcher helps secure your AEM environment by filtering requests and controlling access:</p>
+                <ul>
+                    <li><strong>Request Filtering:</strong> Using <code>/filter</code> rules, you can block unwanted requests such as those targeting the CRXDE or AEM consoles.</li>
+                    <li><strong>Access Control:</strong> Restrict access to parts of the website based on client IP addresses or other criteria.</li>
+                    <li><strong>DDoS Protection:</strong> Dispatcher can mitigate DDoS attacks by filtering suspicious requests and limiting requests from a single IP address.</li>
+                </ul>
+                <p>Example request filtering configuration:</p>
+                <pre>
+/filter {
+    /0001 { /type "deny" /glob "/crx/*" }
+    /0002 { /type "allow" /glob "/content/*" }
+}
+
+/unavailable {
+    /url "/content/error_page.html"
+}</pre>
+            </div>
+            <div class="card">
+                <h3>Dispatcher Caching Strategies</h3>
+                <p>The following caching strategies can be employed in Dispatcher configuration:</p>
+                <ul>
+                    <li><strong>Full Page Caching:</strong> Cache the entire HTML page. Ideal for static content.</li>
+                    <li><strong>Fragment Caching:</strong> Cache only specific parts of a page, like the header or footer, while leaving the main content dynamic.</li>
+                    <li><strong>Header Caching:</strong> Cache HTTP headers along with the content. This is useful for caching content with specific cache-control headers.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Common Dispatcher Use Cases</h3>
+                <ul>
+                    <li><strong>Static Content Caching:</strong> Cache static assets like images, CSS, and JavaScript files to improve site performance.</li>
+                    <li><strong>Dynamic Content Caching:</strong> Cache entire pages or parts of pages to reduce load on AEM publish instances.</li>
+                    <li><strong>Multisite Caching:</strong> Configure caching rules for multiple sites hosted on the same AEM instance.</li>
+                    <li><strong>CDN Integration:</strong> Use the Dispatcher in conjunction with a Content Delivery Network (CDN) for global content distribution.</li>
+                    <li><strong>Security Filtering:</strong> Prevent unauthorized access to sensitive parts of the AEM environment by blocking specific URLs or patterns.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Monitoring and Managing Dispatcher</h3>
+                <p>Dispatcher provides several mechanisms for logging and cache management:</p>
+                <ul>
+                    <li><strong>Logging:</strong> Dispatcher logs offer insights into request handling, cache hits, invalidation, and performance.</li>
+                    <li><strong>Cache Flushing:</strong> Automate or manually flush the cache when content is updated in AEM to ensure fresh content is served.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Dispatcher Tools and Best Practices</h3>
+                <ul>
+                    <li><strong>Dispatcher Flush Agents:</strong> Set up Flush Agents in AEM to automatically flush the cache when content is published or deactivated.</li>
+                    <li><strong>Dispatcher Optimization:</strong> Review and optimize your Dispatcher configuration to ensure efficient caching and load balancing.</li>
+                    <li><strong>Testing:</strong> Always test your Dispatcher configuration in a staging environment to verify behavior before deploying to production.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Dispatcher in a Cloud Environment</h3>
+                <p>In cloud environments like AEM as a Cloud Service, the Dispatcher is often managed automatically by the cloud infrastructure. However, the core principles of caching, load balancing, and security still apply, and custom configurations can be applied where necessary.</p>
+            </div>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

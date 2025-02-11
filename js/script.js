@@ -27,7 +27,12 @@ const menuItems = [
     { href: "queries.html", text: "Queries" },
     { href: "experience-fragment.html", text: "Experience Fragment" },
     { href: "content-fragment.html", text: "Content Fragment" },
-    { href: "runmodes.html", text: "Runmodes" }
+    { href: "multi-site-manager.html", text: "Multi-Site Manager" },
+    { href: "dispatcher.html", text: "Dispatcher" },
+    { href: "runmodes.html", text: "Runmodes" },
+    { href: "caching.html", text: "Caching" },
+    { href: "internationalization.html", text: "Internationalization" },
+    { href: "acs-commons.html", text: "ACS Commons" }
 ];
 
 const navList = document.getElementById('navList');
