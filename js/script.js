@@ -10,6 +10,7 @@ const menuItems = [
     { href: "apache-sling.html", text: "Apache Sling" },
     { href: "setting-up-aem.html", text: "Setting Up AEM" },
     { href: "project-creation-and-deployment.html", text: "Project Creation & Deployment" },
+    { href: "replication.html", text: "Replication" },
     { href: "sites-pages.html", text: "Sites & Pages" },
     { href: "templates.html", text: "Templates" },
     { href: "components.html", text: "Components" },
