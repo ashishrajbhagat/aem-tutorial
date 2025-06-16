@@ -1,6 +1,8 @@
 function toggleMenu() {
     var sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("active");
+    var content = document.getElementById("content");
+    content.classList.toggle("hide");
 }
 
 const menuItems = [
