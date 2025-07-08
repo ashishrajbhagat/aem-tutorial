@@ -1,226 +1,293 @@
+/* ===========================
+   Global Styles
+=========================== */
 body {
-    background-color: #f0f4f8;
-    color: #333;
-    display: flex;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
+	background-color: #f0f4f8;
+	color: #333;
+	display: flex;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	height: 100vh;
+	margin: 0;
+	padding: 0;
 }
 
+/* ===========================
+   Sidebar Styles
+=========================== */
 .sidebar {
-    background-color: #333;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 10px;
-    width: 20%;
-    transition: 0.5s;
-    overflow-y: scroll;
+	background-color: #333;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: 10px;
+	width: 20%;
+	transition: 0.5s;
+	overflow-y: scroll;
 }
 
-.logo h2 {    
-    font-size: 32px;
-    margin: 10px;
-    text-align: center;
+.logo h2 {
+	font-size: 32px;
+	margin: 20px 0;
+	text-align: center;
 }
 
 .sidebar .nav-list {
-    list-style-type: none;
-    padding: 0;
+	list-style-type: none;
+	padding: 0;
 }
 
 .sidebar .nav-link {
-    border-bottom: 1px solid #444;
-    color: white;
-    display: block;
-    padding: 10px 15px;
-    text-decoration: none;
+	border-bottom: 1px solid #444;
+	color: white;
+	display: block;
+	padding: 10px 15px;
+	text-decoration: none;
 }
 
 .sidebar .nav-link:hover {
-    background-color: #575757;
+	background-color: #575757;
 }
 
 .sidebar .nav-link.active {
-    background-color: #fff;
-    color: #000;
+	background-color: #fff;
+	color: #000;
 }
 
 .sidebar .footer {
-    text-align: center;
+	text-align: center;
+	margin-top: 20px;
+	font-size: 14px;
+	color: #ccc;
 }
 
+/* ===========================
+   Hamburger for Mobile
+=========================== */
 .hamburger {
-    background-color: #333;
-    border: none;
-    border-radius: 10px;
-    color: #f0f0f0;
-    cursor: pointer;
-    display: none;
-    font-size: 30px;
-    padding: 10px;
-    position: fixed;
-    top: 10px;
-    left: 10px;
+	background-color: #333;
+	border: none;
+	border-radius: 10px;
+	color: #f0f0f0;
+	cursor: pointer;
+	display: none;
+	font-size: 30px;
+	padding: 10px;
+	position: fixed;
+	top: 10px;
+	left: 10px;
 }
 
+/* ===========================
+   Content Area
+=========================== */
 .content {
-    width: 80%;
-    padding: 20px;
-    overflow-y: scroll;
+	width: 80%;
+	padding: 20px;
+	overflow-y: scroll;
 }
 
 h1 {
-    font-size: 36px;
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
+	font-size: 36px;
+	color: #2c3e50;
+	text-align: center;
+	margin: 10px 0 30px 0;
 }
 
+/* ===========================
+   Card (Box) Layout
+=========================== */
 .card {
-    background: #f9fbfd;
-    border: 1px solid #dfe6ee;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    padding: 20px;
-    transition: box-shadow 0.3s ease;
+	background: #f9fbfd;
+	border: 1px solid #dfe6ee;
+	border-radius: 10px;
+	margin-bottom: 30px;
+	padding: 25px;
+	transition: box-shadow 0.3s ease;
 }
 
 .card h2 {
-    font-size: 24px;
-    color: #34495e;
-    margin-bottom: 10px;
+	font-size: 26px;
+	color: #34495e;
+	margin-bottom: 10px;
 }
 
 .card h3 {
-    font-size: 20px;
-    color: #34495e;
-    margin-bottom: 10px;
+	font-size: 22px;
+	color: #34495e;
+	margin-bottom: 10px;
 }
 
-.card p, .card ul, .card ol {
-    font-size: 16px;
-    line-height: 1.6;
-    color: #555;
+.card p,
+.card ul,
+.card ol {
+	font-size: 16px;
+	line-height: 1.7;
+	color: #555;
 }
 
-.card ul, .card ol {
-    padding-left: 20px;
+.card ul,
+.card ol {
+	padding-left: 20px;
+	word-wrap: break-word;
 }
 
 .card a {
-    color: #000;
-    text-decoration: underline;
+	color: #1a0dab;
+	text-decoration: underline;
 }
 
 .card img {
-    display: block;
-    margin: auto;
-    width: 70%;
+	display: block;
+	margin: auto;
+	width: 70%;
 }
 
+/* Two-column layout inside card */
 .card .two-col {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
 }
 
 .card .two-col img {
-    width: 500px;
-    height: 600px;
+	width: 500px;
+	height: 600px;
 }
 
+/* Code block styling */
 .card pre {
-    background: #272822;
-    border-radius: 5px;
-    color: #f8f8f2;
-    font-size: 16px;
-    padding: 10px;
-    overflow-x: auto;
-    white-space: pre-wrap;
+	background: #272822;
+	border-radius: 5px;
+	color: #f8f8f2;
+	font-size: 16px;
+	padding: 12px;
+	overflow-x: auto;
+	white-space: pre-wrap;
 }
 
 .card code {
-    background: #eee;
-    padding: 2px 5px;
-    border-radius: 4px;
-    font-family: "Courier New", Courier, monospace;
-    word-break: break-all;
+	background: #eee;
+	padding: 2px 5px;
+	border-radius: 4px;
+	font-family: "Courier New", Courier, monospace;
+	word-break: break-word;
 }
 
+/* ===========================
+   Table Styling
+=========================== */
 .table-container {
-    width: 90%;
-    margin: 20px auto;
-    overflow-x: auto;
+	width: 90%;
+	margin: 20px auto;
+	overflow-x: auto;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
+	width: 100%;
+	border-collapse: collapse;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	background-color: #ffffff;
 }
 
-th, td {
-    padding: 12px;
-    text-align: left;
-    border: 1px solid #ddd;
+th,
+td {
+	padding: 12px;
+	text-align: left;
+	border: 1px solid #ddd;
 }
 
 th {
-    background-color: #34495e;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-tr:hover {
-    background-color: #f1f1f1;
+	background-color: #34495e;
+	color: white;
+	font-size: 16px;
 }
 
 td {
-    font-size: 14px;
-    color: #555;
+	font-size: 14px;
+	color: #555;
 }
 
-th, td {
-    font-size: 16px;
+tr:nth-child(even) {
+	background-color: #f9f9f9;
 }
 
+tr:hover {
+	background-color: #f1f1f1;
+}
+
+/* ===========================
+   Simple Pagination (Next/Prev)
+=========================== */
+.simple-pagination {
+	display: flex;
+	justify-content: space-between;
+	margin: 40px auto;
+	padding-top: 20px;
+	border-top: 1px solid #ccc;
+}
+
+.simple-pagination a {
+	color: #1a237e;
+	text-decoration: none;
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.simple-pagination a:hover {
+	text-decoration: underline;
+}
+
+/* ===========================
+   Responsive Styles
+=========================== */
 @media (max-width: 1024px) {
-    .sidebar {
-        width: 25%;
-    }
+	.sidebar {
+		width: 25%;
+	}
 
-    .content {
-        width: 75%;
-    }
+	.content {
+		width: 75%;
+	}
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        display: none;
-        width: 100%;
-    }
+	.sidebar {
+		display: none;
+		width: 100%;
+	}
 
-    .sidebar.active {
-        display: block;
-    }
+	.sidebar.active {
+		display: block;
+	}
 
-    .hamburger {
-        display: block;
-    }
+	.hamburger {
+		display: block;
+	}
 
-    .content {
-        margin-top: 10px;
-        width: 100%;
-    }
-    
-    .content.hide {
-        display: none;
-    }
+	.content {
+		margin-top: 10px;
+		width: 100%;
+	}
+
+	.content.hide {
+		display: none;
+	}
+
+	.card h2,
+	.card h3 {
+		font-size: 18px;
+	}
+
+	.card p,
+	.card ul,
+	.card ol {
+		font-size: 15px;
+	}
+
+	.simple-pagination {
+		flex-direction: column;
+		gap: 10px;
+		text-align: center;
+	}
 }

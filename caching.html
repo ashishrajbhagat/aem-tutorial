@@ -28,11 +28,11 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Caching</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Caching in Adobe Experience Manager (AEM)</h2>
                 <p>Adobe Experience Manager (AEM) uses multiple layers of caching to optimize content delivery and improve performance. These caching mechanisms help reduce server load and enhance page load times. Below is an in-depth look at how caching is implemented in AEM:</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>1. Client-Side Caching</h3>
                 <p>Client-side caching is implemented by storing content in the user's browser to reduce the number of requests made to the server and improve the overall page load speed. This is controlled using HTTP headers.</p>
                 <p>Key HTTP headers used for client-side caching include:</p>
@@ -56,8 +56,8 @@
 Cache-Control: max-age=86400, public
 ETag: "abc123"
 Last-Modified: Wed, 21 Oct 2021 07:28:00 GMT</pre>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>2. Dispatcher Caching</h3>
                 <p>The Dispatcher is a caching and load-balancing tool that helps reduce the load on the AEM server. It caches content at the web server level (Apache HTTP Server or IIS) and stores content as static files, which can be served to the client directly, bypassing AEM.</p>
                 <p>Here's how Dispatcher Caching works:</p>
@@ -76,8 +76,8 @@ Last-Modified: Wed, 21 Oct 2021 07:28:00 GMT</pre>
 }</pre>
                     <li><strong>Flush Agent:</strong> AEM uses the Flush Agent to clear or invalidate the cache automatically when content is published. This ensures the Dispatcher serves the latest content.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>3. In-Memory Caching</h3>
                 <p>AEM uses in-memory caching mechanisms to minimize the load on the content repository (JCR). These caches store frequently accessed data in memory to reduce database calls and speed up content delivery.</p>
                 <ul>
@@ -99,8 +99,8 @@ queryCache {
     /maxSize 1000
 }</pre>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>4. CDN Caching</h3>
                 <p>For better global content delivery, AEM works with Content Delivery Networks (CDNs) like Akamai, CloudFront, or Fastly. CDNs cache content at edge locations that are closer to end-users, which helps deliver assets faster.</p>
                 <ul>
@@ -111,8 +111,8 @@ cdn:purge {
     /url "/content/dam/assets/*.jpg"
 }</pre>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>5. AEM Sites Performance Tuning</h3>
                 <p>AEM allows various configurations to tune caching strategies for optimal performance:</p>
                 <ul>
@@ -120,8 +120,8 @@ cdn:purge {
                     <li><strong>Replication and Flush Agents:</strong> Properly configuring replication and flush agents ensures that cache invalidation is timely and content is always up-to-date.</li>
                     <li><strong>Cache Control:</strong> Fine-tuning HTTP headers such as <code>Cache-Control</code> and <code>Expires</code> ensures proper client-side caching and reduces unnecessary requests to AEM servers.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>Summary</h3>
                 <p>AEM uses multiple caching layers to ensure efficient content delivery. These include:</p>
                 <ul>
@@ -131,7 +131,7 @@ cdn:purge {
                     <li><strong>CDN Caching</strong> for faster content delivery globally with edge caching and cache invalidation.</li>
                 </ul>
                 <p>Each caching layer plays a vital role in enhancing the performance of AEM. Proper configuration and tuning are essential for maximizing the speed and efficiency of your AEM-based website.</p>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

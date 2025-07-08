@@ -28,7 +28,7 @@
 		<span class="hamburger" onclick="toggleMenu()">&#9776;</span>
 		<main class="content" id="content">
 			<h1>Clientlibs</h1>
-			<div class="card">
+			<section class="card">
 				<h2>Introduction to Client Libraries in AEM</h2>
 				<p>Client Libraries (ClientLibs) in AEM are a powerful mechanism to manage and include front-end assets such as JavaScript, CSS, fonts, and other resources in a modular, optimized, and maintainable way. These are special folders with the node type <code>cq:ClientLibraryFolder</code> that contain front-end assets organized into subfolders like <code>js</code>, <code>css</code>, and <code>resources</code>. They include configuration files like <code>js.txt</code> and <code>css.txt</code> to specify the order of file inclusion. By using ClientLibs, AEM handles versioning, dependency resolution, minification, and efficient delivery of client-side code across components and pages.</p>
 				<h3>Why use ClientLibs instead of direct HTML includes?</h3>
@@ -40,26 +40,26 @@
 					<li><strong>Reusability:</strong> ClientLibs can be included in multiple components or templates using categories.</li>
 					<li><strong>Security:</strong> Prevents exposing internal paths or unsafe script injection through direct HTML tags.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Folder Structure of ClientLibs</h2>
 				<p>AEM Client Libraries follow a standardized directory structure that helps organize front-end assets efficiently. This structure enables AEM to locate, process, and serve the required JS/CSS resources properly across components and pages.</p>
 				<h3>Standard Directory Structure</h3>
 				<ul>
-					<li><code>js/</code> — Contains JavaScript files used by components or pages.</li>
-					<li><code>css/</code> — Contains CSS or SCSS files for styling components.</li>
-					<li><code>resources/</code> — Holds other assets like images, fonts, etc.</li>
-					<li><code>js.txt</code> — Lists the JavaScript files (in order) to be included.</li>
-					<li><code>css.txt</code> — Lists the CSS files (in order) to be included.</li>
+					<li><code>js/</code> - Contains JavaScript files used by components or pages.</li>
+					<li><code>css/</code> - Contains CSS or SCSS files for styling components.</li>
+					<li><code>resources/</code> - Holds other assets like images, fonts, etc.</li>
+					<li><code>js.txt</code> - Lists the JavaScript files (in order) to be included.</li>
+					<li><code>css.txt</code> - Lists the CSS files (in order) to be included.</li>
 				</ul>
 				<h3>Location of ClientLibs</h3>
 				<ul>
-					<li><code>/apps/&lt;project&gt;/clientlibs</code> — Recommended location for project-specific ClientLibs in editable templates (AEM as a Cloud Service).</li>
-					<li><code>/apps/clientlibs</code> — Alternative location, mostly used in traditional AEM setups.</li>
-					<li><code>/etc/clientlibs</code> — Deprecated in modern AEM; was commonly used in older versions (AEM 6.2 and earlier).</li>
+					<li><code>/apps/&lt;project&gt;/clientlibs</code> - Recommended location for project-specific ClientLibs in editable templates (AEM as a Cloud Service).</li>
+					<li><code>/apps/clientlibs</code> - Alternative location, mostly used in traditional AEM setups.</li>
+					<li><code>/etc/clientlibs</code> - Deprecated in modern AEM; was commonly used in older versions (AEM 6.2 and earlier).</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Creating a Basic Client Library Folder</h2>
 				<p>To create a client library in AEM, you need to define a folder with a specific structure and properties. This folder must have the node type <code>cq:ClientLibraryFolder</code> and contain all required files for organizing and delivering CSS, JS, and other static resources.</p>
 				<h3>Creating a Folder with <code>cq:ClientLibraryFolder</code> Node Type</h3>
@@ -74,8 +74,8 @@
 					<li><strong>js.txt</strong>: A text file inside the <code>js</code> folder listing JavaScript files to include in order.</li>
 					<li><strong>css.txt</strong>: A text file inside the <code>css</code> folder listing CSS files to include in order.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Categories, Dependencies, Embed, and allowProxy in ClientLibs</h2>
 				<p>ClientLibs in AEM are highly configurable using properties like <code>categories</code>, <code>dependencies</code>, <code>embed</code>, and <code>allowProxy</code>. These properties control how the client libraries are grouped, referenced, and delivered.</p>
 				<h3>Using <code>categories</code> to Group ClientLibs</h3>
@@ -103,8 +103,8 @@
 					<li>Essential for caching at the dispatcher and serving assets securely from the <code>/apps</code> path.</li>
 					<li>Example: <code>allowProxy=true</code></li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>js.txt and css.txt Files</h2>
 				<p>The <code>js.txt</code> and <code>css.txt</code> files are used in AEM ClientLibs to define the order in which JavaScript and CSS files are included. These text files help ensure consistent loading of front-end assets and allow modular file organization.</p>
 				<h3>Purpose and Usage</h3>
@@ -129,8 +129,8 @@ reset.css
 main.css</pre>
 					</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Loading ClientLibs in HTL</h2>
 				<p>In AEM HTL (Sightly), ClientLibs can be loaded using different mechanisms to ensure styles and scripts are applied to your components or pages. These approaches ensure assets are loaded efficiently and modularly.</p>
 				<h3>Using <code>&lt;sly data-sly-use&gt;</code> and <code>data-sly-call</code></h3>
@@ -160,8 +160,8 @@ main.css</pre>
 					</li>
 					<li>This will include both JS and CSS defined in the <code>clientlib-site</code> category.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Using ClientLibs with Page Templates</h2>
 				<p>ClientLibs can be integrated into page templates in AEM to ensure that page-level CSS and JavaScript are consistently loaded across all pages using the template. This is typically done using the <code>head.html</code> and <code>body.html</code> structure in editable templates.</p>
 				<h3>Adding Page-Level JS/CSS</h3>
@@ -185,8 +185,8 @@ main.css</pre>
 					</li>
 					<li><code>clientlib.all</code> can be used to include both CSS and JS at once if needed.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Minification and Gzip Support</h2>
 				<p>Minification and Gzip compression in AEM improve page performance by reducing the size of client-side assets such as JavaScript and CSS files. These optimizations are handled by the HTML Library Manager service in AEM.</p>
 				<h3>OSGi Configurations: Adobe Granite HTML Library Manager</h3>
@@ -208,8 +208,8 @@ main.css</pre>
 					<li>To <strong>disable minification</strong> (e.g., for debugging), uncheck <code>minify</code> or enable the <code>debug</code> mode.</li>
 					<li>Changes may require a restart of the AEM instance or a flush of the clientlib cache.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>ClientLibs Debugging</h2>
 				<p>Debugging ClientLibs in AEM is essential for identifying loading issues, missing assets, or dependency problems. AEM provides a built-in debug mode to help with troubleshooting client-side libraries.</p>
 				<h3>Using <code>?debugClientLibs=true</code></h3>
@@ -224,8 +224,8 @@ main.css</pre>
 					<li>Look for <strong>404 errors</strong> or incorrect paths that might indicate a problem in your <code>js.txt</code> or <code>css.txt</code> configuration.</li>
 					<li>Check the <strong>Console</strong> tab for JavaScript errors that may be related to improperly loaded or missing clientlib files.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>ClientLibs Proxy Servlet</h2>
 				<p>The ClientLibs Proxy Servlet in AEM allows client libraries to be accessed securely via the <code>/etc.clientlibs</code> path. This is especially important when using a dispatcher, as it restricts access to internal paths like <code>/apps</code> or <code>/libs</code>.</p>
 				<h3>Access via <code>/etc.clientlibs</code> for Dispatcher</h3>
@@ -240,8 +240,8 @@ main.css</pre>
 					<li><code>/etc.clientlibs</code>: Public-facing path used to serve those client libraries safely through the dispatcher using the proxy servlet.</li>
 					<li>This separation ensures that internal project structure remains protected while still allowing public access to necessary assets.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Custom Resource Path Handling</h2>
 				<p>When working with ClientLibs in AEM, handling resource paths correctly is important to ensure that images, fonts, or other static assets are loaded properly in both author and publish environments. AEM supports referencing assets inside the <code>resources/</code> folder using special path handling techniques.</p>
 				<h3>Referencing Assets in <code>resources/</code></h3>
@@ -256,8 +256,8 @@ main.css</pre>
 					<li><strong>Absolute URLs:</strong> Useful for external resources or when referencing globally hosted assets (e.g., CDNs).</li>
 					<li>Example relative usage in CSS: <code>background: url("../resources/bg.png");</code></li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Theming with ClientLibs</h2>
 				<p>AEM ClientLibs support theming by allowing developers to define different style sets as separate client library categories. This makes it easy to switch themes dynamically based on user preferences, site sections, or device types.</p>
 				<h3>Creating Theme-Based Categories</h3>
@@ -280,8 +280,8 @@ main.css</pre>
 					<li>Use <code>&lt;cq:includeClientLib categories="mysite.theme.light"/&gt;</code> or <code>data-sly-use</code> with logic to determine which theme to load.</li>
 					<li>This provides flexibility for implementing dark/light modes, multi-brand support, or user-customized layouts.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Best Practices for Using ClientLibs</h2>
 				<p>Following best practices while working with Client Libraries in AEM ensures clean, maintainable, and scalable front-end development. Proper structuring and usage help avoid performance issues and asset conflicts across components and pages.</p>
 				<h3>Key Guidelines</h3>
@@ -290,8 +290,8 @@ main.css</pre>
 					<li><strong>Use categories consistently:</strong> Define clear and meaningful category names and use them uniformly across templates and components. This ensures that the right assets are included without duplication.</li>
 					<li><strong>Avoid global dependencies where possible:</strong> Don't rely on global variables or functions unless necessary. Encapsulate scripts and use namespacing to prevent conflicts.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>ClientLibs in Editable Templates</h2>
 				<p>In AEM, editable templates allow flexible page designs while keeping the structure consistent. ClientLibs can be included directly in the structure components of these templates to ensure consistent styling and behavior across all pages using the template.</p>
 				<h3>Including ClientLibs in Template Structure Components</h3>
@@ -306,8 +306,8 @@ main.css</pre>
 					<li>Assign unique categories to root components and include them only where needed.</li>
 					<li>This modular approach ensures better performance and avoids unnecessary loading of assets.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Using CSS Preprocessors (LESS/SASS) in ClientLibs</h2>
 				<p>CSS preprocessors like LESS and SASS enhance your styling workflow by providing features like variables, mixins, nesting, and functions. In AEM, these preprocessors are typically integrated using frontend build tools and their compiled output is linked via ClientLibs.</p>
 				<h3>Integration via Frontend Maven or NodeJS Build</h3>
@@ -326,8 +326,8 @@ main.css</pre>
 main.css</pre>
 					</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Integration with Frontend Build Tools</h2>
 				<p>To streamline front-end development in AEM, modern tools like the AEM Frontend Maven Plugin, Webpack, or NPM scripts are used to compile, bundle, and deploy assets. This allows separation of concerns between frontend and backend while ensuring optimized client-side delivery.</p>
 				<h3>AEM Frontend Maven Plugin</h3>
@@ -348,8 +348,8 @@ main.css</pre>
 					<li>Use <code>js.txt</code> and <code>css.txt</code> to include the compiled and minified files in AEM.</li>
 					<li>This ensures seamless delivery of modern front-end code within the AEM framework.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>ClientLibs vs Page Properties</h2>
 				<p>ClientLibs and Page Properties serve different but complementary roles in managing styles and scripts in AEM. While ClientLibs are used to define reusable frontend resources, page-level properties allow contextual control over which styles or scripts to apply based on content configuration.</p>
 				<h3>Setting Page-Level Styles</h3>
@@ -365,8 +365,8 @@ main.css</pre>
 					<li>These configurations can be passed to HTL and used to control what ClientLib categories or CSS classes are rendered dynamically.</li>
 					<li>Combining ClientLibs with design configurations ensures flexibility and reusability across templates and components.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Performance Optimization with ClientLibs</h2>
 				<p>Optimizing performance in AEM involves minimizing the amount of unnecessary CSS and JS sent to the browser, reducing render-blocking resources, and improving loading times. ClientLibs support several strategies to help achieve this.</p>
 				<h3>Reducing Unused JS/CSS</h3>
@@ -387,10 +387,26 @@ main.css</pre>
 					<li>Use categories wisely to group related functionality together and avoid duplicate loading.</li>
 					<li>Bundling reduces HTTP requests, especially beneficial when HTTP/1.1 is used on the server.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
+				<h2>ClientLib Versioning in AEM</h2>
+				<p>ClientLib versioning in AEM ensures that browsers always load the latest version of JavaScript and CSS files after an update. This avoids caching issues where old client-side files may be served even after deployment of new code. AEM provides automatic versioning based on file hash or manual versioning via custom folder structures.</p>
+				<h3>Why ClientLib Versioning is Important</h3>
+				<p>Browsers cache static assets like CSS and JS aggressively. Without versioning, users may continue to see outdated styles or scripts even after publishing updates. Versioning forces browsers to fetch the latest assets when changes are deployed.</p>
+				<h3>Automatic Versioning with Proxy Servlet</h3>
+				<p>When client libraries are served through <code>/etc.clientlibs</code>, AEM includes a hash-based version in the URL path (e.g., <code>/etc.clientlibs/my-site/clientlibs/clientlib-base.v12345.css</code>). This hash changes automatically whenever files are modified, invalidating the browser cache.</p>
+				<h3>Manual Versioning Strategy</h3>
+				<p>In projects not using the proxy servlet, developers can manually version their clientlibs by placing them in versioned folders (e.g., <code>clientlib-v1</code>, <code>clientlib-v2</code>) and updating references in components accordingly. This approach offers more control but requires manual updates.</p>
+				<h3>Best Practices</h3>
+				<ul>
+					<li>Always use the <code>/etc.clientlibs</code> path for clientlib delivery to benefit from automatic versioning.</li>
+					<li>Avoid hardcoding URLs - use <code>cq:includeClientLib</code> or HTL helpers instead.</li>
+					<li>Invalidate Dispatcher and CDN cache when deploying updated client-side assets.</li>
+				</ul>
+			</section>
+			<section class="card">
 				<h2>Common Issues and Troubleshooting</h2>
-				<p>While working with ClientLibs in AEM, developers may encounter issues related to missing assets, incorrect load order, or caching problems—especially when using a dispatcher. Understanding these common pitfalls can help in faster resolution.</p>
+				<p>While working with ClientLibs in AEM, developers may encounter issues related to missing assets, incorrect load order, or caching problems-especially when using a dispatcher. Understanding these common pitfalls can help in faster resolution.</p>
 				<h3>Clientlib Not Found Errors</h3>
 				<ul>
 					<li>Verify the clientlib folder is correctly marked with the <code>cq:ClientLibraryFolder</code> node type.</li>
@@ -410,7 +426,7 @@ main.css</pre>
 					<li>Invalidate dispatcher cache when changes are made to static assets or category names.</li>
 					<li>Check logs on both AEM and dispatcher side to confirm if files are being cached or blocked.</li>
 				</ul>
-			</div>
+			</section>
 			<script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
 		</main>
 		<script src="js/script.js"></script>

@@ -28,11 +28,11 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Runmodes</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Runmodes in AEM</h2>
                 <p>Adobe Experience Manager (AEM) uses <strong>Runmodes</strong> to enable specific configurations and functionalities based on the environment in which AEM is running. Runmodes allow administrators to configure AEM differently for development, testing, staging, and production environments. They determine the behavior of an AEM instance based on predefined settings, enabling the loading of different configurations, OSGi settings, and content packages depending on the instance type.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Common Runmodes in AEM</h2>
                 <p>AEM supports various runmodes, including:</p>
                 <ul>
@@ -43,8 +43,8 @@
                     <li><strong>Staging:</strong> Pre-production environment for validation.</li>
                     <li><strong>Production (prod):</strong> Live environment for end users.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>How to Configure Runmodes?</h2>
                 <h4>1. Setting Runmodes via <code>sling.properties</code></h4>
                 <p>Runmodes can be set in the <code>crx-quickstart/conf/sling.properties</code> file:</p>
@@ -56,8 +56,8 @@
                 <h4>3. Setting Runmodes via Environment Variables</h4>
                 <p>Runmodes can be defined using environment variables:</p>
                 <pre>export SLING_OPTS="-Dsling.run.modes=author,prod"</pre>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>Using Runmodes in AEM</h3>
                 <p>Runmodes are used to configure:</p>
                 <ul>
@@ -72,16 +72,16 @@
                 <h3>4.2 Installing Content Packages Based on Runmodes</h3>
                 <p>Content packages can be installed using runmode-specific folders:</p>
                 <pre>/apps/myproject/install.prod</pre>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Checking Active Runmodes</h2>
                 <p>You can check the active runmodes in AEM by navigating to:</p>
                 <ul>
                     <li><strong>OSGi Console:</strong> <code>/system/console/status-slingsettings</code></li>
                     <li><strong>JCR Path:</strong> <code>/var/logs/error.log</code> (logs contain active runmodes)</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Runmodes Best Practices</h2>
                 <ul>
                     <li>Always define runmodes explicitly for different environments.</li>
@@ -90,7 +90,7 @@
                     <li>Regularly verify active runmodes in AEM.</li>
                 </ul>
                 <p><strong>Note:</strong> Runmodes help optimize AEM configurations for different environments, ensuring better scalability and maintainability.</p>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

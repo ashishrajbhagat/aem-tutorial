@@ -28,7 +28,7 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Apache Sling</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Introduction to Apache Sling</h2>
                 <p>Apache Sling is a web framework designed to expose Java Content Repository (JCR) content over HTTP using REST principles. It is the foundation of AEM's content delivery mechanism.</p>
                 <h3>What is Apache Sling?</h3>
@@ -85,8 +85,8 @@
                         </tr>
                     </table>
                 </div>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Resource Resolution</h2>
                 <p>Sling's resource resolution mechanism is responsible for mapping request URLs to JCR content nodes. It plays a crucial role in serving content dynamically in AEM.</p>
                 <img src="images/sling-resource-resolution.png" alt="Sling Resource Resolution">
@@ -114,8 +114,8 @@
                     <li><strong>Overlays:</strong> AEM developers can override OOTB components and templates under <code>/apps</code> while keeping the original ones intact under <code>/libs</code>.</li>
                     <li>For example, modifying <code>/libs/wcm/core/components</code> by overlaying it under <code>/apps/wcm/core/components</code>.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Request Processing</h2>
                 <p>Sling follows a resource-oriented approach to handle HTTP requests dynamically based on JCR content structure.</p>
                 <h3>How Sling Handles HTTP Requests</h3>
@@ -142,8 +142,8 @@
                     <li><strong>Parameters:</strong> Data sent via query strings or form submissions (`request.getParameter("paramName");`).</li>
                     <li><strong>Headers:</strong> HTTP headers sent with the request (`request.getHeader("headerName");`).</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Servlet and Request Handling</h2>
                 <p>Sling Servlets extend AEM's request processing by handling dynamic content and custom business logic.</p>
                 <h3>What are Sling Servlets?</h3>
@@ -176,8 +176,8 @@
                     <li>Use OSGi Declarative Services for dependency injection.</li>
                     <li>Optimize performance by caching frequently used responses.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Models</h2>
                 <p>Sling Models provide a way to map JCR content to Java objects, simplifying data access in AEM components.</p>
                 <h3>What are Sling Models?</h3>
@@ -215,8 +215,8 @@
                     <li>Use constructor injection over field injection for better maintainability.</li>
                     <li>Follow AEM's separation of concerns by keeping business logic out of Sling Models.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Adaptables</h2>
                 <p>The Adaptable pattern in Sling allows seamless conversion between different types of objects.</p>
                 <h3>Understanding the Adaptable Pattern in Sling</h3>
@@ -264,7 +264,7 @@ MyModel model = resource.adaptTo(MyModel.class);</pre>
     &lt;h2&gt;${model.title}&lt;/h2&gt;
 &lt;/sly&gt;</pre>
             </div>
-            <div class="card">
+            <section class="card">
                 <h2>Sling HTL (Sightly)</h2>
                 <p>HTL (HTML Template Language) is AEM’s recommended templating system.</p>
                 <h3>Using HTL Expressions in Components</h3>
@@ -283,8 +283,8 @@ MyModel model = resource.adaptTo(MyModel.class);</pre>
 &lt;div data-sly-use.model="com.example.MyModel"&gt;
     &lt;h2&gt;${model.title}&lt;/h2&gt;
 &lt;/div&gt;</pre>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Resource Providers</h2>
                 <p>Resource Providers manage access to different data sources.</p>
                 <h3>What is a Sling Resource Provider?</h3>
@@ -302,8 +302,8 @@ public class MyResourceProvider extends ResourceProvider {
                 <ul>
                     <li>Custom providers can extend JCR for dynamic content.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Event Handling</h2>
                 <p>Enables event-driven development in AEM.</p>
                 <h3>Sling Eventing and Observations</h3>
@@ -334,8 +334,8 @@ public class MyJobConsumer implements JobConsumer {
                     <li>Use asynchronous processing for heavy tasks.</li>
                     <li>Ensure event listeners are efficient.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Scheduler</h2>
                 <p>Sling Scheduler allows scheduling of jobs in AEM.</p>
                 <h3>What is the Sling Scheduler?</h3>
@@ -366,8 +366,8 @@ public class MyScheduler implements Runnable {
                     <li>Use thread-safe operations.</li>
                     <li>Avoid scheduling long-running tasks.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Context-Aware Configurations</h2>
                 <p>Context-Aware Configurations (CAC) allow dynamic configuration management in AEM.</p>
                 <h3>What is Context-Aware Configuration (CAC)?</h3>
@@ -399,8 +399,8 @@ public class MyService {
                     <li>Store configurations in /conf instead of /apps.</li>
                     <li>Use CAC instead of OSGi configs when possible.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Content Distribution (SCD)</h2>
                 <p>SCD is used for content replication between AEM instances.</p>
                 <h3>What is Sling Content Distribution?</h3>
@@ -423,8 +423,8 @@ public class MyDistributionAgent {
                     <li>Check distribution logs for failures.</li>
                     <li>Ensure network connectivity between instances.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling URL Decomposition</h2>
                 <p>Sling URLs are structured to resolve resources dynamically.</p>
                 <h3>Understanding the Sling URL Structure</h3>
@@ -455,8 +455,8 @@ public class MyServlet extends SlingSafeMethodsServlet {
                     <li>Helps in SEO-friendly URLs.</li>
                     <li>Can be extracted using <code>request.getRequestPathInfo().getSuffix()</code>.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Filters and Request Processing</h2>
                 <p>Sling Filters allow pre-processing and post-processing of HTTP requests.</p>
                 <h3>What are Sling Request Filters?</h3>
@@ -483,8 +483,8 @@ public class MyFilter implements Filter {
                     <li>Pre-processing: Modify request parameters.</li>
                     <li>Post-processing: Modify response headers, logging.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Rewriter Pipeline</h2>
                 <p>The Sling Rewriter Pipeline customizes HTML responses in AEM.</p>
                 <h3>What is the Sling Rewriter Pipeline?</h3>
@@ -507,8 +507,8 @@ public class MyRewriter implements Transformer {
                     <li>Modify HTML output dynamically.</li>
                     <li>Used for adding attributes, optimizing images, injecting scripts.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Context and Resource Resolution Best Practices</h2>
                 <p>Optimizing resource resolution for better performance in AEM.</p>
                 <h3>Understanding the Sling Execution Context</h3>
@@ -526,8 +526,8 @@ public class MyRewriter implements Transformer {
                     <li>Use cached resource resolution.</li>
                     <li>Avoid unnecessary repository traversals.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Debugging and Troubleshooting Sling</h2>
                 <p>Best practices for debugging Sling components in AEM.</p>
                 <h3>Debugging Sling Servlets and Models</h3>
@@ -542,8 +542,8 @@ public class MyRewriter implements Transformer {
                     <li><strong>404 Resource Not Found:</strong> Check resource type mappings.</li>
                     <li><strong>Servlet Not Invoked:</strong> Verify @SlingServletResourceTypes.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>REST in Apache Sling (Web Framework)</h2>
                 <p>REST (Representational State Transfer) is an architectural style that is commonly used in modern web applications. It defines a set of constraints that, when applied to web services, result in a lightweight, scalable, and easy-to-use service. Apache Sling, which powers AEM, is designed around the principles of REST to enable seamless interaction with resources stored in the Java Content Repository (JCR).</p>
                 <p>The REST architectural style is based on six key constraints that shape the interaction between clients and servers:</p>
@@ -594,7 +594,7 @@ public class MyRewriter implements Transformer {
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

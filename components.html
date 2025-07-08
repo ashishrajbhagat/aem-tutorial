@@ -28,7 +28,7 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Components</h1>
-            <div class="card">
+            <section class="card">
                 <h2>What are AEM Components?</h2>
                 <p>AEM Components are reusable building blocks that define page structure, layout, and content behavior. They help developers and authors create dynamic, scalable, and consistent experiences. They are built using HTL (HTML Template Language) or JSP (legacy approach).</p>
                 <p>Key Features of Components:</p>
@@ -37,8 +37,8 @@
                     <li><strong>Flexibility:</strong> Components can be configured to display different types of content based on parameters or user input.</li>
                     <li><strong>Customizability:</strong> Components can be customized with various properties and settings to fit specific requirements.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Types of Components</h2>
                 <ol>
                     <li>
@@ -86,8 +86,8 @@
                         </ul>
                     </li>
                 </ol>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Component Structure</h2>
                 <p>The basic structure of any component:</p>
                 <pre>
@@ -123,8 +123,8 @@
                     <li><code>slingModel.java</code> - Backend logic for dynamic data. Should be placed under <code>core/src/main/java/com/myproject/models/</code>.</li>
                     <li><code>clientlibs/</code> (Optional) - Stores CSS & JS for the component. Can be placed inside the component folder or in the global <code>/apps/my-site/clientlibs/</code> directory.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating a Component in AEM</h2>
                 <ol>
                     <li>
@@ -222,13 +222,13 @@
                         <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"<br>  cq:tagName="section"<br>  jcr:primaryType="nt:unstructured"<br>  class="class-name"<br>  id="id-name"/&gt;</pre>
                     </li>
                 </ol>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Component Overloading vs Overlaying</h2>
                 <p><strong>Component Overloading</strong> refers to the practice of creating custom components that inherit or extend the functionality of existing components. Instead of directly modifying the original component, you create a new component that leverages the original one and adds or changes functionality.</p>
                 <p><strong>Component Overlaying</strong> refers to the practice of overriding or replacing an existing component or configuration by creating a new resource with the same name or path under a higher-priority folder in the JCR repository. This is typically done by creating a copy of a component from /libs and placing it under /apps.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Using Sling Resource Merger in AEM</h2>
                 <p>Sling Resource Merger in AEM allows developers to extend, modify, and customize existing resources without altering the core structure. This approach ensures smooth upgrades and better maintainability.</p>
                 <h3>Capabilities of Sling Resource Merger</h3>
@@ -247,7 +247,7 @@
                 <p>Hides specific child nodes while keeping their properties intact. Using <code>*</code> hides all child nodes.</p>
                 <h4>4. <code>sling:orderBefore</code> (String)</h4>
                 <p>Determines the position of the current node by placing it before the specified sibling node in the merged hierarchy.</p>
-            </div>            
+            </section>            
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

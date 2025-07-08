@@ -28,7 +28,7 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Services</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Introduction to AEM Services</h2>
                 <p>AEM Services are reusable components that encapsulate business logic and provide functionalities to different parts of an AEM application. Services are Java classes registered as OSGi components, which provide modular and reusable functionalities across various parts of the application.</p>
                 <ul>
@@ -42,8 +42,8 @@
                     <li>Improves separation of concerns.</li>
                     <li>Facilitates easy testing and maintenance.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Difference between OSGi Services and Servlets in AEM</h2>
                 <p>While both OSGi Services and Servlets are used in AEM, they serve different purposes.</p>
                 <ul>
@@ -51,8 +51,8 @@
                     <li><strong>Servlets:</strong> Handle HTTP requests and responses but usually rely on services for business logic.</li>
                     <li>OSGi Services improve code modularity, whereas Servlets mainly focus on request handling.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating an OSGi Service</h2>
                 <p>OSGi services in AEM allow developers to create reusable business logic that can be accessed across different parts of an application.</p>
                 <p>Follow these steps to create an OSGi service in AEM:</p>
@@ -63,8 +63,8 @@
                     <li>Use <code>@Activate</code> and <code>@Deactivate</code> methods for service lifecycle management.</li>
                     <li>Consume the service in a Servlet, Model, or other AEM components.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Defining an interface and implementing the service</h2>
                 <p>The interface defines the contract for the OSGi service, and the implementation provides the actual logic.</p>
                 <ol>
@@ -94,8 +94,8 @@ public class GreetingServiceImpl implements GreetingService {
 }</pre>
                     </li>
                 </ol>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Registering a service using @Component annotation</h2>
                 <p>The <code>@Component</code> annotation is used to declare an OSGi service in AEM.</p>
                 <ul>
@@ -115,13 +115,13 @@ public class GreetingServiceImpl implements GreetingService {
                     <li><code>immediate</code> is about when the service gets activated after registration (either immediately or lazily).</li>
                     <li><code>enabled</code> is about whether the service is allowed to be activated at all. Default value is true.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Using @Activate, @Modified and @Deactivate methods</h2>
                 <p>The <code>@Activate</code>, <code>@Modified</code> and <code>@Deactivate</code> annotations manage the service lifecycle.</p>
                 <ul>
                     <li><code>@Activate</code> is executed when the service starts, used for initialization.</li>
-                    <li><code>@Modified</code> is executed when when a component's configuration has been modified after the component has been activated.</li>
+                    <li><code>@Modified</code> is executed when a component's configuration has been modified after the component has been activated.</li>
                     <li><code>@Deactivate</code> is executed when the service stops, used for cleanup.</li>
                     <li>These methods ensure proper resource management in OSGi services.</li>
                 </ul>
@@ -150,8 +150,8 @@ public class GreetingServiceImpl implements GreetingService {
         return "Hello from OSGi Service!";
     }
 }</pre>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Types of OSGi Services in AEM</h2>
                 <p>OSGi services in AEM can be classified into different types based on their functionality. Below are some of the common types of OSGi services:</p>
                 <h3>1. Simple OSGi Service - A basic service example</h3>
@@ -238,8 +238,8 @@ public class HttpClientServiceImpl implements HttpClientService {
     }
 }</pre>
                 <p>This service can be used to call external REST APIs and retrieve data in AEM components or services.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Consuming OSGi Services in AEM</h2>
                 <p>OSGi services can be consumed in AEM components, Sling models, Servlets, and workflows using the <code>@Reference</code> annotation. This enables you to easily access and use services that are registered in the OSGi container.</p>
                 <h3>Injecting services using @Reference annotation</h3>
@@ -306,8 +306,8 @@ public class MyWorkflowProcess implements WorkflowProcess {
     }
 }</pre>
                 <p>The service is injected using <code>@Reference</code>, and you can use it within the <code>execute()</code> method to carry out the necessary tasks in the workflow process.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Common Use Cases of AEM Services</h2>
                 <p>AEM services are highly useful in various scenarios ranging from accessing content stored in JCR to calling external APIs and sending emails. Below are some common use cases where AEM services can be leveraged effectively.</p>
                 <h3>Fetching Data from JCR</h3>
@@ -424,8 +424,8 @@ public class LoggingService {
     }
 }</pre>
                 <p>This example demonstrates how to create a custom logging service that uses SLF4J for logging purposes. You can extend this service to log messages at different levels (info, debug, error) throughout your AEM components.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>System User</h2>
                 <p>A System User in AEM is a special type of user <code>rep:SystemUser</code> introduced in AEM 6.1 to securely access JCR resources and services without using administrative sessions, reducing security risks. System Users are needed in AEM to replace deprecated admin sessions, ensuring secure and restricted access to JCR resources without hardcoding credentials or using excessive administrative privileges.</p>
                 <h3>Why we need System User?</h3>
@@ -493,8 +493,8 @@ public class LoggingService {
                     <li>Click on <code>Save</code>.</li>
                 </ol>
                 <p><em>Note: </em><strong>System User </strong>is a special user <code>rep:SystemUser</code> created in the JCR repository with restricted permissions, meant for backend service access while <strong>Service User </strong>is a logical mapping in AEM that associates a service (or subservice) to a System User using the Service User Mapper. In other words, A Service User is just a mapping (defined in Felix Console) that allows a specific System User to be used by a service. The actual user in the repository is always a System User.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Services vs Models in AEM</h2>
                 <p>Both Services and Models are used in AEM to manage backend logic and content retrieval, but they serve different purposes and are used in different scenarios.</p>
                 <ul>
@@ -513,7 +513,7 @@ public class LoggingService {
                     <li>When working with Sling models to expose structured data for components.</li>
                     <li>When simplifying content retrieval in HTL templates.</li>
                 </ul>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

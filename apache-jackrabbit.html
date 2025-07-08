@@ -28,7 +28,7 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Apache Jackrabbit (JCR Implementation)</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Overview</h2>
                 <p>Apache Jackrabbit is an open-source implementation of the Java Content Repository (JCR) specification. It serves as the backbone for content storage in AEM.</p>
                 <ul>
@@ -37,8 +37,8 @@
                     <li>Used as the default persistence layer in AEM for managing structured and unstructured content.</li>
                     <li>Jackrabbit allows the storage of structured and unstructured content and provides features like versioning, access control, and content queries.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Role in AEM</h2>
                 <ul>
                     <li><strong>Content Storage: </strong>Apache Jackrabbit is responsible for storing all the content in AEM, whether it’s structured data (e.g., page content) or unstructured data (e.g., images, videos).</li>
@@ -46,15 +46,15 @@
                     <li><strong>Versioning and Locking: </strong>Jackrabbit provides version control for content, meaning AEM can keep track of content changes over time and roll back to previous versions if necessary. It also allows locking of content nodes to prevent concurrent updates from conflicting.</li>
                     <li><strong>Querying: </strong>Jackrabbit supports querying content using JCR-SQL2 or XPath query languages, which allows developers to search and retrieve content stored in the repository efficiently.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Difference Between JCR and a Traditional Database</h2>
                 <ul>
                     <li><strong>JCR</strong> stores content in a hierarchical tree structure (nodes and properties) while <strong>Traditional Database</strong> uses relational tables and rows.</li>
                     <li><strong>JCR</strong> supports full-text search, versioning, and access control out-of-the-box while <strong>Traditional Database</strong> requires manual implementation for versioning and permissions.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Key Benefits</h2>
                 <ul>
                     <li><strong>Hierarchical Content Storage: </strong>Jackrabbit stores content in a tree structure, making it easy to organize and manage.</li>
@@ -65,8 +65,8 @@
                     <li><strong>Access Control:</strong> Manages permissions and security at a granular level.</li>
                     <li><strong>Transactional Support:</strong> Ensures data consistency.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>JCR Repository Architecture</h2>
                 <p>The JCR repository in AEM provides a flexible and scalable way to store content in a hierarchical manner. It is structured with different components such as repository, workspace, and nodes that manage and store content.</p>
                 <h3>Repository, Workspace, and Node Structure</h3>
@@ -93,8 +93,8 @@
                     <li><strong>Access Control:</strong> Controls the permissions for accessing and modifying nodes. Can be configured at a granular level to ensure content security.</li>
                     <li>Access control lists (ACLs) are used to specify which users or groups have read/write access to certain parts of the repository.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>JCR Querying and Searching</h2>
                 <p>JCR provides powerful querying capabilities to search and retrieve content stored in the repository. You can query the repository using different query languages such as SQL2, XPath, and JCR-SQL.</p>
                 <h3>Querying with SQL2</h3>
@@ -138,8 +138,8 @@ Query query = queryManager.createQuery("SELECT * FROM [nt:base]", Query.JCR_SQL2
 QueryResult result = query.execute();</pre>
                     </li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Node Operations in JCR</h2>
                 <p>JCR provides a set of operations to interact with nodes and properties stored in the content repository. These operations include creating, reading, updating, and deleting nodes (CRUD operations), as well as managing node types and properties.</p>
                 <h3>Creating, Reading, Updating, and Deleting Nodes (CRUD Operations)</h3>
@@ -162,8 +162,8 @@ QueryResult result = query.execute();</pre>
                     <li><strong>Retrieving Properties:</strong> Properties can be accessed using <code>node.getProperty()</code>. For example, <code>node.getProperty("jcr:title").getString()</code> retrieves the title property of a node.</li>
                     <li><strong>Updating Properties:</strong> You can update properties using <code>node.setProperty()</code>. For instance, <code>node.setProperty("jcr:title", "New Title")</code> modifies the title property.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Versioning in JCR</h2>
                 <p>Versioning in JCR allows you to store and manage different versions of content nodes, which helps to track changes over time and roll back to previous states if necessary.</p>
                 <h3>What is JCR Versioning?</h3>
@@ -193,8 +193,8 @@ Version version = versionHistory.getVersion("1.0");</pre>
                     </li>
                     <li><strong>Reverting to a Previous Version:</strong> A node can be reverted to a specific version by using the <code>node.restore()</code> method.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Jackrabbit Oak - The Next-Gen JCR Implementation</h2>
                 <p>Jackrabbit Oak is a more modern and scalable implementation of the JCR specification, designed for better performance and flexibility, especially in large-scale content repositories.</p>
                 <h3>Difference Between Jackrabbit 2.x and Jackrabbit Oak</h3>
@@ -214,7 +214,7 @@ Version version = versionHistory.getVersion("1.0");</pre>
                     <li><strong>Concurrent Modifications:</strong> Oak is designed to better handle concurrent changes, which is critical for high-traffic content repositories.</li>
                     <li><strong>Efficient Query Processing:</strong> Oak improves query execution times and provides more efficient access to content data.</li>
                 </ul>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

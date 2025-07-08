@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Introduction</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <nav class="nav">
+                <ul class="nav-list" id="navList"></ul>
+            </nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Dynamic Media</h1>
+            <section class="card">
+                <h2>What is Dynamic Media?</h2>
+                <p>Dynamic Media is a service in AEM that allows you to serve optimized, responsive images and videos, dynamically resize and crop assets using URL modifiers, deliver personalized/localized assets, and offload delivery to a high-performance CDN.</p>
+                <h3>Core Capabilities</h3>
+                <ul>
+                    <li>Responsive image and video delivery</li>
+                    <li>On-the-fly transformations using URL modifiers</li>
+                    <li>Integration with templates and personalization</li>
+                    <li>Global CDN-based delivery</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Integration with AEM</h2>
+                <p>Dynamic Media is natively integrated into Adobe Experience Manager Assets and can be enabled through configuration. Once set up, it allows seamless publishing, transformation, and delivery of assets directly from within the AEM interface.</p>
+                <h3>Integration Highlights</h3>
+                <ul>
+                    <li>Dynamic Media can be enabled via the AEM Author instance by configuring cloud services</li>
+                    <li>Assets are uploaded once and automatically synced to Dynamic Media cloud</li>
+                    <li>Publish actions trigger the upload to Dynamic Media servers/CDN</li>
+                    <li>Dynamic URLs are generated for each asset and can be used in components</li>
+                    <li>Image presets, video profiles, and smart crops are configured within AEM</li>
+                    <li>Developers can use Dynamic Media components (e.g., <code>media.html</code>) in editable templates</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Image Modifiers (URL Parameters)</h2>
+                <p>Image modifiers are URL query parameters that let you control image properties like size, format, and crop without creating separate renditions.</p>
+                <h3>Common Examples</h3>
+                <ul>
+                    <li><code>?wid=300</code> - Set width to 300px</li>
+                    <li><code>?hei=200</code> - Set height to 200px</li>
+                    <li><code>?fmt=png</code> - Convert to PNG</li>
+                    <li><code>?crop=100,100,400,400</code> - Crop to specific coordinates</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Video Support</h2>
+                <p>Dynamic Media supports adaptive bitrate video hosting and streaming with custom video player integration.</p>
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Adaptive bitrate streaming</li>
+                    <li>Smart encoding</li>
+                    <li>Custom video player support</li>
+                    <li>Cloud-based delivery</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Smart Crop & Responsive Images</h2>
+                <p>Dynamic Media can automatically detect the focal point of an image and generate responsive renditions for different devices.</p>
+                <h3>Benefits</h3>
+                <ul>
+                    <li>AI-based focal point detection</li>
+                    <li>Automatic responsive renditions</li>
+                    <li>Integration with <code>srcset</code> and lazy loading</li>
+                    <li>Improved performance across devices</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Dynamic Banners and Image Templates</h2>
+                <p>Use Dynamic Media's image presets and text overlays to create localized or personalized marketing banners.</p>
+                <h3>Capabilities</h3>
+                <ul>
+                    <li>Dynamic background and text swapping</li>
+                    <li>Localized campaigns with single template</li>
+                    <li>Personalized content delivery</li>
+                    <li>Template-driven asset generation</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>How It Works</h2>
+                <p>Dynamic Media works by processing assets uploaded to AEM and serving them via optimized URLs through a cloud-based image server and CDN.</p>
+                <h3>Process Steps</h3>
+                <ul>
+                    <li>Upload assets to AEM Assets</li>
+                    <li>Publish to Dynamic Media cloud</li>
+                    <li>Generate URL with modifiers</li>
+                    <li>Image server processes request</li>
+                    <li>Asset delivered via CDN</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Benefits</h2>
+                <p>Dynamic Media offers performance and personalization advantages with automated transformations and global delivery.</p>
+                <h3>Key Advantages</h3>
+                <ul>
+                    <li>Faster page load times</li>
+                    <li>Mobile-optimized asset delivery</li>
+                    <li>Smart automation like cropping and tagging</li>
+                    <li>Personalized and scalable content</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Use Case Comparison</h2>
+                <p>Dynamic Media simplifies responsive image delivery by reducing the need to manually create multiple renditions.</p>
+                <h3>Example</h3>
+                <ul>
+                    <li><strong>Without Dynamic Media:</strong> Upload multiple image sizes</li>
+                    <li><strong>With Dynamic Media:</strong> Upload one high-quality image, use URL modifiers or <code>srcset</code></li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Troubleshooting</h2>
+                <p>Common issues and fixes while working with Dynamic Media in AEM.</p>
+                <h3>Common Issues</h3>
+                <ul>
+                    <li><strong>Asset not loading:</strong> Ensure it is published to Dynamic Media and check CDN URL</li>
+                    <li><strong>Image not transforming:</strong> Verify URL modifiers</li>
+                    <li><strong>Not responsive:</strong> Ensure correct use of <code>srcset</code> and image presets</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

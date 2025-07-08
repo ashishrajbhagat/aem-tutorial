@@ -28,7 +28,7 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Multi-Site Manager</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Introduction to Multi-Site Manager (MSM) in AEM</h2>
                 <p>Multi-Site Manager (MSM) is a powerful feature in Adobe Experience Manager (AEM) that allows organizations to efficiently manage multiple websites that share similar content and structure. MSM enables content replication from a master blueprint site to multiple live copies while maintaining synchronization and inheritance.</p>
                 <h3>Why is MSM Important?</h3>
@@ -48,8 +48,8 @@
                     <li><strong>Translation Framework:</strong> Manages language translation workflows, integrating with third-party translation services to localize content.</li>
                 </ul>
                 <p>MSM is best suited for managing structurally similar sites, while the Translation Framework is ideal for handling language translations within a site.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Key Concepts of MSM</h2>
                 <h3>Live Copy</h3>
                 <p>A <strong>Live Copy</strong> in AEM MSM is a site or page that is created from a blueprint and maintains a relationship with the source content. Changes in the blueprint can be automatically or manually synchronized with the live copy using rollout configurations.</p>
@@ -76,8 +76,8 @@
                     <li><strong>Blueprint:</strong> The master content structure from which live copies are created and managed.</li>
                 </ul>
                 <p>Understanding the differences between these concepts helps in selecting the right approach for managing multilingual and multi-regional sites.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating and Managing Live Copies</h2>
                 <p>Live Copies in AEM Multi-Site Manager (MSM) allow content to be inherited and synchronized from a Blueprint source. They enable content teams to efficiently manage multiple site variations while maintaining consistency across regions and languages.</p>
                 <h3>How to Create a Live Copy</h3>
@@ -127,8 +127,8 @@
                     <li>Break inheritance only when absolutely necessary.</li>
                     <li>Regularly review Live Copy relationships to ensure content consistency.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Blueprint in MSM</h2>
                 <p>In AEM Multi-Site Manager (MSM), a <strong>Blueprint</strong> is a structured approach to managing content replication across multiple Live Copies. It defines the source from which content is inherited and synchronized, ensuring consistency across different site versions.</p>
                 <h3>What is a Blueprint?</h3>
@@ -170,8 +170,8 @@
                     <li>Select the pages you want to roll out.</li>
                     <li>Click <strong>Rollout</strong> to push changes to Live Copies.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Rollout Configuration in MSM</h2>
                 <p>Rollout Configuration in AEM Multi-Site Manager (<strong>MSM</strong>) defines how and when content updates from a <strong>Blueprint</strong> are propagated to <strong>Live Copies</strong>. It controls the synchronization process to ensure consistency while allowing flexibility for modifications.</p>
                 <h3>What is Rollout Configuration?</h3>
@@ -223,8 +223,8 @@
                     <li>Use <strong>manual rollout triggers</strong> for critical content updates.</li>
                     <li>Ensure <strong>indexing is optimized</strong> for large-scale rollouts to maintain performance.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Live Copy Synchronization and Updates</h2>
                 <p><strong>Live Copy Synchronization</strong> in AEM MSM ensures that changes made in a <strong>Blueprint</strong> are propagated to its <strong>Live Copies</strong>. This synchronization process maintains content consistency while allowing selective modifications in <strong>Live Copies</strong> based on business requirements.</p>
                 <h3>Synchronizing Changes from Blueprint to Live Copy</h3>
@@ -275,8 +275,8 @@
                     <li>Test rollout configurations in a staging environment before applying them to production.</li>
                     <li>Utilize <strong>version control</strong> to track changes and prevent data loss.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>MSM with Language Copies (Localization & Translation)</h2>
                 <p><strong>Multi-Site Manager (MSM)</strong> and <strong>Language Copies</strong> in AEM allow organizations to manage multilingual content efficiently. While MSM enables content inheritance and synchronization across different sites, <strong>Language Copies</strong> help in creating region-specific translations.</p>
                 <h3>MSM vs. Translation Projects</h3>
@@ -316,8 +316,8 @@
                     <li><strong>Test Before Rollouts:</strong> Always verify translations before rolling them out across sites.</li>
                     <li><strong>Use Metadata for Localization:</strong> Store localized metadata to improve searchability and personalization.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Customizing MSM with Live Action Scripts</h2>
                 <p><strong>Live Action Scripts</strong> in AEM allow the customization and extension of <strong>Multi-Site Manager (MSM)</strong> functionality. These scripts enable developers to implement custom logic and behavior during the content rollout process across multiple sites.</p>
                 <h3>What are Live Action Scripts?</h3>
@@ -381,8 +381,8 @@ public class CustomLiveAction implements Action {
                     <li>Verify the action's configuration in OSGi and ensure that it is being correctly recognized and triggered during the MSM process.</li>
                     <li>Test the action with various triggers (e.g., inheritance break, page rollout) to ensure it behaves as expected in different scenarios.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Automating MSM Using Workflow Integration</h2>
                 <p><strong>Automating MSM</strong> processes using AEM workflows allows for seamless content management and publishing across multiple sites. By integrating <strong>Multi-Site Manager (MSM)</strong> with AEM workflows, you can automate tasks such as content synchronization, blueprint rollouts, and site publishing, which reduces manual intervention and enhances efficiency.</p>
                 <h3>Integrating MSM with AEM Workflows</h3>
@@ -417,8 +417,8 @@ public class CustomLiveAction implements Action {
                     <li><strong>Scenario:</strong> You update a page in the blueprint. The workflow launcher is configured to detect the change and automatically trigger the <strong>rollout process</strong> to synchronize content across live copies in multiple regions.</li>
                     <li><strong>Outcome:</strong> The page content is rolled out to the live copies automatically, without requiring manual intervention, ensuring a smooth and efficient process.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>MSM Performance and Optimization</h2>
                 <p><strong>MSM Performance</strong> in AEM plays a critical role in ensuring that content is efficiently managed and synchronized across multiple sites without causing performance bottlenecks. Optimizing the performance of MSM processes, especially in large-scale websites, is essential to maintain a smooth user experience and prevent delays in content rollout and synchronization.</p>
                 <h3>MSM Performance Considerations</h3>
@@ -453,8 +453,8 @@ public class CustomLiveAction implements Action {
                     <li><strong>Use of Exclude Paths:</strong> Exclude paths related to live copy rollouts and blueprint pages from being cached, as they are frequently updated and should not be served from cache.</li>
                     <li><strong>Dispatcher Flush Strategies:</strong> Ensure that the dispatcher flush strategy is in place to invalidate caches after content updates, ensuring consistent content delivery across sites.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>MSM Troubleshooting and Debugging</h2>
                 <p><strong>MSM Troubleshooting</strong> and debugging in AEM is an essential skill for resolving issues that arise during the rollout, synchronization, and live copy management processes. Understanding common issues and knowing how to use the proper debugging tools can help ensure smooth site management across multiple environments.</p>
                 <h3>Common MSM Issues and How to Fix Them</h3>
@@ -490,8 +490,8 @@ public class CustomLiveAction implements Action {
                     <li><strong>Manual Synchronization:</strong> For specific page updates, you can manually trigger synchronization by using AEM's built-in MSM tools, ensuring that changes are propagated from the blueprint to the live copies.</li>
                     <li><strong>Check for Permissions:</strong> Ensure that the necessary permissions are granted to the users performing rollouts and managing live copy configurations. Lack of proper permissions can prevent successful rollouts.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Use Cases of Multi-Site Manager (MSM)</h2>
                 <p><strong>Multi-Site Manager (MSM)</strong> in AEM provides a centralized and efficient solution for managing multiple websites across different regions, languages, or brands. It enables seamless content management, rollout, and synchronization for global enterprises. Below are some common use cases of MSM in real-world scenarios.</p>
                 <h3>Managing Multiple Regional Sites</h3>
@@ -519,8 +519,8 @@ public class CustomLiveAction implements Action {
                     <li><strong>Price and Promotions:</strong> Localized pricing and promotional offers can be rolled out through MSM, ensuring that each region receives accurate and tailored offers.</li>
                     <li><strong>Seamless Updates:</strong> Centralized updates to product information or promotions can be synchronized across multiple stores, keeping them in sync without manual intervention.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Best Practices for Using MSM in AEM</h2>
                 <p><strong>Multi-Site Manager (MSM)</strong> is a powerful tool in AEM for managing multiple sites, but to get the most out of MSM, it’s important to follow best practices. Below are key guidelines and best practices for using MSM in AEM effectively.</p>
                 <h3>When to Use MSM and When Not to Use It</h3>
@@ -553,8 +553,8 @@ public class CustomLiveAction implements Action {
                     <li><strong>Regularly Review and Update Blueprints:</strong> Ensure that blueprints are regularly reviewed and updated to reflect any changes in the global content strategy. This ensures that regional sites are always in sync with the global strategy.</li>
                     <li><strong>Scale Infrastructure:</strong> For large-scale MSM implementations, ensure that the infrastructure is scaled to handle the additional load generated by rollouts. This includes optimizing AEM and dispatcher configurations for high traffic and complex workflows.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Tools for Managing MSM in AEM</h2>
                 <p>Managing Multi-Site Manager (MSM) efficiently requires a set of tools to handle tasks like blueprint management, live copy creation, rollout configurations, and troubleshooting. AEM provides several built-in tools to manage MSM effectively.</p>
                 <h3>MSM Control Center (/mnt/overlay/msm/gui/content/livecopies.html)</h3>
@@ -592,7 +592,7 @@ public class CustomLiveAction implements Action {
                     <li><strong>Accessing MSM Logs:</strong> The logs can typically be found in the AEM logs directory or accessed via the AEM log viewer for troubleshooting.</li>
                 </ul>
                 <p>MSM logs provide valuable insights into system behavior and help pinpoint areas where fixes or optimizations are needed. Regular monitoring of logs is key to maintaining a healthy MSM environment.</p>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

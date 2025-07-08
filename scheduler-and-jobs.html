@@ -28,7 +28,7 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Scheduler and Jobs</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Introduction to AEM Scheduler</h2>
                 <p>A Sling Scheduler in AEM is a mechanism that allows the execution of tasks at predefined intervals or specific times in the background. It is used to automate processes that need to run periodically, asynchronously, or at a scheduled time. Schedulers in AEM use OSGi-based job scheduling, leveraging frameworks like Apache Sling Scheduler and Quartz Scheduler to handle scheduled tasks efficiently.</p>
                 <h3>Understanding the Concept of Background Job Processing</h3>
@@ -104,8 +104,8 @@
                         </ul>
                     </li>
                 </ol>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Different ways to create a Scheduler</h2>
                 <p>AEM provides multiple ways to schedule tasks and background jobs. The scheduling approach depends on the use case, frequency, and execution requirements.</p>
                 <h3>1. Whiteboard Pattern</h3>
@@ -204,8 +204,8 @@ public class SimpleScheduler implements Runnable {
         LOG.info("Executing scheduled task...");
     }
 }</pre>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating a Scheduler Using Scheduler API in AEM</h2>
                 <p>The AEM Scheduler API allows developers to schedule jobs using OSGi services. We use OSGi R6 annotations to define a scheduled job dynamically.</p>
                 <h3>1.  Create an OSGi Configuration Interface</h3>
@@ -305,8 +305,8 @@ public class PracticeScheduledTask implements Runnable {
                 <p>Open <code>error.log</code> and look for log entries:
                 <pre>INFO Scheduled Task is running...</pre>
                 </p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Common Methods in Scheduler API</h2>
                 <p>There are multiple methods from Scheduler interface:</p>
                 <ul>
@@ -318,8 +318,8 @@ public class PracticeScheduledTask implements Runnable {
                     <li><code>scheduler.NOW()</code> - Run a job immediately only once</li>
                     <li><code>scheduler.NOW(int times, long period)</code> - Run a job immediately more than once.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Job Scheduling with Cron Expressions</h2>
                 <p>Cron expressions define job execution schedules using a specific format:</p>
                 <pre>
@@ -338,8 +338,8 @@ public class PracticeScheduledTask implements Runnable {
                     <li><code>0 */10 * * * ?</code> - Runs every 10 minutes.</li>
                 </ul>
                 <p><strong>Note: </strong> This can be created using any online tool as well. For example: <code>https://www.freeformatter.com/cron-expression-generator-quartz.html</code></p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Jobs</h2>
                 <p>Sling Jobs are based on Apache Sling Job Handling, which provides an efficient way to manage background tasks asynchronously. This is useful for processing tasks that do not require immediate user interaction. Sling Jobs are a type of Sling Event that is persisted and executed asynchronously. They ensure that a job is executed only once across an AEM cluster, providing reliability and failover mechanisms.</p>
                 <p>Sling Jobs are designed to ensure reliable execution, even in the event of failures. If a job fails due to an unexpected issue such as a system crash or an error in execution, it will automatically retry until it successfully completes. Unlike event handlers or schedulers, which execute code at predefined times but may fail to run if the system goes down at that moment, Sling Jobs persist their state. Once the system recovers, they resume execution, ensuring that the task is eventually completed. This built-in retry mechanism makes Sling Jobs highly robust for critical background processing tasks in AEM.</p>
@@ -385,8 +385,8 @@ public class PracticeScheduledTask implements Runnable {
                         </tr>
                     </table>
                 </div>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating a Sling Job in AEM</h2>
                 <h3>Step 1: Define a Job Consumer</h3>
                 <p>A JobConsumer <code>org.apache.sling.event.jobs.consumer.JobConsumer</code> listens for a specific job type and executes logic when a job is triggered. <code>JobConsumer</code> defines logic to process jobs when triggered.</p>
@@ -500,7 +500,7 @@ public void checkJobStatus(String jobId) {
                     <li>Navigate to <strong>OSGi Web Console</strong> (<code>/system/console/jobs</code>).</li>
                     <li>View job details, execution time, and status.</li>
                 </ul>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

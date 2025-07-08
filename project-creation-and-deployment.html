@@ -28,22 +28,22 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Project Creation & Deployment</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Prerequisites</h2>
                 <ul>
                     <li><strong>Apache Maven:</strong> Maven is used as the build tool for AEM projects. You can download and install Maven from <a href="https://maven.apache.org/download.cgi" target="_blank">here</a>.</li>
                     <li><strong>Node.js & npm:</strong> Node.js and npm (Node Package Manager) are required for managing front-end dependencies, bundling resources, and more. Download and install Node.js from <a href="https://nodejs.org/" target="_blank">here</a>.</li>
                     <li><strong>JDK 11:</strong> Make sure that Java Development Kit (JDK) 11 is installed on your system to support AEM's Java-based backend. You can install it from <a href="https://adoptium.net/" target="_blank">Adoptium</a>.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating a New AEM Project</h2>
                 <p>You can generate a new AEM project using Maven. AEM provides a pre-built Maven archetype that simplifies project setup. To create a new AEM project, run the following command:</p>
                 <pre>mvn -B org.apache.maven.plugins:maven-archetype-plugin:3.2.1:generate -D archetypeGroupId=com.adobe.aem -D archetypeArtifactId=aem-project-archetype -D archetypeVersion=39 -D appTitle="Training" -D appId="training" -D groupId="com.training.project" -D artifactId="training-project" -D package="com.training.project" -D version="0.0.1-SNAPSHOT" -D aemVersion="cloud" -D includeDispatcherConfig=n -D includeExamples=n</pre>
                 <p>Set <code>aemVersion=cloud</code> for AEM as a cloud service.</p>
                 <p>This will generate a basic project structure with Maven configuration and basic code to get started with AEM development.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Project Structure</h2>
                 <p>A typical AEM project follows a modular structure for organizing different components and layers of functionality. Below is a detailed breakdown of the project structure:</p>
                 <pre>
@@ -117,8 +117,8 @@
                     <li><strong>archetype:</strong> Provides the project archetype that helps developers start with a standard project template.</li>
                     <li><strong>LICENSE:</strong> Ensures that the project's legal terms are clear and enforceable.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Deploying Your Project Locally</h2>
                 <p>Once your AEM project is created, you can deploy it to your local AEM instance (either Author or Publish). Here are the steps to follow:</p>
                 <h4>How to build</h4>
@@ -154,8 +154,8 @@
                     <li>If deploying the ui.frontend module, check the browser’s developer tools for JavaScript and CSS resources loading correctly.</li>
                 </ul>
                 </p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h3>Working with Front-End Development</h3>
                 <p>In the <strong>ui.frontend</strong> module, you will be working with npm and Node.js to handle your project's client-side development. The package.json file is the key configuration file that contains all the front-end dependencies.</p>
                 <ul>
@@ -173,11 +173,11 @@
                     </li>
                 </ul>
                 <p>Once built, the front-end assets are automatically integrated into AEM's UI, and you can see the changes in the AEM instance live. You can also use AEM's dispatcher to improve performance by caching front-end resources.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Conclusion</h2>
-                <p>Now you have a fully functioning local AEM development setup! You’ve created a new AEM project using Maven, set up your project structure, deployed the project to your local AEM instance, and are ready to start building more sophisticated AEM applications. By following these steps, you ensure a smooth development workflow with a local environment that mirrors a production system.</p>
-            </div>
+                <p>Now you have a fully functioning local AEM development setup! You've created a new AEM project using Maven, set up your project structure, deployed the project to your local AEM instance, and are ready to start building more sophisticated AEM applications. By following these steps, you ensure a smooth development workflow with a local environment that mirrors a production system.</p>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

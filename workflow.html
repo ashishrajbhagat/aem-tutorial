@@ -28,7 +28,7 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Workflow</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Introduction to AEM Workflows</h2>
                 <p>A workflow in AEM is a series of steps that define a process for automating tasks and content management. These steps can include human tasks and system tasks. Workflows help in managing content lifecycles efficiently. Workflows streamline business processes such as content approval, asset management, and publishing by automating tasks and routing content through different stages of approval. Workflows help in ensuring that content is reviewed, approved, and published systematically, reducing errors and improving efficiency.</p>
                 <h4>Key Benefits:</h4>
@@ -41,8 +41,8 @@
                 </ul>
                 <h4>Types of workflows:</h4>
                 <p>AEM supports both basic workflows (like approval or publishing) and custom workflows, where businesses can define their own processes using workflow models, steps, and participants.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Workflow Consoles</h2>
                 <p>Workflow Consoles in Adobe Experience Manager (AEM) provide an interface for users to create, manage, and monitor workflows. These consoles help administrators and authors efficiently handle workflow-related tasks, such as starting workflows, tracking progress, and troubleshooting issues.</p>
                 <h3>Overview of Workflow Consoles</h3>
@@ -52,33 +52,38 @@
                 <ul>
                     <li><strong>Purpose:</strong> Create, modify, and manage workflow models.</li>
                     <li><strong>Access:</strong> <code>http://localhost:4502/libs/cq/workflow/admin/console/content/models.html</code></li>
+                    <li><strong>Storage Location:</strong> <code>/var/workflow/models</code> (runtime) and <code>/apps/your-project/workflow/models</code> (version-controlled in codebase)</li>
                 </ul>
                 <h4>2. Workflow Instances Console</h4>
                 <p>The Workflow Instances Console helps in monitoring running and completed workflow instances. It allows users to track progress, terminate workflows, or restart failed workflows.</p>
                 <ul>
                     <li><strong>Purpose:</strong> View and manage active and completed workflow instances.</li>
                     <li><strong>Access:</strong> <code>http://localhost:4502/libs/cq/workflow/admin/console/content/instances.html</code></li>
+                    <li><strong>Storage Location:</strong> <code>/var/workflow/instances</code></li>
                 </ul>
                 <h4>3. Workflow Launcher Console</h4>
                 <p>The Workflow Launcher Console defines rules for triggering workflows automatically based on specific events, such as content modifications or asset uploads.</p>
                 <ul>
                     <li><strong>Purpose:</strong> Configure automatic workflow triggers based on JCR events.</li>
                     <li><strong>Access:</strong> <code>http://localhost:4502/libs/cq/workflow/admin/console/content/launcher.html</code></li>
+                    <li><strong>Storage Location:</strong> <code>/conf/global/settings/workflow/launchers</code> (or <code>/conf/your-project/settings/workflow/launchers</code>)</li>
                 </ul>
                 <h4>4. Workflow Archive Console</h4>
                 <p>The Workflow Archive Console provides access to historical workflow instances. Users can review completed workflows for audit and compliance purposes.</p>
                 <ul>
                     <li><strong>Purpose:</strong> Review past workflow executions.</li>
                     <li><strong>Access:</strong> <code>http://localhost:4502/libs/cq/workflow/admin/console/content/archive.html</code></li>
+                    <li><strong>Storage Location:</strong> <code>/var/workflow/instances</code> (archived under this node)</li>
                 </ul>
                 <h4>5. Workflow Failure Console</h4>
                 <p>The Workflow Failure Console helps users to manage and monitor workflows that have failed. It provides tools to troubleshoot and resolve issues that may have caused workflows to fail.</p>
                 <ul>
                     <li><strong>Purpose:</strong> Identify and troubleshoot failed workflows.</li>
                     <li><strong>Access:</strong> <code>http://localhost:4502/libs/cq/workflow/admin/console/content/failures.html</code></li>
+                    <li><strong>Storage Location:</strong> <code>/var/workflow/instances</code> (failed workflows are retained here until resolved or archived)</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Workflow Steps</h2>
                 <p>Workflow Steps in Adobe Experience Manager (AEM) define the individual tasks or actions executed during the workflow process. Each step serves a distinct purpose, whether it's processing data, involving users, or controlling the workflow's flow.</p>
                 <h3>Types of Workflow Steps</h3>
@@ -131,8 +136,8 @@
                     <li><strong>Customization:</strong> Define the target step to jump to and the conditions under which the jump occurs.</li>
                     <li><strong>Access:</strong> Configured in the Workflow Model Editor, allowing flexible workflow routing.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating a Basic Workflow Model</h2>
                 <h4>Steps to create</h4>
                 <ul>
@@ -159,8 +164,8 @@
                     </li>
                     <li>Save and Activate the Workflow</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating a Custom Workflow Process</h2>
                 <p>A custom workflow process step allows developers to introduce custom logic into workflow models. This can be achieved by implementing the <code>WorkflowProcess</code> interface and overriding its <code>execute()</code> method.</p>
                 <h3>Steps to Create a Custom Workflow Process</h3>
@@ -246,8 +251,8 @@ LOG.info("Custom workflow step executed with payload: {}", payloadPath);</pre>
                     <li>Monitor the workflow execution from the <strong>Workflow Instances Console</strong>.</li>
                     <li>Check AEM logs for debug information.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Creating a Process Step using ECMA Script</h2>
                 <p>AEM allows the use of <strong>ECMA Scripts</strong> in workflows to add custom logic to process steps without needing Java development. This provides a lightweight alternative for modifying workflow behavior.</p>
                 <h3>1. Steps to Create a Process Step using ECMA Script</h3>
@@ -353,8 +358,8 @@ if (workflowData.getPayloadType() == "JCR_PATH") {
                     </table>
                 </div>
                 <p><strong>Note:</strong> For complex logic, it's recommended to use <strong>Java-based Workflow Process Steps</strong>.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Dynamic Participant Step</h2>
                 <p>The <strong>Dynamic Participant Step</strong> is a workflow step that dynamically assigns a participant (user or group) based on custom logic. Unlike the standard <strong>Participant Step</strong>, which assigns tasks to predefined users or groups, the Dynamic Participant Step determines the assignee at runtime.</p>
                 <h3>Steps to Create a Dynamic Participant Step</h3>
@@ -456,8 +461,8 @@ public class CustomDynamicParticipantStep implements ParticipantStepChooser {
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Ways to Trigger a Workflow Model in AEM</h2>
                 <p>In Adobe Experience Manager (AEM), workflows can be triggered in various ways to streamline processes. The main methods for triggering workflow models are through the Workflow Launcher, using the Workflow API, or manually via the AEM interface.</p>
                 <h3>Main Ways to Trigger a Workflow Model</h3>
@@ -482,8 +487,8 @@ public class CustomDynamicParticipantStep implements ParticipantStepChooser {
                     <li><strong>Customization:</strong> Users can choose which workflow model to execute and on which content.</li>
                     <li><strong>Access:</strong> Manually trigger workflows through the context menu in AEM's UI, such as in the Assets or Sites sections.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Using Workflow Launcher</h2>
                 <p>The Workflow Launcher monitors <strong>JCR node changes</strong> and automatically starts a workflow based on predefined rules. 
                     It listens for events like:
@@ -542,8 +547,8 @@ public class CustomDynamicParticipantStep implements ParticipantStepChooser {
                     <li>Processing assets automatically upon upload.</li>
                 </ul>
                 <p><strong>Note:</strong> Excessive use of Workflow Launchers can impact performance. Ensure they are only configured for necessary paths.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Using Workflow API</h2>
                 <p>The Workflow API allows workflows to be triggered through Java servlets, OSGi services, or scheduled jobs. The key interfaces involved are:</p>
                 <ul>
@@ -631,8 +636,8 @@ public class WorkflowTriggerServlet extends SlingAllMethodsServlet {
                     <li>Starting workflows from external integrations.</li>
                 </ul>
                 <p><strong>Note:</strong> Ensure the service user has the necessary permissions to execute workflows.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Manual Workflow Triggering</h2>
                 <p>Manual workflow triggering allows an AEM author, editor, or administrator to start a workflow on selected pages, assets, or resources directly from the AEM interface.</p>
                 <h3>Steps to Manually Start a Workflow</h3>
@@ -673,8 +678,8 @@ public class WorkflowTriggerServlet extends SlingAllMethodsServlet {
                     <li>Processing assets before making them available.</li>
                 </ul>
                 <p><strong>Note:</strong> Manual workflow triggering is ideal for scenarios where human intervention is required.</p>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Transient Workflows</h2>
                 <p>Adobe Experience Manager (AEM) provides an option to create <strong>Transient Workflows</strong>, which are workflows that do not create persistent history logs in the repository. 
                     These workflows improve performance by reducing storage consumption and are useful for lightweight processes that do not require tracking.
@@ -735,7 +740,7 @@ public class TransientWorkflowProcess implements WorkflowProcess {
                     <li>Debugging is more difficult without logs.</li>
                 </ul>
                 <p><strong>Note:</strong> Use transient workflows only when logging and history tracking are not required.</p>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

@@ -28,23 +28,23 @@
         <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
         <main class="content" id="content">
             <h1>Apache Felix (OSGi Framework)</h1>
-            <div class="card">
+            <section class="card">
                 <h2>Overview</h2>
                 <ul>
                     <li>Apache Felix is an open-source implementation of the OSGi (Open Services Gateway initiative) specification. OSGi is a framework for developing and deploying modular Java applications, where each module (bundle) can be installed, started, stopped, updated, or uninstalled dynamically (without stopping the system).</li>
                     <li>AEM uses Apache Felix as the core service management layer. It handles the lifecycle of bundles, services, and configurations, providing a modular and dynamic environment.</li>
                     <li>The author instance communicates with the JCR (Java Content Repository) to store and manage content.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Role in AEM</h2>
                 <ul>
                     <li><strong>Modularization: </strong>AEM uses Felix to break down its core functionality into modular bundles. This allows AEM to be extensible and configurable, where bundles can be added or removed depending on the requirements.</li>
                     <li><strong>Service Management: </strong>Felix manages the lifecycle of services that AEM uses, including content management, user management, and workflow services.</li>
                     <li><strong>Dynamic Updates: </strong>OSGi allows AEM to dynamically load and update bundles without restarting the system, providing better flexibility and scalability.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Key Benefits</h2>
                 <ul>
                     <li><strong>Modularity:</strong> Enables independent and reusable modules.</li>
@@ -53,8 +53,8 @@
                     <li><strong>Scalability: </strong>OSGi helps scale the application by allowing different services to run independently in different bundles.</li>
                     <li><strong>Decoupling: </strong>Helps keep services and components decoupled, leading to cleaner code and easier maintenance.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi Framework Basics</h2>
                 <p>The OSGi (Open Service Gateway initiative) framework is used for developing modular, dynamic, and service-oriented applications. It provides a dynamic component system for Java, enabling the creation of modular applications that can be easily extended or updated without restarting the entire system.</p>
                 <h3>Bundles: What They Are and How They Work</h3>
@@ -93,8 +93,8 @@ Import-Package: org.osgi.framework
 Export-Package: com.example.mybundle</pre>
                     </li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi Layered Model</h2>
                 <p>The OSGi framework is structured into several layers, each serving a distinct function:</p>
                 <ul>
@@ -105,8 +105,8 @@ Export-Package: com.example.mybundle</pre>
                     <li><strong>Security</strong> - An optional layer that extends the Java 2 security model, validating bundle signatures and enforcing access control to components.</li>
                     <li><strong>Execution Environment</strong> - The foundational layer where bundles are deployed, tailored to work with specific hardware or operating system configurations.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Bundle Lifecycle States</h2>
                 <p>The bundle lifecycle follows these distinct states:</p>
                 <ul>
@@ -117,24 +117,24 @@ Export-Package: com.example.mybundle</pre>
                     <li><strong>STOPPING</strong> - The bundle is in the process of stopping but has not yet completed the shutdown.</li>
                     <li><strong>UNINSTALLED</strong> - The bundle has been fully uninstalled, and no further operations can be performed on it.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Difference Between JAR and Bundle</h2>
                 <p>A JAR file is a compressed archive used to store Java classes and resources, while a bundle is a modular component used in the OSGi framework for dynamic loading and management of Java code.</p>
                 <ul>
                     <li><strong>JAR:</strong> A file format for packaging Java classes and resources into a single file for distribution and execution.</li>
                     <li><strong>Bundle:</strong> A modular unit, often used in OSGi, that contains Java code and resources but is managed dynamically by the OSGi runtime environment.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Difference Between Package and Bundle</h2>
                 <p>The main difference between a package and a bundle is that a package is typically a collection of items or components for a specific function, while a bundle is usually a combination of products or services offered together.</p>
                 <ul>
                     <li><strong>Package:</strong> A group of related items or files, often for software or product installation.</li>
                     <li><strong>Bundle:</strong> A set of items, often sold together at a discounted price or for convenience.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>What are artifactId, groupId, and version in a Bundle?</h2>
                 <p>In the context of bundles, <strong>groupId</strong>, <strong>artifactId</strong>, and <strong>version</strong> are key elements used to uniquely identify and manage dependencies in a project.</p>
                 <ul>
@@ -142,8 +142,8 @@ Export-Package: com.example.mybundle</pre>
                     <li><strong>artifactId:</strong> This is the name of the JAR without its version number. You can choose any name, as long as it’s lowercase and doesn’t include strange symbols. If it's a third-party artifact, you must use the exact name as it's distributed (e.g., `maven`, `commons-math`).</li>
                     <li><strong>version:</strong> This specifies the version of the artifact. You can choose any standard versioning scheme (e.g., `1.0`, `1.1`, `1.0.1`). Avoid using dates as they are often associated with nightly builds (SNAPSHOT). For third-party artifacts, use the version number as provided, even if it seems unconventional (e.g., `2.0`, `1.3.1`).</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi Services and Service Registry</h2>
                 <p>OSGi services provide a mechanism for modular components to interact with each other within the OSGi framework. These services are registered in the service registry, which acts as a directory of available services for consumption by other bundles.</p>
                 <h3>What are OSGi Services?</h3>
@@ -197,8 +197,8 @@ ServiceRegistration&lt;MyService&gt; registration = context.registerService(MySe
 // Handle service dependencies manually</pre>
                     </li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Apache Felix and AEM Integration</h2>
                 <p>Apache Felix is the OSGi container that powers AEM's dynamic module system. AEM relies on Apache Felix to manage its OSGi bundles, configurations, and services, enabling dynamic updates and modularization.</p>
                 <h3>Overview of How AEM Uses Apache Felix</h3>
@@ -223,8 +223,8 @@ ServiceRegistration&lt;MyService&gt; registration = context.registerService(MySe
                     <li>Configurations are stored in the JCR repository and can be accessed and modified from the Felix Web Console or via configuration files in AEM's file system.</li>
                     <li>Configuring OSGi components allows you to customize the behavior of AEM services, enabling a tailored experience based on project needs.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi Bundle Management in AEM</h2>
                 <p>Efficient OSGi bundle management is critical for maintaining a smooth and scalable AEM instance. This section focuses on the tools and best practices for managing bundles in AEM.</p>
                 <h3>Deploying Bundles in AEM Using the Web Console</h3>
@@ -247,8 +247,8 @@ ServiceRegistration&lt;MyService&gt; registration = context.registerService(MySe
                     <li><strong>Testing and Validation:</strong> Always test bundles in a development or staging environment before deploying to production. Ensure that bundles work as expected and that dependencies are correctly managed.</li>
                     <li><strong>Use OSGi Declarative Services:</strong> Leverage Declarative Services (DS) to manage service dependencies and simplify lifecycle management, rather than using programmatic service registration wherever possible.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Declarative Services (DS)</h2>
                 <p>Declarative Services (DS) is a key feature of OSGi that simplifies the creation and management of services in an OSGi-based application like AEM. DS reduces the need for manual service registration and management, enabling automatic dependency injection and lifecycle management.</p>
                 <h3>Introduction to Declarative Services</h3>
@@ -293,8 +293,8 @@ public class MyService {
                     <li><strong>Configuration:</strong> DS components can be configured through the OSGi Configuration Admin Service (CAS). This allows components to have configurable properties, which can be modified dynamically at runtime.</li>
                     <li>Configuration values can be injected into components using annotations like <code>@Designate</code>, which binds the component to a specific configuration.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Configuration Management in AEM using OSGi</h2>
                 <p>Configuration management in AEM is handled through the OSGi Configuration Admin Service (CAS), which allows you to define and manage the configuration of bundles and components at runtime.</p>
                 <h3>Configuration Admin Service (CAS)</h3>
@@ -331,8 +331,8 @@ public class MyService {
 }</pre>
                     </li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Event Handling in OSGi</h2>
                 <p>Event-driven development in AEM is based on the Event Admin Service (EAS), which allows components to publish and subscribe to events. This enables asynchronous communication and decouples the sender and receiver of events.</p>
                 <h3>Event Admin Service</h3>
@@ -369,8 +369,8 @@ public class MyEventListener implements EventHandler {
                     <li><strong>Event-Driven Development:</strong> By using the Event Admin Service, AEM can implement event-driven architecture, allowing components to react to changes dynamically. This is particularly useful for building scalable and responsive applications.</li>
                     <li>Events allow for decoupling components and enhancing system flexibility, making it easier to maintain and extend the application.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi Dependency Injection in AEM</h2>
                 <p>OSGi Dependency Injection (DI) allows components to automatically inject references to other services, easing the management of dependencies between components in AEM. This eliminates the need for manual service registration and lookup.</p>
                 <h3>Using OSGi Dependency Injection (OSGi DI)</h3>
@@ -402,8 +402,8 @@ public class MyComponent {
                     <li><strong>Service Lookup:</strong> In OSGi, services are registered in the service registry and can be looked up using either the programmatic approach (using <code>BundleContext.getService()</code>) or through DI annotations like <code>@Reference</code>.</li>
                     <li>When a component is activated, OSGi ensures that all referenced services are available, injecting them before the component’s <code>@Activate</code> method is called.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi and Sling</h2>
                 <p>Sling is a web framework built on top of Apache Jackrabbit, and it works seamlessly with OSGi in AEM. Sling components can be enhanced using OSGi services, allowing for efficient resource resolution and component management.</p>
                 <h3>Sling's Role in AEM and its Connection with OSGi</h3>
@@ -434,8 +434,8 @@ public class MySlingModel {
                     <li><strong>Resource Resolution:</strong> Sling uses OSGi-based services for resolving resources dynamically. It allows components to interact with AEM’s content repository in a flexible manner.</li>
                     <li>Through OSGi services, Sling models can retrieve, update, and manipulate content in the JCR (Java Content Repository), providing a smooth and integrated development environment.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi Console Management</h2>
                 <p>The Apache Felix Web Console provides a user interface for managing OSGi bundles and services in AEM. It allows administrators to configure, monitor, and troubleshoot the OSGi container without writing code.</p>
                 <h3>Using Apache Felix Web Console for OSGi Bundle Management</h3>
@@ -453,8 +453,8 @@ public class MySlingModel {
                     <li><strong>Viewing Bundle Information:</strong> The Felix Web Console allows you to see detailed information about each installed bundle, including its state (Active, Resolved, etc.), version, and dependencies.</li>
                     <li><strong>Logs:</strong> The console also offers a view of logs, which can help diagnose issues related to OSGi bundles or AEM itself. You can view the system logs or configure loggers for better visibility into the running application.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi Bundle Development</h2>
                 <p>OSGi bundles are essential for modular application development in AEM. Bundles allow you to package your functionality as components that can be installed, updated, and removed dynamically in AEM's OSGi container.</p>
                 <h3>Developing OSGi Bundles in AEM</h3>
@@ -477,8 +477,8 @@ public class MySlingModel {
                     <li><strong>Version Management:</strong> Use proper versioning for your bundles to avoid compatibility issues during updates.</li>
                     <li><strong>Leverage Declarative Services (DS):</strong> Prefer Declarative Services for component lifecycle management instead of manual lifecycle handling.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>OSGi and Security</h2>
                 <p>Security plays a vital role in OSGi-based applications in AEM. By ensuring that OSGi bundles are secure, you can protect your system from unauthorized access and ensure data privacy.</p>
                 <h3>Security Considerations for OSGi in AEM</h3>
@@ -496,8 +496,8 @@ public class MySlingModel {
                     <li><strong>Security Manager:</strong> OSGi uses a security manager to enforce security policies at runtime, ensuring that only trusted bundles can perform specific actions.</li>
                     <li><strong>Declarative Security:</strong> You can configure security settings declaratively, specifying which permissions and security policies to apply to each bundle through the <code>manifest.mf</code> or using Apache Felix security services.</li>
                 </ul>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Troubleshooting OSGi Bundles in AEM</h2>
                 <p>Dealing with issues related to OSGi bundles in AEM can be challenging. Troubleshooting involves identifying common issues, examining logs, and debugging bundles to ensure they are functioning as expected.</p>
                 <h3>Common Issues with OSGi in AEM</h3>
@@ -515,7 +515,7 @@ public class MySlingModel {
                     <li><strong>Log Levels:</strong> AEM’s logging system provides different log levels, such as DEBUG, INFO, WARN, and ERROR. Set the appropriate log level to capture detailed information during troubleshooting.</li>
                     <li><strong>Log Files:</strong> Review the AEM error logs located in the <code>logs</code> directory. Logs often contain useful information regarding bundle issues, missing dependencies, and other system failures.</li>
                 </ul>
-            </div>
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

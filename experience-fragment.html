@@ -28,7 +28,7 @@
 		<span class="hamburger" onclick="toggleMenu()">&#9776;</span>
 		<main class="content" id="content">
 			<h1>Experience Fragment</h1>
-			<div class="card">
+			<section class="card">
 				<h2>Introduction to Experience Fragments</h2>
 				<p>Experience Fragments (XFs) in AEM are reusable, standalone content blocks that include one or more components—such as banners, text, images, and CTAs—designed to deliver consistent and personalized experiences across multiple channels like websites, mobile apps, and third-party platforms. They are created using AEM templates and can include components like images, text, and buttons. These fragments can be exported to Adobe Target or used directly in AEM pages to maintain consistency and improve efficiency in content delivery.</p>
 				<h3>Use-cases and Importance in Content Reusability</h3>
@@ -45,8 +45,8 @@
 					<li>XF is visual and layout-driven; CF is data-centric and better for APIs</li>
 					<li>XF can include full experiences; CF typically holds raw, structured data like articles, product info, etc.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Experience Fragment Architecture</h2>
 				<p>Experience Fragments in AEM are built on top of standard AEM page templates but designed specifically to encapsulate reusable, channel-agnostic experiences. Their architecture supports structured management, reuse, and delivery of experiences across multiple channels with variations for personalization and localization.</p>
 				<h3>Experience Fragment Structure</h3>
@@ -70,8 +70,8 @@
 					<li>Each fragment under this path includes its own subfolders for variations and assets.</li>
 					<li>This centralized structure helps in consistent management and retrieval of XFs across AEM and external channels.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Creating Experience Fragments</h2>
 				<p>Creating Experience Fragments (XFs) in AEM is a straightforward process through the AEM Touch UI. You can select templates, add components, and manage multiple variations for delivering consistent and reusable experiences across channels.</p>
 				<h3>Creating XF via AEM UI</h3>
@@ -101,8 +101,8 @@
 					<li>Use layout containers to manage responsive design and structure.</li>
 					<li>Save and preview the XF to verify how it appears in different channels or layouts.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Using Experience Fragments in Pages</h2>
 				<p>Experience Fragments (XFs) can be embedded into regular AEM pages to promote content reusability, consistent branding, and easier maintenance. They allow authors to centrally manage experiences that can be reused across multiple pages or sites, with support for localization and variation.</p>
 				<h3>Embedding XF in AEM pages</h3>
@@ -129,8 +129,8 @@
 					<li>This supports content reuse across different markets and regions while allowing tailored messaging per locale.</li>
 					<li>Localization mappings are typically defined under <code>/content/experience-fragments/&lt;site&gt;/&lt;language&gt;</code>.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>XF and Personalization</h2>
 				<p>Experience Fragments (XFs) can be integrated with Adobe Target or other personalization engines to deliver dynamic, audience-specific experiences. With XF variations and targeting rules, marketers can serve the right content to the right audience across channels.</p>
 				<h3>Integration with Adobe Target</h3>
@@ -154,8 +154,8 @@
 					<li>The correct variation is shown dynamically based on targeting rules, improving engagement and conversion rates.</li>
 					<li>This approach supports scalable personalization without duplicating content structures across pages or templates.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Experience Fragment vs Content Fragment</h2>
 				<p>Experience Fragments (XFs) and Content Fragments (CFs) are both powerful content reuse tools in AEM, but they serve different purposes. Understanding their differences helps choose the right one for your use case.</p>
 				<h3>Key Differences</h3>
@@ -185,39 +185,8 @@
 						</ul>
 					</li>
 				</ul>
-			</div>
-			<div class="card">
-				<h2>Experience Fragment vs Content Fragment</h2>
-				<p>Experience Fragments (XFs) and Content Fragments (CFs) are reusable content types in AEM, but they serve different purposes. While XFs are layout-based and visually styled blocks of content, CFs are structured content meant for channel-agnostic delivery.</p>
-				<h3>Key Differences</h3>
-				<ul>
-					<li><strong>Experience Fragments:</strong> Include layout, components (e.g., text, images, buttons), and styles – used for visually styled content reuse.</li>
-					<li><strong>Content Fragments:</strong> Contain only structured content (text, fields) without layout – used for omnichannel or headless content delivery.</li>
-					<li>XFs can be authored using the page editor, while CFs are created and edited through structured content models.</li>
-					<li>XFs are typically used for marketing/presentation-driven reuse, whereas CFs are used for raw, structured data reuse across channels.</li>
-					<li>XFs support exporting to Adobe Target for personalization; CFs support GraphQL/JSON APIs for headless use cases.</li>
-				</ul>
-				<h3>When to Use What</h3>
-				<ul>
-					<li>
-						<strong>Use Experience Fragments:</strong>
-						<ul>
-							<li>To reuse a visual section with layout and design across multiple pages.</li>
-							<li>When targeting and personalization with Adobe Target are needed.</li>
-							<li>For content that needs to be previewed and authored in a WYSIWYG fashion.</li>
-						</ul>
-					</li>
-					<li>
-						<strong>Use Content Fragments:</strong>
-						<ul>
-							<li>To manage structured content that needs to be delivered via APIs to mobile apps or SPAs.</li>
-							<li>When layout is handled by the consuming application (headless architecture).</li>
-							<li>For dynamic content like news articles, FAQs, product descriptions, etc.</li>
-						</ul>
-					</li>
-				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Headless Use with Experience Fragments (XFs)</h2>
 				<p>Experience Fragments can be used in headless scenarios by exposing them as JSON through AEM’s Content Services. This allows structured and styled content to be consumed by external applications, SPAs, or mobile apps.</p>
 				<h3>How to Enable Headless Delivery</h3>
@@ -236,8 +205,8 @@
 					<li>Use content policies and templates to maintain consistency across reusable fragments.</li>
 					<li>Consider localization and personalization requirements for XF JSON consumers.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Best Practices for Experience Fragments</h2>
 				<p>Following best practices while working with Experience Fragments ensures scalable, reusable, and maintainable content across multiple channels. It helps teams to stay organized and aligned with AEM standards.</p>
 				<h3>Naming Conventions</h3>
@@ -258,8 +227,8 @@
 					<li>Design XFs with modular components to enable flexible content assembly.</li>
 					<li>Avoid duplicating content by reusing existing XFs and managing variations for different contexts.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Common Issues and Troubleshooting</h2>
 				<p>While working with Experience Fragments (XFs), developers may encounter rendering issues, configuration mistakes, or caching problems. Understanding these common pitfalls helps in faster debugging and smoother development.</p>
 				<h3>XF Not Rendering Correctly on Pages</h3>
@@ -280,8 +249,8 @@
 					<li>Flush dispatcher cache after XF updates to reflect changes immediately on the publish tier.</li>
 					<li>Ensure XF paths are not excluded or blocked by rewrite or filter rules in the dispatcher configuration.</li>
 				</ul>
-			</div>
-			<div class="card">
+			</section>
+			<section class="card">
 				<h2>Advanced Concepts</h2>
 				<p>Experience Fragments (XFs) offer advanced capabilities for modern content architectures, including editable templates, headless delivery, and programmatic creation to support dynamic, multi-channel experiences.</p>
 				<h3>Editable Templates Used in XF</h3>
@@ -302,7 +271,7 @@
 					<li>Programmatic creation helps in large-scale onboarding, automated migration, or batch updates of fragments.</li>
 					<li>Example: Using Sling APIs to create nodes of type <code>cq:Page</code> under <code>/content/experience-fragments</code> and setting necessary properties like template, structure, and variation metadata.</li>
 				</ul>
-			</div>
+			</section>
 			<script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
 		</main>
 		<script src="js/script.js"></script>
