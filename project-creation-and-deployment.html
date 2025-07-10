@@ -18,9 +18,10 @@
             <div class="logo">
                 <h2>AEM Tutorial</h2>
             </div>
-            <nav class="nav">
-                <ul class="nav-list" id="navList"></ul>
-            </nav>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
             <div class="footer">
                 <p>&copy; 2025 AEM Tutorial</p>
             </div>
@@ -151,9 +152,47 @@
                 <ul>
                     <li>Visit the AEM Author instance at <code>http://localhost:4502</code> to see if the project was deployed successfully.</li>
                     <li>Verify the content by creating a page and adding components to it.</li>
-                    <li>If deploying the ui.frontend module, check the browser’s developer tools for JavaScript and CSS resources loading correctly.</li>
+                    <li>If deploying the ui.frontend module, check the browser's developer tools for JavaScript and CSS resources loading correctly.</li>
                 </ul>
                 </p>
+            </section>
+            <section class="card">
+                <h2>Understanding <code>filter.xml</code> in AEM Projects</h2>
+                <p>Every AEM content package includes a file named <code>filter.xml</code> that defines the paths in the JCR repository the package affects during installation. This file is critical in controlling how content and configuration are installed, merged, or replaced on the target AEM instance.</p>
+                <h3>📍 Where to Find <code>filter.xml</code>?</h3>
+                <p>In a typical Maven-based AEM project, you will find <code>filter.xml</code> under the <code>ui.apps</code> or <code>ui.content</code> module, inside:</p>
+                <pre>ui.apps/src/main/content/META-INF/vault/filter.xml
+ui.content/src/main/content/META-INF/vault/filter.xml</pre>
+                <h3>🔍 Why Is <code>filter.xml</code> Needed?</h3>
+                <p>When you build a package using Maven or AEM Package Manager, <code>filter.xml</code> tells AEM which parts of the JCR repository should be included, and how the package content should be deployed. It helps:</p>
+                <ul>
+                    <li>Define the JCR paths to include (e.g., <code>/apps/myproject</code>, <code>/content/myproject</code>)</li>
+                    <li>Control the merge or overwrite behavior using <code>mode</code></li>
+                    <li>Avoid accidental overwrites of system or shared content</li>
+                </ul>
+                <h3>⚙️ The <code>mode</code> Attribute in <code>filter.xml</code></h3>
+                <p>You can add a <code>mode</code> attribute to any filter rule to define how AEM should handle the content at that path during installation.</p>
+                <h4>Supported Modes:</h4>
+                <ul>
+                    <li><strong>replace</strong>: Completely replaces existing nodes and their children under the path. Use with caution.</li>
+                    <li><strong>merge</strong>: (Default) Merges the package content with existing content without removing anything.</li>
+                    <li><strong>update</strong>: Updates existing nodes' properties but doesn't add or delete child nodes.</li>
+                    <li><strong>delete</strong>: Deletes the specified content path from the repository.</li>
+                </ul>
+                <h3>💡 Example <code>filter.xml</code> Usage</h3>
+                <pre>&lt;workspaceFilter version="1.0"&gt;
+    &lt;filter root="/apps/myproject" mode="merge"/&gt;
+    &lt;filter root="/content/myproject" mode="replace"/&gt;
+    &lt;filter root="/conf/myproject" mode="update"/&gt;
+&lt;/workspaceFilter&gt;</pre>
+                <h3>🚨 Best Practices</h3>
+                <ul>
+                    <li>Always be cautious when using <code>replace</code> — it deletes existing nodes before re-installing.</li>
+                    <li>Use <code>merge</code> or <code>update</code> in most environments to avoid data loss.</li>
+                    <li>Version control your filter.xml and test deployments in a lower environment before production.</li>
+                    <li>Break down large packages into separate content and config packages (ui.content, ui.apps) with clear filters.</li>
+                </ul>
+                <p><strong>Note:</strong> The behavior of <code>mode</code> is executed by the Apache Jackrabbit FileVault (VLT) mechanism which AEM uses under the hood for content packaging.</p>
             </section>
             <section class="card">
                 <h3>Working with Front-End Development</h3>

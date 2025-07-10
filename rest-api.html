@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - REST API Development</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>REST API Development</h1>
+            <section class="card">
+                <h2>Introduction to REST in AEM</h2>
+                <p>
+                    Adobe Experience Manager (AEM) is inherently RESTful, thanks to its underlying Sling framework. Sling maps HTTP request URLs to JCR nodes and resources, making it easy to access and manipulate content using standard HTTP methods like <code>GET</code>, <code>POST</code>, <code>PUT</code>, and <code>DELETE</code>.
+                </p>
+                <p><strong>Key Characteristics:</strong></p>
+                <ul>
+                    <li>URLs directly map to content nodes or resources in the JCR.</li>
+                    <li>Supports multiple content formats like <code>.json</code>, <code>.xml</code>, and <code>.html</code>.</li>
+                    <li>Custom servlets and resource types can extend REST capabilities further.</li>
+                </ul>
+                <p><strong>Use Cases:</strong></p>
+                <ul>
+                    <li>Expose site content to frontend apps (e.g., React, Angular, mobile apps).</li>
+                    <li>Create APIs for integrations with external systems.</li>
+                    <li>Perform content CRUD operations through secure endpoints.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Exposing Content via REST</h2>
+                <p>AEM allows you to access repository content in various formats using the built-in capabilities of Sling. You can directly retrieve JSON or XML representations of content by appending the correct extension to the URL.</p>
+                <p><strong>Common Extensions:</strong></p>
+                <ul>
+                    <li><code>.json</code> — Returns the JCR node and child hierarchy in JSON format.</li>
+                    <li><code>.xml</code> — Returns an XML representation of the node.</li>
+                    <li><code>.html</code> — Used for rendering components or pages via scripts.</li>
+                </ul>
+                <p><strong>Example:</strong></p>
+                <p>If you have a page at <code>/content/site/en/home</code>, you can access its JSON structure via:</p>
+                <pre>GET /content/site/en/home.model.json</pre>
+                <pre>GET /content/site/en/home.json</pre>
+                <p>This helps in debugging, understanding node structures, or consuming raw data in headless use cases.</p>
+                <p><strong>Note:</strong> If using AEM with editable templates and content policies, you may also see a <code>.model.json</code> endpoint available, especially when using Sling Model Exporter with SPA or headless approaches.</p>
+            </section>
+            <section class="card">
+                <h2>Creating Custom REST Endpoints</h2>
+                <p>In AEM, you can create custom RESTful endpoints using Sling Servlets. Depending on your use case, you can use:</p>
+                <ul>
+                    <li><strong>SlingSafeMethodsServlet</strong> — for <code>GET</code>, <code>HEAD</code> (non-modifying requests).</li>
+                    <li><strong>SlingAllMethodsServlet</strong> — for all HTTP methods, including <code>POST</code>, <code>PUT</code>, and <code>DELETE</code>.</li>
+                </ul>
+                <h3>Registering Servlets</h3>
+                <p>You can register servlets in two primary ways:</p>
+                <ul>
+                    <li><code>@SlingServletPaths</code> — Map the servlet to a specific path (e.g., <code>/bin/myapi</code>).</li>
+                    <li><code>@SlingServletResourceTypes</code> — Map the servlet to a resource type and selector.</li>
+                </ul>
+                <h4>Example: Servlet with @SlingServletPaths</h4>
+                <p>Below is an example servlet that responds to <code>GET</code> requests at <code>/bin/myapi</code>:</p>
+                <pre>
+// src/main/java/com/example/core/servlets/MyApiServlet.java
+
+package com.example.core.servlets;
+
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
+import org.osgi.service.component.annotations.Component;
+
+import javax.servlet.Servlet;
+import javax.servlet.ServletException;
+import java.io.IOException;
+
+@Component(service = Servlet.class,
+           property = {
+             "sling.servlet.paths=/bin/myapi",
+             "sling.servlet.methods=GET"
+           })
+public class MyApiServlet extends SlingSafeMethodsServlet {
+  @Override
+  protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
+      throws ServletException, IOException {
+    response.setContentType("application/json");
+    response.getWriter().write("{ \"message\": \"Hello from AEM REST API\" }");
+  }
+}</pre>
+                <p><strong>Note:</strong> For production, avoid exposing sensitive data via <code>/bin</code> or <code>/services</code> without authentication and proper filtering. Use resourceType-based servlets when possible for better modularity and security.</p>
+            </section>
+            <section class="card">
+                <h2>Handling POST, PUT, DELETE Methods</h2>
+                <p>AEM supports RESTful interactions using <code>POST</code>, <code>PUT</code>, and <code>DELETE</code> methods through custom Sling Servlets. These are useful for performing content updates, form submissions, or integrating with frontend frameworks.</p>
+                <h3>CSRF Protection</h3>
+                <p>AEM enforces Cross-Site Request Forgery (CSRF) protection for all modifying HTTP methods (POST, PUT, DELETE). You must include a valid CSRF token in requests.</p>
+                <ul>
+                    <li>Token path: <code>/libs/granite/csrf/token.json</code></li>
+                    <li>Add token to the request header: <code>CSRF-Token</code></li>
+                </ul>
+                <pre>CSRF-Token: fetch from /libs/granite/csrf/token.json</pre>
+                <h3>Handling Form Parameters</h3>
+                <p>Inside your servlet, you can extract parameters submitted from the frontend using standard methods:</p>
+                <pre>
+String name = request.getParameter("name");
+String email = request.getParameter("email");</pre>
+                <p>To process JSON payloads from a POST body:</p>
+                <pre>
+BufferedReader reader = request.getReader();
+StringBuilder sb = new StringBuilder();
+String line;
+while ((line = reader.readLine()) != null) {
+    sb.append(line);
+}
+String jsonBody = sb.toString();
+// Use Gson or Jackson to parse the JSON body</pre>
+                <h3>Responding with JSON</h3>
+                <p>You can return a JSON response from your servlet using the response writer:</p>
+                <pre>
+response.setContentType("application/json");
+response.getWriter().write("{ \"status\": \"success\", \"message\": \"Data saved\" }");</pre>
+                <p><strong>Tip:</strong> Always set the correct HTTP status codes (e.g., <code>200 OK</code>, <code>201 Created</code>, <code>400 Bad Request</code>, <code>500 Internal Server Error</code>) in your responses to follow REST best practices.</p>
+            </section>
+            <section class="card">
+                <h2>Securing REST APIs</h2>
+                <p>REST APIs in AEM should be secured to prevent unauthorized access, especially if exposing internal content or functionality. AEM provides several layers of protection through ACLs, token-based authentication, and request filtering.</p>
+                <h3>Access Control via ACLs</h3>
+                <p>AEM uses Access Control Lists (ACLs) to define who can access or modify content and services:</p>
+                <ul>
+                    <li>Assign read/write permissions at the JCR node level via CRXDE Lite or useradmin.</li>
+                    <li>Servlets registered via <code>@SlingServletResourceTypes</code> inherit permissions of the resource.</li>
+                    <li>Secure your servlet paths under content nodes with restricted access.</li>
+                </ul>
+                <h3>Token-Based Authentication</h3>
+                <p>For external API consumers, use token-based mechanisms such as:</p>
+                <ul>
+                    <li><strong>OAuth:</strong> AEM can integrate with Adobe IMS or third-party identity providers to issue access tokens.</li>
+                    <li><strong>Bearer Tokens:</strong> Custom filters can validate JWT or API tokens on incoming requests.</li>
+                    <li><strong>Basic Authentication:</strong> Can be used in protected author environments (not recommended for production APIs).</li>
+                </ul>
+                <pre>Authorization: Bearer &lt;your-token&gt;</pre>
+                <h3>Filtering Internal Endpoints</h3>
+                <p>Avoid exposing sensitive servlet paths (e.g., under <code>/bin</code>, <code>/libs</code>, <code>/apps</code>) publicly:</p>
+                <ul>
+                    <li>Use Dispatcher filters to block requests to internal paths.</li>
+                    <li>Whitelist only the necessary API endpoints in <code>dispatcher.any</code>:</li>
+                </ul>
+                <pre>
+/filter {
+  /0001 { /type "deny"  /url "/bin/*" }
+  /0002 { /type "allow" /url "/bin/public-api/*" }
+}</pre>
+                <p><strong>Best Practice:</strong> Always validate and sanitize inputs, use HTTPS, and implement authentication and authorization when exposing custom endpoints.</p>
+            </section>
+            <section class="card">
+                <h2>Consuming External REST APIs</h2>
+                <p>AEM can act as a consumer of third-party REST APIs using built-in support for HTTP clients through OSGi services and standard Java libraries. This is commonly used for integrations such as fetching data from external systems, headless search services, or sending user submissions.</p>
+                <h3>Using Apache HttpClient (Recommended)</h3>
+                <p>Apache HttpClient is commonly used in AEM for making HTTP requests. It offers fine-grained control over headers, authentication, and retries.</p>
+                <pre>
+@Reference
+private HttpClientBuilderFactory httpClientBuilderFactory;
+
+public String callExternalApi(String url) {
+    HttpClient client = httpClientBuilderFactory.newBuilder().build();
+    HttpGet get = new HttpGet(url);
+    try (CloseableHttpResponse response = client.execute(get)) {
+        return EntityUtils.toString(response.getEntity());
+    } catch (IOException e) {
+        // Handle errors or log
+    }
+    return null;
+}</pre>
+                <h3>Using OSGi HTTP Services (Apache Commons HttpComponents)</h3>
+                <p>You can also use Apache Commons HTTP within an OSGi service for loosely coupled integration:</p>
+                <ul>
+                    <li>Use <code>HttpClientBuilderFactory</code> for compatibility with AEM's OSGi container.</li>
+                    <li>Bundle dependencies using <code>bnd-maven-plugin</code> or include via <code>core/pom.xml</code>.</li>
+                </ul>
+                <h3>Handling Timeouts and Retries</h3>
+                <p>Always configure proper timeouts to avoid blocking AEM threads. Also implement retries where transient failures may occur.</p>
+                <pre>
+RequestConfig config = RequestConfig.custom()
+    .setConnectTimeout(5000)
+    .setSocketTimeout(5000)
+    .build();
+HttpClient client = HttpClients.custom()
+    .setDefaultRequestConfig(config)
+    .build();</pre>
+                <p><strong>Best Practice:</strong> Avoid synchronous API calls in authoring or page rendering. Instead, use background jobs or prefetch/cache the data during publish time if possible.</p>
+            </section>
+            <section class="card">
+                <h2>Creating Custom REST Endpoints in AEM</h2>
+                <p>AEM allows you to create custom REST-style endpoints using Sling Servlets. You can register servlets by path or resource type to expose data or operations to external systems or frontend apps.</p>
+                <h3>Using Sling Servlets</h3>
+                <p>Create a servlet using OSGi annotations to define the endpoint, HTTP methods, and response types.</p>
+                <pre>
+@Component(service = Servlet.class)
+@SlingServletPaths("/bin/myapp/customapi")
+@SlingServletMethods("GET")
+public class MyCustomApiServlet extends SlingSafeMethodsServlet {
+
+    @Override
+    protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
+        throws ServletException, IOException {
+
+        response.setContentType("application/json");
+        response.getWriter().write("{\"message\": \"Hello from AEM!\"}");
+    }
+}</pre>
+                <p><strong>Endpoint URL:</strong> <code>/bin/myapp/customapi</code></p>
+                <h3>Using Resource Type Servlets</h3>
+                <p>Servlets can also be registered for a specific resource type. This is useful for extending components with backend APIs.</p>
+                <pre>
+@Component(service = Servlet.class)
+@SlingServletResourceTypes(
+    resourceTypes = "myproject/components/custom",
+    methods = HttpConstants.METHOD_GET,
+    extensions = "json"
+)
+public class CustomComponentApiServlet extends SlingSafeMethodsServlet {
+    @Override
+    protected void doGet(SlingHttpServletRequest request, SlingHttpServletResponse response)
+        throws ServletException, IOException {
+        
+        response.setContentType("application/json");
+        response.getWriter().write("{\"status\": \"Component data returned\"}");
+    }
+}</pre>
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Use <code>/bin</code> for system APIs and custom paths for REST interfaces.</li>
+                    <li>Avoid exposing internal JCR structure directly. Use DTOs or custom response objects.</li>
+                    <li>Secure endpoints with ACLs and CSRF protection.</li>
+                    <li>Consider rate-limiting and token validation for public APIs.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Sling Models Exporter vs Custom REST APIs</h2>
+                <h3>Headless API vs REST API in AEM</h3>
+                <p>
+                    Adobe Experience Manager provides two major approaches to exposing data to external systems or frontend frameworks:
+                </p>
+                <ul>
+                    <li><strong>Headless API (Sling Model Exporter, GraphQL):</strong> Focused on content delivery, typically for SPAs, mobile apps, and frontend frameworks.</li>
+                    <li><strong>Custom REST APIs:</strong> Used for exposing custom services, logic, or non-content-based data, often consumed by backend systems or admin tools.</li>
+                </ul>
+                <h3>Key Differences</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Sling Model Exporter</th>
+                                <th>Custom REST APIs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Use Case</td>
+                                <td>Deliver AEM-authored content as JSON (headless)</td>
+                                <td>Expose custom business logic, operations, or integrations</td>
+                            </tr>
+                            <tr>
+                                <td>Data Source</td>
+                                <td>JCR Content bound to components</td>
+                                <td>Anything (JCR, external APIs, DB, services)</td>
+                            </tr>
+                            <tr>
+                                <td>Implementation</td>
+                                <td><code>@Model</code> + <code>@Exporter</code> annotations</td>
+                                <td>SlingServlet or JAX-RS servlet endpoints</td>
+                            </tr>
+                            <tr>
+                                <td>Response Format</td>
+                                <td>Structured JSON (via model.json or GraphQL)</td>
+                                <td>Custom JSON/XML/text based on logic</td>
+                            </tr>
+                            <tr>
+                                <td>Security</td>
+                                <td>Handled via ACLs, dispatcher filters</td>
+                                <td>Requires token/session/CORS management</td>
+                            </tr>
+                            <tr>
+                                <td>Frontend Usage</td>
+                                <td>React, Angular, Vue (via SPA Editor or GraphQL)</td>
+                                <td>Admin dashboards, backend integrations</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>When to Use Which?</h3>
+                <ul>
+                    <li><strong>Use Sling Model Exporter:</strong> When building SPAs, headless apps, or structured content delivery using <code>.model.json</code> or GraphQL</li>
+                    <li><strong>Use Custom REST APIs:</strong> When your requirement involves non-content data, workflows, jobs, or dynamic logic (e.g. POST operations, validation services)</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Best Practices for REST APIs in AEM</h2>
+                <p>When designing and exposing REST APIs in Adobe Experience Manager, it's important to follow key best practices for security, performance, and maintainability:</p>
+                <h3>✔️ Follow RESTful Standards</h3>
+                <ul>
+                    <li>Use proper HTTP verbs: <code>GET</code> for retrieval, <code>POST</code> for creation, <code>PUT</code> for update, and <code>DELETE</code> for deletion.</li>
+                    <li>Use clear and meaningful resource paths: <code>/api/products/123</code> instead of <code>/getProductDetails</code>.</li>
+                    <li>Support appropriate response codes: <code>200</code>, <code>201</code>, <code>400</code>, <code>401</code>, <code>404</code>, <code>500</code>, etc.</li>
+                </ul>
+                <h3>🔐 Secure Your APIs</h3>
+                <ul>
+                    <li>Enforce authentication and authorization using ACLs or token-based access (JWT/OAuth).</li>
+                    <li>Block access to internal endpoints (e.g., <code>/libs</code>, <code>/bin</code>) via dispatcher filters.</li>
+                    <li>Use CORS policies for cross-domain calls and avoid exposing sensitive data.</li>
+                </ul>
+                <h3>🧱 Structure and Modularize</h3>
+                <ul>
+                    <li>Use separate classes for data handling, validation, and business logic.</li>
+                    <li>Organize APIs under a common namespace (e.g., <code>/api/v1/</code>) to allow versioning.</li>
+                    <li>Return consistent JSON structures with meaningful error messages.</li>
+                </ul>
+                <h3>🚀 Performance Optimization</h3>
+                <ul>
+                    <li>Use caching headers (e.g., <code>Cache-Control</code>) when appropriate for GET requests.</li>
+                    <li>Use pagination or query limits for large data responses.</li>
+                    <li>Minimize internal JCR queries and avoid deep traversal in large hierarchies.</li>
+                </ul>
+                <h3>🧪 Testing and Documentation</h3>
+                <ul>
+                    <li>Use tools like Postman, Swagger (OpenAPI), or REST Assured for API testing.</li>
+                    <li>Document your APIs with usage examples and parameter descriptions.</li>
+                    <li>Consider generating OpenAPI docs for teams consuming the APIs.</li>
+                </ul>
+                <p>By following these practices, you ensure that your AEM REST APIs are secure, scalable, and maintainable in both internal and external integrations.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

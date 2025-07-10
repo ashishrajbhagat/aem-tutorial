@@ -18,9 +18,10 @@
             <div class="logo">
                 <h2>AEM Tutorial</h2>
             </div>
-            <nav class="nav">
-                <ul class="nav-list" id="navList"></ul>
-            </nav>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
             <div class="footer">
                 <p>&copy; 2025 AEM Tutorial</p>
             </div>
@@ -328,6 +329,62 @@ public void useResourceAPI() {
                         </tr>
                     </table>
                 </div>
+            </section>
+            <section class="card">
+                <h2>Custom JCR Node Handling using Java</h2>
+                <p>In AEM, the Java Content Repository (JCR) is at the heart of how content is stored and accessed. You can interact with JCR programmatically using the <code>javax.jcr</code> API. This is useful for automating tasks, writing migration scripts, or building admin tools.</p>
+                <h3>Basic Operations</h3>
+                <p>Common node operations you can perform via Java:</p>
+                <ul>
+                    <li>Creating new nodes and setting properties</li>
+                    <li>Reading content from existing nodes</li>
+                    <li>Updating node properties</li>
+                    <li>Deleting nodes safely</li>
+                </ul>
+                <h3>Getting JCR Session</h3>
+                <p>To interact with the JCR, use a <code>ResourceResolver</code> to adapt to a <code>Session</code>:</p>
+                <pre>
+@Reference
+private ResourceResolverFactory resolverFactory;
+
+public void writeToJcr() {
+    Map&lt;String, Object&gt; authInfo = new HashMap&lt;&gt;();
+    authInfo.put(ResourceResolverFactory.SUBSERVICE, "writeService");
+
+    try (ResourceResolver resolver = resolverFactory.getServiceResourceResolver(authInfo)) {
+        Session session = resolver.adaptTo(Session.class);
+
+        if (!session.nodeExists("/content/mysite/data")) {
+            Node rootNode = session.getNode("/content/mysite");
+            Node dataNode = rootNode.addNode("data", "nt:unstructured");
+            dataNode.setProperty("title", "New Node Title");
+            session.save(); // persist changes
+        }
+
+    } catch (LoginException | RepositoryException e) {
+        // handle exception
+    }
+}</pre>
+                <h3>Service User Mapping</h3>
+                <p>Always use a system service user (via <code>subservice</code>) to avoid security issues. Example:</p>
+                <pre>
+/apps/myproject/system/rep:policy
+/system/console/configMgr -> Apache Sling Service User Mapper Service
+Service Mapping: myproject.core:writeService=user-writer</pre>
+                <h3>Important Notes</h3>
+                <ul>
+                    <li>Use <strong>nt:unstructured</strong> nodes for flexibility, or specific node types like <code>cq:Page</code> where applicable.</li>
+                    <li>Always check if a node exists before creating or deleting to avoid exceptions.</li>
+                    <li>Call <code>session.save()</code> only when all operations are complete to reduce overhead.</li>
+                    <li>Never use <code>admin</code> session in production environments.</li>
+                </ul>
+                <h3>Use Cases</h3>
+                <ul>
+                    <li>Content migration scripts during deployment</li>
+                    <li>Bulk node creation or cleanup tasks</li>
+                    <li>Automated tag or asset structure generation</li>
+                    <li>Integration with external systems to push/pull content</li>
+                </ul>
             </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>

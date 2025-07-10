@@ -18,9 +18,10 @@
             <div class="logo">
                 <h2>AEM Tutorial</h2>
             </div>
-            <nav class="nav">
-                <ul class="nav-list" id="navList"></ul>
-            </nav>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
             <div class="footer">
                 <p>&copy; 2025 AEM Tutorial</p>
             </div>
@@ -29,10 +30,345 @@
         <main class="content" id="content">
             <h1>Replication</h1>
             <section class="card">
-                <h2></h2>
+                <h2>Introduction to Replication in AEM</h2>
+                <p>Replication in Adobe Experience Manager (AEM) refers to the process of transferring content and configurations between different AEM environments—most commonly from the <strong>Author</strong> instance to the <strong>Publish</strong> instance.</p>
+                <h3>What is Replication?</h3>
+                <p>Replication is the mechanism that enables authors to publish, update, or delete content on the public-facing site. It ensures content authored and reviewed in the Author environment is reflected live on the Publish environment.</p>
+                <h3>Purpose of Replication</h3>
+                <ul>
+                    <li>Sync updated or newly created pages, assets, and configurations to the Publish tier.</li>
+                    <li>Unpublish or delete content from the live site when necessary.</li>
+                    <li>In some use cases, sync content <em>back</em> from Publish to Author (via <strong>Reverse Replication</strong>).</li>
+                </ul>
+                <h3>Replication in AEM Architecture</h3>
+                <p>In a typical AEM setup, content flows as follows:</p>
+                <ul>
+                    <li><strong>Author → Publish:</strong> Authors create and activate content using the AEM UI. Replication agents send the content to the Publish instance.</li>
+                    <li><strong>Publish → Dispatcher → End-User:</strong> The Publish instance serves content, and Dispatcher acts as a caching and security layer.</li>
+                    <li><strong>Optional (Reverse):</strong> Some data (e.g., form submissions) may travel from Publish to Author for processing or storage.</li>
+                </ul>
+                <p>Replication is a foundational part of AEM's <strong>content delivery pipeline</strong> and critical to maintaining a seamless author-to-publish workflow.</p>
+            </section>
+            <section class="card">
+                <h2>Types of Replication</h2>
+                <p>AEM supports multiple types of replication depending on the content flow and architecture needs. Here's a breakdown of common replication types:</p>
+                <h3>Standard (Forward) Replication</h3>
+                <ul>
+                    <li>Primary form of replication: content is activated (published) from <strong>Author</strong> to <strong>Publish</strong>.</li>
+                    <li>Used for websites, assets, experience fragments, etc.</li>
+                </ul>
+                <h3>Reverse Replication (rare use)</h3>
+                <ul>
+                    <li>Data is replicated <strong>from Publish back to Author</strong>.</li>
+                    <li>
+                        Used in specific scenarios such as:
+                        <ul>
+                            <li>Syncing form submissions (user-generated content)</li>
+                            <li>Capturing survey or feedback data</li>
+                            <li>Clustered author setups needing data consistency from edge publish tiers</li>
+                        </ul>
+                    </li>
+                    <li>Configured using <strong>reverse replication agents</strong> on the <strong>Publish instance</strong>.</li>
+                    <li>Data usually written to <code>/var/replication/outbox</code> on publish, then pulled to Author.</li>
+                    <li><strong>Note:</strong> Reverse replication is deprecated in AEM as a Cloud Service.</li>
+                </ul>
+                <h3>Flush Replication</h3>
+                <ul>
+                    <li>Triggers a cache flush or invalidation on the Dispatcher after content is published or unpublished.</li>
+                    <li>Ensures updated content is delivered to site visitors without stale caching.</li>
+                </ul>
+                <h3>Static Agent Replication</h3>
+                <ul>
+                    <li>Used to replicate content to a static file system (e.g., flat file export).</li>
+                    <li>Useful for edge cases like PDF generation, external file ingestion, or third-party systems.</li>
+                </ul>
+                <h3>Tree Activation</h3>
+                <ul>
+                    <li>Allows activation/deactivation of an entire subtree of content.</li>
+                    <li>Accessible via Tools → Deployment → Activate Tree in Touch UI.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>How Replication Works (Behind the Scenes)</h2>
+                <p>Replication in AEM is not just a UI action—it involves several internal steps that ensure content is safely and efficiently moved from the Author instance to the Publish instance. Here's what happens under the hood when you activate a page or asset:</p>
+                <h3>Step-by-Step Flow</h3>
+                <ol>
+                    <li><strong>Author makes a change:</strong> A content author edits or creates a page/asset and selects “Activate” or “Publish.”</li>
+                    <li><strong>Replication queue is updated:</strong> AEM creates a replication job and adds it to the <em>replication queue</em>.</li>
+                    <li><strong>Content is sent via HTTP:</strong> The Replication Agent initiates an HTTP POST request to the target Publish instance.</li>
+                    <li><strong>Replication Receiver accepts the request:</strong> The Publish instance receives the payload through its servlet at <code>/bin/receive</code>.</li>
+                    <li><strong>Content is written to JCR:</strong> The content is persisted into the JCR repository at the correct location, making it available to end users.</li>
+                </ol>
+                <h3>Internal Mechanics</h3>
+                <ul>
+                    <li>Transport protocol used: <strong>HTTP or HTTPS</strong></li>
+                    <li>Payload types: Pages, assets, configurations, metadata</li>
+                    <li>Jobs are handled asynchronously and retried if the Publish instance is unreachable</li>
+                </ul>
+                <h3>Visual Flow</h3>
+                <p>The diagram below shows how replication flows in a typical Author → Publish setup:</p>
+                <svg width="100%" height="120" viewBox="0 0 900 120" xmlns="http://www.w3.org/2000/svg" style="margin-top: 1rem; margin-bottom: 1rem;">
+                    <rect x="10" y="30" width="130" height="60" fill="#f3f4f6" stroke="#333" rx="8"/>
+                    <rect x="170" y="30" width="180" height="60" fill="#e0f2fe" stroke="#333" rx="8"/>
+                    <rect x="380" y="30" width="90" height="60" fill="#fef3c7" stroke="#333" rx="8"/>
+                    <rect x="490" y="30" width="160" height="60" fill="#d1fae5" stroke="#333" rx="8"/>
+                    <rect x="670" y="30" width="180" height="60" fill="#ede9fe" stroke="#333" rx="8"/>
+                    <text x="30" y="65" font-size="14" fill="#111">Author</text>
+                    <text x="195" y="65" font-size="14" fill="#111">Replication Agent</text>
+                    <text x="400" y="65" font-size="14" fill="#111">HTTP</text>
+                    <text x="510" y="65" font-size="14" fill="#111">Publish Receiver</text>
+                    <text x="695" y="65" font-size="14" fill="#111">Content Node Created</text>
+                    <line x1="140" y1="60" x2="170" y2="60" stroke="#111" stroke-width="2" marker-end="url(#arrow)"/>
+                    <line x1="350" y1="60" x2="380" y2="60" stroke="#111" stroke-width="2" marker-end="url(#arrow)"/>
+                    <line x1="470" y1="60" x2="490" y2="60" stroke="#111" stroke-width="2" marker-end="url(#arrow)"/>
+                    <line x1="650" y1="60" x2="670" y2="60" stroke="#111" stroke-width="2" marker-end="url(#arrow)"/>
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L9,3 z" fill="#111"/>
+                        </marker>
+                    </defs>
+                </svg>
+                <pre>
+Author Instance
+   ↓
+[Replication Agent]
+   ↓  (HTTP POST)
+Publish Instance
+   ↓
+[Replication Receiver]
+   ↓
+JCR Node Created
+  </pre>
+                <p>This flow ensures a reliable and secure way to keep the live site in sync with the authored content.</p>
+            </section>
+            <section class="card">
+                <h2>Replication Agents</h2>
+                <p>Replication agents are the core components in AEM that handle the actual process of transferring content from the Author instance to the Publish instance (or other destinations like the Dispatcher or file systems).</p>
+                <h3>What is a Replication Agent?</h3>
+                <p>A replication agent defines the destination and transport method for replicated content. Each agent is responsible for delivering content to a specific endpoint, such as a Publish instance or Dispatcher cache.</p>
+                <h3>Where to Configure Replication Agents</h3>
+                <ul>
+                    <li>Access via: <code>http://localhost:4502/etc/replication/agents.author.html</code></li>
+                    <li>
+                        Agents can be configured under Author or Publish depending on direction:
+                        <ul>
+                            <li><strong>Author:</strong> Forward replication (to publish)</li>
+                            <li><strong>Publish:</strong> Reverse replication or cache flushing</li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Common Agent Types</h3>
+                <ul>
+                    <li><strong>Default Replication Agent:</strong> Pushes content from Author to Publish (e.g., <code>http://localhost:4503</code>)</li>
+                    <li><strong>Dispatcher Flush Agent:</strong> Triggers cache invalidation in the Dispatcher after content is activated</li>
+                    <li><strong>Static Agent:</strong> Writes content to a static location on the file system or external directory</li>
+                    <li><strong>Reverse Replication Agent:</strong> (on Publish) Sends user-generated content (e.g., form data) back to Author (deprecated in AEMaaCS)</li>
+                </ul>
+                <h3>Agent Configuration Options</h3>
+                <ul>
+                    <li><strong>Name:</strong> Identifier for the agent</li>
+                    <li><strong>Transport URI:</strong> Destination URL (e.g., <code>http://localhost:4503/bin/receive</code>)</li>
+                    <li><strong>Credentials:</strong> Username and password for the target AEM instance</li>
+                    <li><strong>Triggers:</strong> Auto-triggered on content activation or deactivation</li>
+                    <li><strong>Filters:</strong> Path filters to control what gets replicated</li>
+                    <li><strong>Logging:</strong> Log level and output file for replication activity</li>
+                </ul>
+                <p>📌 <em>Tip:</em> You can disable or pause a replication agent to stop replication temporarily during testing or deployments.</p>
+            </section>
+            <section class="card">
+                <h2>Transport Configuration</h2>
+                <p>The transport configuration defines how AEM sends the content to the target instance. This is an essential part of setting up a replication agent.</p>
+                <h3>Transport URI</h3>
+                <ul>
+                    <li>Specifies the endpoint that receives the replicated content.</li>
+                    <li>Common example: <code>http://localhost:4503/bin/receive</code> (default receiver servlet on Publish)</li>
+                    <li>Can also point to external systems, static servers, or other environments.</li>
+                </ul>
+                <h3>Credentials</h3>
+                <ul>
+                    <li>Username and password for authentication with the target AEM instance.</li>
+                    <li>Ensure that the user on the target instance has sufficient permissions (usually <code>replication</code> group).</li>
+                </ul>
+                <h3>SSL Usage</h3>
+                <ul>
+                    <li>It is highly recommended to use <strong>HTTPS</strong> for secure replication.</li>
+                    <li>Ensure SSL certificates are valid and trusted by the source AEM instance.</li>
+                    <li>Update the transport URI to <code>https://</code> if SSL is enabled on the target side.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Replication Queues</h2>
+                <p>Each replication agent maintains a queue of replication jobs, which track the status of content activation or deactivation requests.</p>
+                <h3>Queue Status</h3>
+                <ul>
+                    <li><strong>Queued:</strong> Waiting to be sent.</li>
+                    <li><strong>Delivered:</strong> Successfully replicated to the target.</li>
+                    <li><strong>Failed:</strong> Attempt failed (due to network issues, authentication problems, or unresponsive targets).</li>
+                </ul>
+                <h3>Viewing and Managing Queues</h3>
+                <ul>
+                    <li>Access queue status via: <code>/etc/replication/agents.author.html</code></li>
+                    <li>Click on a specific agent to view its queue and log.</li>
+                    <li>Failed jobs can be retried manually from the agent interface.</li>
+                </ul>
+                <h3>Automatic Retry and Purging</h3>
+                <ul>
+                    <li>AEM will automatically retry failed jobs based on agent settings.</li>
+                    <li>Administrators can purge stuck or old items from the queue manually.</li>
+                    <li>Long queues may indicate an issue with the replication target or network.</li>
+                </ul>
+                <p>📌 <em>Tip:</em> Keep an eye on replication logs and queues, especially during deployments or heavy authoring activity.</p>
+            </section>
+            <section class="card">
+                <h2>Manual vs Automatic Replication</h2>
+                <p>Replication in AEM can be triggered manually by users or automatically through workflows or backend logic.</p>
+                <h3>Manual Replication</h3>
+                <ul>
+                    <li>Authors can use the <strong>Page Editor</strong> or <strong>Sites console</strong> to activate (publish) or deactivate (unpublish) content.</li>
+                    <li>Classic UI (older versions) allowed use of the <strong>Sidekick</strong> for replication actions.</li>
+                    <li>Requires appropriate permissions (usually <code>replicate</code> on the content path).</li>
+                </ul>
+                <h3>Automatic Replication</h3>
+                <ul>
+                    <li>Can be triggered as part of a workflow (e.g., after content approval).</li>
+                    <li>Useful for publishing assets after DAM processing or metadata enrichment.</li>
+                    <li>Custom event listeners or schedulers can trigger replication based on business rules.</li>
+                    <li>Supports programmatic control via Java APIs (see next section).</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Programmatic Replication (Java API)</h2>
+                <p>Developers can trigger replication through code using AEM's backend APIs. This is commonly done in workflow steps, servlets, or scheduled jobs.</p>
+                <h3>Key APIs</h3>
+                <ul>
+                    <li><code>Replicator</code> - Primary service for activating/deactivating content.</li>
+                    <li><code>ReplicationService</code> - Advanced control over replication actions.</li>
+                    <li><code>AgentManager</code> - Access and manage replication agents.</li>
+                </ul>
+                <h3>Example: Triggering Replication</h3>
+                <pre>
+// Inject the Replicator service
+@Reference
+private Replicator replicator;
+
+replicator.replicate(session, ReplicationActionType.ACTIVATE, "/content/mysite");</pre>
+                <h3>Use Cases</h3>
+                <ul>
+                    <li>Replicating content at the end of an approval workflow.</li>
+                    <li>Publishing specific paths after a scheduled job or external trigger.</li>
+                    <li>Cleaning up old content programmatically and replicating changes.</li>
+                </ul>
+                <h3>Permissions Required</h3>
+                <ul>
+                    <li>The user associated with the session must have <strong>replication rights</strong> on the target path.</li>
+                    <li>Without proper permissions, the replication will fail or be ignored silently.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Dispatcher Cache Invalidation</h2>
+                <p>Once content is replicated from the Author to the Publish instance, AEM uses the Dispatcher to cache pages and assets for performance. However, to ensure visitors see the latest content, the Dispatcher cache must be invalidated.</p>
+                <h3>What Happens After Publishing?</h3>
+                <ul>
+                    <li>Content is replicated to the Publish instance.</li>
+                    <li>A <strong>Dispatcher Flush Agent</strong> triggers an HTTP request to invalidate cached content on the Dispatcher.</li>
+                    <li>The cache is cleared (or marked stale), forcing new content to be fetched on the next request.</li>
+                </ul>
+                <h3>Dispatcher Flush Agent</h3>
+                <ul>
+                    <li>Special replication agent configured on the Author or Publish instance.</li>
+                    <li>Points to the Dispatcher's flush servlet endpoint (e.g., <code>/dispatcher/invalidate.cache</code>).</li>
+                    <li>May be customized to flush only specific paths or resource types.</li>
+                </ul>
+                <h3>Dispatcher Rules</h3>
+                <ul>
+                    <li><strong>/invalidate:</strong> Marks files as stale instead of deleting them.</li>
+                    <li><strong>/statfileslevel:</strong> Defines how deep cache invalidation markers (stat files) are placed.</li>
+                    <li><strong>/allow:</strong> Controls which requests are permitted to trigger a flush.</li>
+                </ul>
+                <h3>Best Practices for Cache Flushing</h3>
+                <ul>
+                    <li>Use <strong>statfileslevel</strong> to limit the scope of invalidation.</li>
+                    <li>Avoid full cache flushes—prefer selective path-based invalidation.</li>
+                    <li>Ensure the flush agent is secure (authenticated and IP-restricted).</li>
+                    <li>Do not expose the flush servlet directly to public internet traffic.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Replication Permissions</h2>
+                <p>Not all users are allowed to replicate content. AEM controls replication permissions using standard ACLs (Access Control Lists).</p>
+                <h3>Who Can Replicate?</h3>
+                <ul>
+                    <li>Users must belong to a group with <strong>replication privileges</strong>, such as the built-in <code>replication</code> group.</li>
+                    <li>Alternatively, individual users can be granted <code>replicate</code> permissions on specific content paths.</li>
+                </ul>
+                <h3>Setting Replication Permissions</h3>
+                <ul>
+                    <li>Use the <strong>Useradmin console</strong> or <strong>CRXDE Lite</strong> to manage permissions.</li>
+                    <li>In CRXDE, add ACL entries with <code>replicate</code> privileges on the desired content paths.</li>
+                    <li>Use groups instead of assigning permissions to users directly (RBAC).</li>
+                </ul>
+                <p><em>Note:</em> If a user without replication rights tries to activate content, the action will silently fail or be rejected with an error.</p>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <p>Follow these recommended practices to ensure secure, reliable, and efficient replication in AEM environments:</p>
+                <ul>
+                    <li><strong>Always use HTTPS</strong> for replication endpoints to protect content in transit.</li>
+                    <li><strong>Use group-based permissions</strong> (RBAC) to manage who can replicate content.</li>
+                    <li>Separate agents for different environments (e.g., dev, stage, prod) to avoid accidental cross-deployment.</li>
+                    <li><strong>Monitor replication queues</strong> regularly to catch stuck or failed jobs early.</li>
+                    <li><strong>Limit replication scope</strong> using path filters and avoid replicating unnecessary system content.</li>
+                    <li><strong>Secure the Dispatcher Flush Agent</strong> to prevent abuse (IP whitelisting, authentication, etc.).</li>
+                    <li>Avoid modifying default agents directly—create clones if needed for customization.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Troubleshooting Replication Issues</h2>
+                <p>Replication problems can occur due to misconfiguration, permission issues, or network failures. Here's how to debug and resolve them:</p>
+                <h3>Common Issues</h3>
+                <ul>
+                    <li>Replication queue stuck in <strong>Queued</strong> or <strong>Failed</strong> status</li>
+                    <li><strong>403 Forbidden</strong> or <strong>401 Unauthorized</strong> on target endpoint</li>
+                    <li>Flush agent not triggering Dispatcher invalidation</li>
+                    <li>Incorrect path filters causing missed replication</li>
+                </ul>
+                <h3>Debugging Tips</h3>
+                <ul>
+                    <li>Check logs in <code>error.log</code> and <code>replication.log</code> on Author instance</li>
+                    <li>Verify credentials and transport URI in replication agent configuration</li>
+                    <li>Use <code>curl</code> to test the target endpoint manually (e.g., <code>curl -u admin:admin http://localhost:4503/bin/receive</code>)</li>
+                    <li>Ensure the user triggering replication has the necessary <code>replicate</code> permission</li>
+                    <li>Inspect queue status via <code>/etc/replication/agents.author.html</code></li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Advanced Use Cases and Tools</h2>
+                <p>In larger or more complex AEM installations, replication can be extended with custom logic and tools:</p>
+                <h3>Custom Replication Agents</h3>
+                <ul>
+                    <li>Create custom agent types to replicate to external systems, cloud storage, or custom endpoints.</li>
+                    <li>Customize filters, triggers, and loggers as per environment needs.</li>
+                </ul>
+                <h3>Replication Filters</h3>
+                <ul>
+                    <li>Use include/exclude path filters to control what content gets replicated.</li>
+                    <li>Exclude system paths (e.g., <code>/libs</code>, <code>/apps</code>) unless necessary.</li>
+                </ul>
+                <h3>ACS Commons Bulk Replicator</h3>
+                <ul>
+                    <li>Use ACS AEM Commons' <a href="https://adobe-consulting-services.github.io/acs-aem-commons/features/bulk-replicator/index.html" target="_blank">Bulk Replicator tool</a> to replicate large sets of pages or assets efficiently.</li>
+                </ul>
+                <h3>Sling Pipes for Replication</h3>
+                <ul>
+                    <li>Leverage <a href="/sling-pipes.html">Sling Pipes</a> to automate large or complex replication tasks through scripts.</li>
+                </ul>
+                <h3>Replication Event Listeners</h3>
+                <ul>
+                    <li>Implement event listeners to hook into the replication process for auditing or custom logic execution.</li>
+                </ul>
             </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
-        </main>        
+        </main>
         <script src="js/script.js"></script>
     </body>
 </html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - OSGI Configuration</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>OSGI Configuration</h1>
+            <section class="card">
+                <h2>Introduction to OSGi Configuration</h2>
+                <p>Adobe Experience Manager (AEM) is built on the OSGi (Open Services Gateway Initiative) framework. Configuring services within AEM typically involves working with OSGi configuration files that are deployed as part of your project or edited directly in the Web Console. Understanding how to manage and deploy OSGi configurations is crucial for developing scalable, maintainable AEM projects.</p>
+            </section>
+            <section class="card">
+                <h2>Creating and Deploying OSGi Configurations</h2>
+                <p>OSGi configurations are generally deployed via your project codebase under the following paths depending on environment and runmode:</p>
+                <ul>
+                    <li><code>/apps/myproject/config</code></li>
+                    <li><code>/apps/myproject/config.author</code></li>
+                    <li><code>/apps/myproject/config.publish</code></li>
+                </ul>
+                <p>Each configuration maps to a Java service interface based on its PID (Persistent Identifier).</p>
+                <h3>Configuration File Formats</h3>
+                <ul>
+                    <li><strong>.cfg.json:</strong> JSON format, preferred for complex or structured configurations.</li>
+                    <li><strong>.config:</strong> Java properties format (key=value). Simpler but limited to flat structures.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Editing Configurations via Felix Console</h2>
+                <p>You can view and modify OSGi configurations at runtime using the Felix Web Console at:</p>
+                <p><code>/system/console/configMgr</code></p>
+                <ul>
+                    <li>Search for the service name or PID.</li>
+                    <li>Edit properties directly via UI.</li>
+                    <li>Changes here are persisted under <code>/apps/system/config</code> as <strong>overlayed runtime configs</strong>.</li>
+                </ul>
+                <p><strong>Note:</strong> These changes override code-deployed configurations but are not version-controlled. Always treat them as temporary or for debugging only.</p>
+            </section>
+            <section class="card">
+                <h2>Factory Configurations</h2>
+                <p>Factory configurations allow you to create multiple configuration instances for a service (e.g., multiple schedulers, each with different timings).</p>
+                <p>To define a factory config, append a tilde (~) and instance name to the PID:</p>
+                <ul>
+                    <li><code>com.mycompany.MyService~daily.cfg.json</code></li>
+                    <li><code>com.mycompany.MyService~weekly.cfg.json</code></li>
+                </ul>
+                <p>Each will result in a unique OSGi instance.</p>
+                <p><strong>Use Cases:</strong></p>
+                <ul>
+                    <li>Multiple cron jobs (e.g., daily, weekly, monthly cleanup).</li>
+                    <li>Different environment-based endpoints or schedules.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Live Configuration Refresh (No Restart)</h2>
+                <p>When you deploy new or updated configuration files (e.g., via package or deployment pipeline), AEM automatically detects changes and applies them at runtime. There is <strong>no need to restart the server</strong>.</p>
+                <p>This live refresh mechanism is one of the key benefits of the OSGi modular framework.</p>
+                <p><strong>Tip:</strong> If changes are not reflecting, check that there’s no runtime config at <code>/apps/system/config</code> or <code>/var/config</code> overriding your code-based config.</p>
+            </section>
+            <section class="card">
+                <h2>Configuration Resolution & Pitfalls</h2>
+                <p>AEM resolves OSGi configurations in the following order:</p>
+                <ol>
+                    <li><code>config.author.dev</code></li>
+                    <li><code>config.author</code> or <code>config.dev</code></li>
+                    <li><code>config</code></li>
+                </ol>
+                <p><strong>Most specific match wins.</strong> This means <code>config.author.dev</code> will override both <code>config.author</code> and <code>config</code> if the same PID exists.</p>
+                <h3>Common Pitfalls</h3>
+                <ul>
+                    <li>Do not use both <code>.config</code> and <code>.cfg.json</code> for the same PID — the outcome is unpredictable.</li>
+                    <li>Runtime configs in the Felix Console override file-based configs but are not part of code or version control.</li>
+                    <li>Wrong PID or folder path means config will be ignored silently.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Use Case Examples</h2>
+                <h3>1. Configuring HTTP Request Limits</h3>
+                <p><code>org.apache.sling.engine.impl.SlingRequestProcessorImpl.cfg.json</code></p>
+                <pre>{
+  "requestLimit": 5000,
+  "enableRequestLogging": true
+}</pre>
+                <h3>2. Scheduler Configuration</h3>
+                <p>Factory Config: <code>com.mycompany.scheduler.MyService~daily.cfg.json</code></p>
+                <pre>{
+  "enabled": true,
+  "scheduler.expression": "0 0 12 * * ?",
+  "description": "Daily cleanup task"
+}</pre>
+            </section>
+            <section class="card">
+                <h2>Conclusion</h2>
+                <p>Mastering OSGi configuration in AEM allows you to build environment-aware, modular, and scalable applications. Whether you're managing HTTP behavior, integrating third-party APIs, or customizing content delivery — OSGi configurations give you the flexibility and structure you need for enterprise-scale solutions.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

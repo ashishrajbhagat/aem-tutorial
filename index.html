@@ -18,9 +18,10 @@
             <div class="logo">
                 <h2>AEM Tutorial</h2>
             </div>
-            <nav class="nav">
-                <ul class="nav-list" id="navList"></ul>
-            </nav>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
             <div class="footer">
                 <p>&copy; 2025 AEM Tutorial</p>
             </div>
@@ -183,24 +184,91 @@
                 </div>
             </section>
             <section class="card">
-                <h2>AEM Instances</h2>
-                <h3>Author</h3>
+                <h2>Author & Publish Architecture</h2>
+                <p>
+                    Adobe Experience Manager (AEM) uses a decoupled architecture based on Author and Publish instances to separate content creation from content delivery. This setup enhances security, scalability, and performance while enabling collaboration among authors and a smooth publishing workflow.
+                </p>
+                <h3>What is an Author Instance?</h3>
+                <p>
+                    The <strong>Author instance</strong> is the backend environment where content authors create and manage websites, assets, templates, workflows, and configurations.
+                </p>
                 <ul>
-                    <li>This is where content is created, managed, and authored.</li>
-                    <li>Content authors use this instance to create and edit web pages, components, and assets.</li>
-                    <li>The author instance communicates with the JCR (Java Content Repository) to store and manage content.</li>
+                    <li>Used by authors, admins, and marketers.</li>
+                    <li>Secure internal access only (behind firewall/VPN).</li>
+                    <li>Supports workflows, versioning, approvals, and testing.</li>
+                    <li>URL Example: <code>http://localhost:4502</code></li>
                 </ul>
-                <h3>Publish</h3>
+                <h3>What is a Publish Instance?</h3>
+                <p>
+                    The <strong>Publish instance</strong> is the frontend environment that serves published content to end users. It contains only approved and activated content from the Author instance.
+                </p>
                 <ul>
-                    <li>This is the public-facing instance where content is published to end-users.</li>
-                    <li>The publish instance retrieves content from the author instance and serves it to the website visitors.</li>
-                    <li>It is optimized for performance and scalability.</li>
+                    <li>Public-facing environment (behind Dispatcher).</li>
+                    <li>No authoring tools or content creation UI.</li>
+                    <li>Used for final content delivery to users.</li>
+                    <li>URL Example: <code>http://localhost:4503</code></li>
+                </ul>
+                <h3>How Replication Works</h3>
+                <p>
+                    <strong>Replication</strong> is the mechanism to publish content from Author to Publish. It can be triggered manually, via workflow, or automatically using launchers.
+                </p>
+                <ul>
+                    <li>Replication agents handle the transport of content.</li>
+                    <li>Uses queues to ensure content is delivered correctly.</li>
+                    <li>Also supports reverse replication (from Publish to Author, e.g., for form data).</li>
+                    <li>Includes content pages, assets, code packages, and configurations.</li>
+                </ul>
+                <h3>Dispatcher: Role in AEM Architecture</h3>
+                <p>
+                    The <strong>Dispatcher</strong> is Adobe's caching and load balancing tool that sits in front of the Publish instance. It enhances performance and security.
+                </p>
+                <ul>
+                    <li>Caches static content (HTML, JS, CSS, images).</li>
+                    <li>Protects Publish instance from direct access.</li>
+                    <li>Can load balance multiple Publish instances.</li>
+                    <li>Applies filter rules for access control.</li>
+                </ul>
+                <h3>Preview vs Live Environments</h3>
+                <p>
+                    Many AEM projects include a <strong>Preview</strong> Publish instance to allow content authors and QA teams to review content before it goes live.
+                </p>
+                <ul>
+                    <li>Preview = Internal content testing (non-public).</li>
+                    <li>Live = Final content delivery to public users.</li>
+                    <li>Helps validate content and personalization.</li>
+                </ul>
+                <h3>Multi-Publish and Failover Support</h3>
+                <p>
+                    Enterprise-grade AEM setups often use multiple Publish instances to ensure high availability and scalability.
+                </p>
+                <ul>
+                    <li>Dispatcher load balances requests among multiple Publish instances.</li>
+                    <li>If one Publish server fails, others continue serving content.</li>
+                    <li>Ideal for global websites and high-traffic apps.</li>
+                </ul>
+                <h3>Diagram: Author-Publish-Dispatcher Flow</h3>
+                <p>
+                    Here's a simplified visual representation of how content flows through the AEM architecture:
+                </p>
+                <div class="image-container">
+                    <img src="images/author-publish-dispatcher-diagram.png" alt="AEM Author Publish Dispatcher Architecture" />
+                    <p>AEM Author Publish Dispatcher Architecture</p>
+                </div>
+                <h3>Benefits of Author-Publish Architecture</h3>
+                <ul>
+                    <li>Improves scalability by separating concerns.</li>
+                    <li>Enhances security with isolated authoring.</li>
+                    <li>Increases performance through caching.</li>
+                    <li>Enables collaborative, workflow-driven content creation.</li>
                 </ul>
             </section>
             <section class="card">
                 <h2>AEM Architecture Stack</h2>
                 <p>The architecture stack of Adobe Experience Manager (AEM) is based on several key open-source technologies. Three of the most important components are <code>Apache Felix</code>, <code>Apache Jackrabbit</code>, and <code>Apache Sling</code>. These technologies work together to provide the foundational framework for AEM.</p>
-                <img src="images/architecture-stack.png" alt="AEM Architecture Stack">
+                <div class="image-container">
+                    <img src="images/architecture-stack.png" alt="AEM Architecture Stack">
+                    <p>AEM Architecture Stack</p>
+                </div>
             </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>

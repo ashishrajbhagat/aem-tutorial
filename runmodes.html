@@ -18,9 +18,10 @@
             <div class="logo">
                 <h2>AEM Tutorial</h2>
             </div>
-            <nav class="nav">
-                <ul class="nav-list" id="navList"></ul>
-            </nav>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
             <div class="footer">
                 <p>&copy; 2025 AEM Tutorial</p>
             </div>
@@ -29,67 +30,161 @@
         <main class="content" id="content">
             <h1>Runmodes</h1>
             <section class="card">
-                <h2>Runmodes in AEM</h2>
-                <p>Adobe Experience Manager (AEM) uses <strong>Runmodes</strong> to enable specific configurations and functionalities based on the environment in which AEM is running. Runmodes allow administrators to configure AEM differently for development, testing, staging, and production environments. They determine the behavior of an AEM instance based on predefined settings, enabling the loading of different configurations, OSGi settings, and content packages depending on the instance type.</p>
-            </section>
-            <section class="card">
-                <h2>Common Runmodes in AEM</h2>
-                <p>AEM supports various runmodes, including:</p>
+                <h2>What are Runmodes in AEM?</h2>
+                <p>Runmodes in Adobe Experience Manager (AEM) are a powerful mechanism that allow you to define different behaviors or configurations for the same AEM codebase based on the environment where it is running. This enables developers and DevOps teams to configure the AEM instance differently for local development, staging, production, testing, etc.</p>
+                <p>These modes control which configurations, bundles, scripts, content packages, and services are enabled at runtime—thereby promoting clean separation of concerns and environment-specific behavior.</p>
+                <p><strong>Why Use Runmodes?</strong></p>
                 <ul>
-                    <li><strong>Author:</strong> Used for content creation and management.</li>
-                    <li><strong>Publish:</strong> Used for serving content to end users.</li>
-                    <li><strong>Development (dev):</strong> Used for local development.</li>
-                    <li><strong>Testing (qa):</strong> Used for testing before deployment.</li>
-                    <li><strong>Staging:</strong> Pre-production environment for validation.</li>
-                    <li><strong>Production (prod):</strong> Live environment for end users.</li>
+                    <li>To isolate configurations per environment</li>
+                    <li>To enable or disable features like analytics, error reporting, debugging</li>
+                    <li>To deploy tools or bundles only in dev or staging but not in prod</li>
+                    <li>To reduce risk by separating production logic from dev/test logic</li>
                 </ul>
             </section>
             <section class="card">
-                <h2>How to Configure Runmodes?</h2>
-                <h4>1. Setting Runmodes via <code>sling.properties</code></h4>
-                <p>Runmodes can be set in the <code>crx-quickstart/conf/sling.properties</code> file:</p>
+                <h2>Commonly Used Runmodes</h2>
+                <p>AEM supports one or more runmodes at the same time. These runmodes are combined to describe the role and environment of an instance. The two major categories of runmodes are:</p>
+                <h3>Instance Role Runmodes:</h3>
+                <ul>
+                    <li><strong>author:</strong> For content creation, review, workflow handling, and management.</li>
+                    <li><strong>publish:</strong> For delivering final published content to end users (typically behind a dispatcher/CDN).</li>
+                </ul>
+                <h3>Environment Runmodes:</h3>
+                <ul>
+                    <li><strong>dev:</strong> Local or developer-specific environments.</li>
+                    <li><strong>qa/test:</strong> For quality assurance, testing teams.</li>
+                    <li><strong>stage/staging:</strong> Mirror of production for validation before release.</li>
+                    <li><strong>prod:</strong> Live, production environment for end users.</li>
+                </ul>
+                <p><strong>Examples:</strong></p>
+                <ul>
+                    <li><code>author + dev</code>: Developer's local instance</li>
+                    <li><code>publish + prod</code>: Production-facing publish server</li>
+                    <li><code>author + qa</code>: QA testing for content editing</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>How to Configure Runmodes in AEM</h2>
+                <p>Runmodes can be configured in three primary ways depending on your deployment method.</p>
+                <h3>1. sling.properties File</h3>
+                <p>You can edit the <code>sling.properties</code> file located at <code>crx-quickstart/conf/sling.properties</code>:</p>
                 <pre>sling.run.modes=author,dev</pre>
-                <p>This example sets the runmodes to <strong>author</strong> and <strong>development</strong>.</p>
-                <h4>2. Setting Runmodes via JVM Parameters</h4>
-                <p>Runmodes can also be configured by passing JVM arguments when starting AEM:</p>
+                <h3>2. JVM Parameters (during jar startup)</h3>
+                <p>When launching AEM via the JAR, specify runmodes using the <code>-r</code> flag:</p>
                 <pre>java -jar aem-quickstart.jar -r author,dev</pre>
-                <h4>3. Setting Runmodes via Environment Variables</h4>
-                <p>Runmodes can be defined using environment variables:</p>
+                <h3>3. Environment Variable (for Docker/Kubernetes)</h3>
                 <pre>export SLING_OPTS="-Dsling.run.modes=author,prod"</pre>
+                <p>This is commonly used in cloud-native and containerized setups.</p>
             </section>
             <section class="card">
-                <h3>Using Runmodes in AEM</h3>
-                <p>Runmodes are used to configure:</p>
-                <ul>
-                    <li><strong>OSGi Configuration:</strong> Different settings for each environment.</li>
-                    <li><strong>Content Packages:</strong> Installing specific content based on environment.</li>
-                    <li><strong>Dispatcher Configurations:</strong> Different caching and security settings.</li>
-                </ul>
-                <h3>4.1 Creating OSGi Configuration for Runmodes</h3>
-                <p>OSGi configurations can be created under <code>/apps/&lt;project&gt;/config.&lt;runmode&gt;</code>.</p>
-                <p>Example for <strong>Production (prod) Runmode:</strong></p>
-                <pre>/apps/myproject/config.prod/com.mycompany.service.MyConfig.cfg.json</pre>
-                <h3>4.2 Installing Content Packages Based on Runmodes</h3>
-                <p>Content packages can be installed using runmode-specific folders:</p>
-                <pre>/apps/myproject/install.prod</pre>
+                <h2>Using Runmodes for OSGi Configuration</h2>
+                <p>OSGi configurations can be scoped to runmodes using special folders under <code>/apps/&lt;project&gt;</code>. These folders ensure only the configurations relevant to the current environment are loaded.</p>
+                <p><strong>Folder Structure Example:</strong></p>
+                <pre>/apps/myproject/config.author/com.mycompany.MyService.cfg.json</pre>
+                <p>This configuration is only loaded if <code>author</code> runmode is active.</p>
             </section>
             <section class="card">
-                <h2>Checking Active Runmodes</h2>
-                <p>You can check the active runmodes in AEM by navigating to:</p>
+                <h2>Environment-Specific OSGi Configuration Folders</h2>
+                <p>Runmodes affect which configuration folder AEM reads from. These folders are typically:</p>
                 <ul>
-                    <li><strong>OSGi Console:</strong> <code>/system/console/status-slingsettings</code></li>
-                    <li><strong>JCR Path:</strong> <code>/var/logs/error.log</code> (logs contain active runmodes)</li>
+                    <li><code>config</code> - Default fallback configuration</li>
+                    <li><code>config.dev</code>, <code>config.stage</code>, <code>config.prod</code> - Single runmode folders</li>
+                    <li><code>config.author.dev</code> - Combined runmodes (most specific)</li>
+                </ul>
+                <p><strong>Folder Resolution Order:</strong></p>
+                <pre>config.author.dev → config.author → config</pre>
+                <p>The most specific folder matching all active runmodes wins.</p>
+            </section>
+            <section class="card">
+                <h2>Multi-Level Runmode Folders</h2>
+                <p>If an instance runs with multiple runmodes like <code>author</code> and <code>dev</code>, you can create a folder like:</p>
+                <pre>/apps/myproject/config.author.dev/</pre>
+                <p>This allows defining fine-grained OSGi settings for very specific combinations.</p>
+            </section>
+            <section class="card">
+                <h2>Runmode Resolution Priority</h2>
+                <p>When multiple folders match the current runmodes, AEM uses the most specific one.</p>
+                <ul>
+                    <li><code>config</code> → loaded if no runmode-specific config exists</li>
+                    <li><code>config.author</code> → overrides <code>config</code></li>
+                    <li><code>config.author.dev</code> → overrides both if both runmodes are active</li>
+                </ul>
+                <p><strong>Important:</strong> Avoid duplicating the same PID in multiple folders unless you intend to override.</p>
+            </section>
+            <section class="card">
+                <h2>.cfg.json vs .config</h2>
+                <p>OSGi configuration files in AEM can be written in two formats, and both serve the same purpose — to define configuration values for a specific OSGi service.</p>
+                <h3>1. <code>.cfg.json</code> (Recommended for AEMaaCS)</h3>
+                <p>This is a structured JSON format. It's easier to read, modern, and preferred for Adobe Experience Manager as a Cloud Service.</p>
+                <p><strong>Example (.cfg.json):</strong></p>
+                <pre>{
+  "enabled": true,
+  "retryCount": 3,
+  "emailRecipients": ["dev@example.com", "admin@example.com"],
+  "serviceName": "UserSyncService"
+}</pre>
+                <h3>2. <code>.config</code> (Java Properties Style)</h3>
+                <p>This is the traditional key-value format (property = value). It is still supported and useful, especially in older or on-prem setups.</p>
+                <p><strong>Example (.config):</strong></p>
+                <pre>
+enabled=Btrue
+retryCount=3
+emailRecipients=["dev@example.com","admin@example.com"]
+serviceName="UserSyncService"
+</pre>
+                <p><strong>Note:</strong> In <code>.config</code> files:</p>
+                <ul>
+                    <li>Boolean values must be capitalized as <code>Btrue</code> or <code>Bfalse</code></li>
+                    <li>String arrays should be enclosed in brackets <code>[]</code> with quotes</li>
+                    <li>Always wrap string values in double quotes if they contain special characters or spaces</li>
                 </ul>
             </section>
             <section class="card">
-                <h2>Runmodes Best Practices</h2>
+                <h2>Factory Configurations</h2>
+                <p>Factory configurations let you create multiple instances of the same service with different values. Naming convention uses a tilde (<code>~</code>).</p>
+                <pre>
+com.mycompany.Service~instance1.cfg.json
+com.mycompany.Service~instance2.cfg.json</pre>
+                <p>AEM treats these as separate service configurations.</p>
+            </section>
+            <section class="card">
+                <h2>Installing Content Packages Based on Runmodes</h2>
+                <p>AEM uses <code>install</code> folders under apps to conditionally install packages:</p>
                 <ul>
-                    <li>Always define runmodes explicitly for different environments.</li>
-                    <li>Use runmodes to separate configuration from code.</li>
-                    <li>Avoid using hardcoded configurations inside code.</li>
-                    <li>Regularly verify active runmodes in AEM.</li>
+                    <li><code>/apps/myproject/install</code> - All runmodes</li>
+                    <li><code>/apps/myproject/install.dev</code> - Only if <code>dev</code> is active</li>
+                    <li><code>/apps/myproject/install.author</code> - Only on author instance</li>
                 </ul>
-                <p><strong>Note:</strong> Runmodes help optimize AEM configurations for different environments, ensuring better scalability and maintainability.</p>
+                <p>Use case: Install Groovy Console only in dev, disable integrations in staging, etc.</p>
+            </section>
+            <section class="card">
+                <h2>How to Check Active Runmodes</h2>
+                <ul>
+                    <li>
+                        <strong>Via Web Console:</strong>
+                        Go to <code>/system/console/status-slingsettings</code> and check the "Run Modes" section.
+                    </li>
+                    <li>
+                        <strong>Via Logs:</strong>
+                        Inspect <code>error.log</code> on startup for a line like:
+                        <pre>Detected run modes: [author, dev]</pre>
+                    </li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Always use meaningful runmodes (e.g., <code>dev</code>, <code>qa</code>, <code>prod</code>).</li>
+                    <li>Separate author and publish configs cleanly using folders.</li>
+                    <li>Use <code>.cfg.json</code> for future-proof compatibility.</li>
+                    <li>Keep sensitive values (e.g., passwords, URLs) out of shared config folders.</li>
+                    <li>Avoid logic branching in code—let configurations control behavior.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Conclusion</h2>
+                <p>Runmodes provide the backbone of flexible, scalable AEM deployments. Whether you are working on an enterprise cloud-native setup or a simple on-premise installation, mastering runmodes will give you strong control over behavior and environment separation.</p>
+                <p>By using structured folders like <code>config.&lt;runmode&gt;</code> and <code>install.&lt;runmode&gt;</code>, and understanding resolution priorities, you can avoid conflicts and ensure consistency across environments.</p>
             </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>

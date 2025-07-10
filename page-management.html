@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Page Management</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Page Management</h1>
+            <section class="card">
+                <h2>Page Creation, Move, Copy & Delete</h2>
+                <p>AEM provides a seamless interface for managing pages within the Sites console. Authors and admins can create new pages, reorganize content structures, and remove unnecessary pages.</p>
+                <ul>
+                    <li><strong>Create:</strong> In the Sites console, select a location and click <em>Create → Page</em>. Choose a template and fill in page details like title and name.</li>
+                    <li><strong>Move:</strong> Select a page and choose <em>Move</em> to relocate it. AEM updates all internal references automatically.</li>
+                    <li><strong>Copy:</strong> Use the <em>Copy</em> and <em>Paste</em> options to duplicate a page, including its child pages and content.</li>
+                    <li><strong>Delete:</strong> Select the page and choose <em>Delete</em>. AEM will ask for confirmation, especially if references exist.</li>
+                </ul>
+                <p>These operations are permission-based, ensuring only authorized users can modify site structure.</p>
+            </section>
+            <section class="card">
+                <h2>Versioning</h2>
+                <p>AEM supports version control for all pages. This helps teams track changes, restore older versions, and maintain content integrity over time.</p>
+                <ul>
+                    <li><strong>Creating a Version:</strong> In the page editor, click <em>Page Info → Create Version</em>. Add a version label and comment for tracking.</li>
+                    <li><strong>Viewing Versions:</strong> Go to the <em>Timeline</em> and filter for version entries. You can see all previously saved versions.</li>
+                    <li><strong>Restoring a Version:</strong> Choose a version and click <em>Revert</em> to restore that content snapshot.</li>
+                </ul>
+                <p>Versioning is crucial for audit trails, content rollback, and QA validations before publishing changes.</p>
+            </section>
+            <section class="card">
+                <h2>Timeline</h2>
+                <p>The Timeline view in the Sites console provides a chronological record of changes for a selected page or folder. It's especially helpful for tracking actions over time.</p>
+                <ul>
+                    <li><strong>What It Shows:</strong> Version creation, publishing, workflow events, comments, and page locks.</li>
+                    <li><strong>Access:</strong> Select a page and click the clock icon <em>(Timeline)</em> in the toolbar.</li>
+                    <li><strong>Commenting:</strong> Team members can add comments to the timeline for collaborative documentation.</li>
+                </ul>
+                <p>This tool enables transparency in content management and helps resolve issues by reviewing recent activity.</p>
+            </section>
+            <section class="card">
+                <h2>Page Locking and Unlocking</h2>
+                <p>Page locking ensures content integrity by preventing multiple authors from editing the same page simultaneously.</p>
+                <ul>
+                    <li><strong>Automatic Locking:</strong> A page is locked automatically when an author opens it in the editor.</li>
+                    <li><strong>Manual Locking:</strong> Can be set from the Sites console to prevent unauthorized edits.</li>
+                    <li><strong>Unlocking:</strong> Only the locking user or an admin can unlock a page. This is done via the Page Info dropdown.</li>
+                </ul>
+                <p>Locking is vital in collaborative environments to avoid overwriting changes or introducing merge conflicts.</p>
+            </section>
+            <section class="card">
+                <h2>Reference Panel</h2>
+                <p>The References panel in AEM shows all relationships and dependencies associated with a page. It helps authors understand how content is reused or linked.</p>
+                <ul>
+                    <li><strong>Accessing:</strong> In the Sites console, select a page and click the <em>References</em> icon in the top bar.</li>
+                    <li><strong>Includes:</strong> Language copies, live copies (MSM), experience fragments, content fragments, and referenced assets/components.</li>
+                    <li><strong>Use Cases:</strong> Prevent deleting referenced content, manage translations, and identify reusable assets.</li>
+                </ul>
+                <p>This panel is essential for maintaining site integrity and avoiding accidental disruption of connected content.</p>
+            </section>
+            <section class="card">
+                <h2>Vanity URLs in AEM</h2>
+                <p>A <strong>Vanity URL</strong> in AEM is a user-friendly, customizable URL path that maps to an internal content path. It allows marketers and content authors to create cleaner, shorter, and more memorable URLs for pages without changing the actual structure in the JCR.</p>
+                <p>Normally, a page in AEM might be accessed via a long path like: <code>/content/mysite/en/products/product-a.html</code><br>With a vanity URL, you can access it via a cleaner path like: <code>/product-a</code></p>
+                <h3>⚙️ How to Set a Vanity URL</h3>
+                <p>You can assign a vanity URL through:</p>
+                <ul>
+                    <li><strong>CRXDE:</strong> Open the page node (e.g., <code>/content/mysite/en/products/product-a</code>) and set the property:
+                        <code>vanityPath = /product-a</code> (type: String or String[])
+                    </li>
+                    <li><strong>Page Properties in Touch UI:</strong> Navigate to the page → Click on <em>Page Properties</em> → Go to the <em>Advanced</em> tab → Enter the vanity URL.</li>
+                </ul>
+                <h3>🔁 Multiple Vanity URLs</h3>
+                <p>You can set multiple vanity paths as an array by entering multiple values in CRXDE or Touch UI. Each will point to the same page.</p>
+                <h3>❌ Things to Keep in Mind</h3>
+                <ul>
+                    <li>Vanity URLs must be unique across the repository. If two pages define the same vanity path, AEM won't know which to resolve.</li>
+                    <li>AEM doesn't auto-redirect from the full path to the vanity URL — both are accessible unless you configure redirection separately.</li>
+                    <li>Vanity URLs are only resolved via the <strong>Resource Resolver</strong> and need Dispatcher to be configured properly to allow them.</li>
+                </ul>
+                <h3>🧠 How AEM Resolves Vanity URLs</h3>
+                <p>The <code>org.apache.sling.jcr.resource.internal.JcrResourceResolverFactoryImpl</code> service handles vanity URL resolution. Its key configuration properties:</p>
+                <ul>
+                    <li><strong>Enable Vanity Path:</strong> Whether to allow vanity resolution at all</li>
+                    <li><strong>Vanity Path Bloom Filter:</strong> Used for performance optimization to cache available vanity paths</li>
+                    <li><strong>Maximum Entries:</strong> How many entries to allow in the cache</li>
+                </ul>
+                <h3>🚫 Disabling Vanity Paths for Performance</h3>
+                <p>In large repositories, you might disable vanity path resolution or limit it to improve performance using:</p>
+                <ul>
+                    <li><strong>Apache Sling Resource Resolver Factory</strong> → <code>Enable Vanity Path = false</code></li>
+                    <li>Use Dispatcher to explicitly deny vanity paths unless required</li>
+                </ul>
+                <h3>✅ Best Practices</h3>
+                <ul>
+                    <li>Keep vanity URLs short, meaningful, and consistent with your site's brand</li>
+                    <li>Regularly audit vanity paths to avoid conflicts or outdated mappings</li>
+                    <li>Avoid using vanity URLs for internal-only pages or system pages</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

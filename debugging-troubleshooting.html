@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Debugging & Troubleshooting</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Debugging & Troubleshooting</h1>
+            <section class="card">
+                <h2>Introduction</h2>
+                <p>Debugging is a critical skill for AEM developers and administrators to ensure smooth development, configuration, and maintenance of an AEM instance. Whether you're building custom components, troubleshooting a content issue, or resolving system-level errors, AEM provides a variety of built-in tools to help you identify and fix problems efficiently.</p>
+                <p>AEM offers several out-of-the-box debugging tools for:</p>
+                <ul>
+                    <li>Inspecting repository nodes and properties</li>
+                    <li>Viewing and configuring log levels</li>
+                    <li>Monitoring Sling models and OSGi services</li>
+                    <li>Customizing error handlers for runtime issues</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Log Levels and Sling Logs</h2>
+                <p>Logs are the first line of insight into what's happening inside an AEM application. AEM leverages the Sling logging framework, and logs can be viewed and configured through the web console.</p>
+                <h3>Accessing Sling Logs</h3>
+                <ul>
+                    <li>Visit: <code><a href="http://localhost:4502/system/console/slinglog">/system/console/slinglog</a></code></li>
+                    <li>Here, you can add or modify loggers, adjust log levels, and define log file locations.</li>
+                </ul>
+                <h3>Common Log Levels</h3>
+                <ul>
+                    <li><strong>TRACE:</strong> Most detailed level. Logs fine-grained steps such as method entry/exit and internal state changes. Useful for deep debugging.</li>
+                    <li><strong>DEBUG:</strong> Developer-focused messages for troubleshooting and understanding logic flow.</li>
+                    <li><strong>INFO:</strong> General application events, such as startup, shutdown, or configuration status.</li>
+                    <li><strong>WARN:</strong> Warning messages indicating a potential issue or unexpected condition that doesn’t stop the application.</li>
+                    <li><strong>ERROR:</strong> Serious issues that need attention, such as failures in processing or system errors.</li>
+                </ul>
+                <h4>Log Level Priority</h4>
+                <p>Log levels follow a strict priority. A lower level includes all the higher-severity levels beneath it:</p>
+                <ul>
+                    <li><code>TRACE</code> → includes <code>DEBUG</code>, <code>INFO</code>, <code>WARN</code>, <code>ERROR</code></li>
+                    <li><code>DEBUG</code> → includes <code>INFO</code>, <code>WARN</code>, <code>ERROR</code></li>
+                    <li><code>INFO</code> → includes <code>WARN</code>, <code>ERROR</code></li>
+                    <li><code>WARN</code> → includes <code>ERROR</code></li>
+                    <li><code>ERROR</code> → logs only errors</li>
+                </ul>
+                <p><strong>To capture all logs during development, set the log level to <code>TRACE</code>.</strong> Avoid this in production as it may impact performance and generate large log files.</p>
+                <h3>Custom Loggers</h3>
+                <ul>
+                    <li>In the Sling Log Support console, click “+” to create a new logger.</li>
+                    <li>Set the logger name to your Java package (e.g., <code>com.myproject.core</code>).</li>
+                    <li>Choose a log level (e.g., <code>DEBUG</code>) and a log file name (e.g., <code>myproject.log</code>).</li>
+                </ul>
+                <h3>Tailing Log Files</h3>
+                <ul>
+                    <li>AEM logs are stored in the <code>/crx-quickstart/logs</code> directory (in local SDK).</li>
+                    <li>
+                        Common log files:
+                        <ul>
+                            <li><code>error.log</code> — general AEM errors and warnings</li>
+                            <li><code>request.log</code> — HTTP request logs</li>
+                        </ul>
+                    </li>
+                    <li>Use terminal commands like <code>tail -f error.log</code> to watch logs in real-time.</li>
+                </ul>
+                <h3>Logging in Java Code</h3>
+                <p>Use SLF4J logger in your custom Java classes:</p>
+                <pre>@Component(service = MyService.class)
+private static final Logger log = LoggerFactory.getLogger(MyService.class);
+
+log.debug("Debug info: {}", variable);
+log.warn("Potential issue with {}", path);</pre>
+            </section>
+            <section class="card">
+                <h2>CRXDE Tips</h2>
+                <p><strong>CRXDE Lite</strong> (<code>/crx/de</code>) is a web-based interface that allows developers to explore, inspect, and edit the JCR repository structure directly. It is an essential tool for debugging content structure, node properties, and permissions.</p>
+                <h3>Common Debugging Scenarios</h3>
+                <ul>
+                    <li><strong>Resource Resolution Issues:</strong> Check for missing or incorrect <code>sling:resourceType</code> or <code>jcr:primaryType</code>.</li>
+                    <li><strong>Component Not Rendering:</strong> Ensure component paths are correctly mapped and all required properties exist.</li>
+                    <li><strong>Dialog Not Appearing:</strong> Validate <code>cq:dialog</code> node structure under the component.</li>
+                </ul>
+                <h3>Useful Tips</h3>
+                <ul>
+                    <li>Use the search bar to quickly locate nodes or properties.</li>
+                    <li>Right-click on a node to copy its path for logs or scripts.</li>
+                    <li>Check <code>rep:policy</code> for permission issues on nodes.</li>
+                    <li>Use the “Properties” tab to inspect <code>cq:tags</code>, <code>jcr:title</code>, and other metadata.</li>
+                    <li>If versioning is enabled, restore accidentally deleted nodes from the <code>versionHistory</code>.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Sightly Debugging</h2>
+                <p>Sightly (HTL) is the templating language used in AEM for component views. Debugging Sightly involves inspecting data bindings, model usage, and rendering logic in your HTML templates.</p>
+                <h3>Output Variable Values</h3>
+                <ul>
+                    <li>
+                        Print model data directly into HTML to verify values:
+                        <pre>&lt;p&gt;${myModel.title}&lt;/p&gt;</pre>
+                    </li>
+                    <li>If a value is <code>null</code>, check whether the Sling Model is adapting correctly.</li>
+                </ul>
+                <h3>Conditional Rendering</h3>
+                <ul>
+                    <li>
+                        Use <code>data-sly-test</code> to conditionally show content:
+                        <pre>&lt;div data-sly-test="${myModel.showSection}"&gt;Visible if true&lt;/div&gt;</pre>
+                    </li>
+                    <li>Log inside the Sling Model to confirm if fields are being set.</li>
+                </ul>
+                <h3>Repeating Elements</h3>
+                <ul>
+                    <li>
+                        Use <code>data-sly-repeat</code> to loop through lists or arrays:
+                        <pre>&lt;li data-sly-repeat.item="${myModel.items}"&gt;${item.name}&lt;/li&gt;</pre>
+                    </li>
+                    <li>Ensure the backing model returns non-null, non-empty lists to avoid silent failures.</li>
+                </ul>
+                <h3>General Tips</h3>
+                <ul>
+                    <li>Use <code>data-sly-unwrap</code> to avoid rendering extra HTML tags.</li>
+                    <li>Log from inside the model's <code>@PostConstruct</code> to trace binding and injection problems.</li>
+                    <li>Make sure HTL variables match the exact model field names and are correctly exposed with getters.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Sling Models & Resource Resolver Debugging</h2>
+                <p>Sling Models are the backbone of AEM component logic. Debugging issues related to model injection, resource adaptation, and context mismatches is essential during development.</p>
+                <h3>Debugging Sling Models</h3>
+                <ul>
+                    <li>
+                        Use <code>@PostConstruct</code> methods to log internal state:
+                        <pre>@PostConstruct
+protected void init() {
+    log.debug("Initialized with title = {}", title);
+}</pre>
+                    </li>
+                    <li>
+                        Check if the model is <code>null</code> in HTL:
+                        <pre>${myModel.title}</pre>
+                        If nothing renders, confirm the model is adapting properly.
+                    </li>
+                    <li>
+                        Confirm the class is registered with:
+                        <ul>
+                            <li><code>@Model(adaptables = Resource.class)</code></li>
+                            <li><code>@Model(adaptables = SlingHttpServletRequest.class)</code></li>
+                        </ul>
+                    </li>
+                </ul>
+                <h3>Resource Resolver Debugging</h3>
+                <ul>
+                    <li>
+                        Log the current user and path:
+                        <pre>log.debug("Path: {}, User: {}", resource.getPath(), resolver.getUserID());</pre>
+                    </li>
+                    <li>Ensure proper permissions are assigned to the service user bound to the resolver.</li>
+                    <li>Use <code>resolver.isLive()</code> and <code>resolver.hasChanges()</code> for diagnostics.</li>
+                    <li>Close resolvers manually when obtained programmatically to avoid memory leaks.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Developer Console Tools</h2>
+                <p>AEM provides several OSGi web consoles to inspect system state, configuration, and Sling internals. These are extremely useful for low-level debugging.</p>
+                <h3>Useful Consoles</h3>
+                <ul>
+                    <li><strong>System Console Config Manager:</strong>  
+                        <code>/system/console/configMgr</code> — View and edit OSGi configurations.
+                    </li>
+                    <li><strong>Bundles Console:</strong>  
+                        <code>/system/console/bundles</code> — See active/inactive bundles and dependency issues.
+                    </li>
+                    <li><strong>Sling Models Status:</strong>  
+                        <code>/system/console/status-slingmodels</code> — Inspect all registered Sling Models and errors.
+                    </li>
+                    <li><strong>JMX Console:</strong>  
+                        <code>/system/console/jmx</code> — Access JVM and AEM health metrics.
+                    </li>
+                    <li><strong>Dispatcher Diagnostics:</strong>  
+                        <code>/libs/granite/operations/content/diagnosis/tool.html</code> — Dispatcher cache validation, replication status.
+                    </li>
+                </ul>
+                <h3>Tips</h3>
+                <ul>
+                    <li>Use the filter/search box in each console to quickly locate services.</li>
+                    <li>Look for unsatisfied OSGi components in the Bundles Console.</li>
+                    <li>Use the Status → Sling Models tool to find registration errors (e.g., model not adapting).</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Error Handler Pages</h2>
+                <p>Error handler pages in AEM allow you to customize the user experience when something goes wrong (e.g., 404 Not Found, 500 Internal Server Error). They are also helpful for logging and debugging.</p>
+                <h3>Default Error Handling</h3>
+                <ul>
+                    <li>AEM falls back to generic error messages if no custom handler is defined.</li>
+                    <li>Default location: <code>/libs/sling/servlet/errorhandler</code></li>
+                </ul>
+                <h3>Custom Error Handler Setup</h3>
+                <ul>
+                    <li>
+                        Create the following structure under <code>/apps/sling/servlet/errorhandler</code>:
+                        <pre>/apps/sling/servlet/errorhandler/404.jsp
+/apps/sling/servlet/errorhandler/500.jsp</pre>
+                    </li>
+                    <li>Use Sightly or JSP to render user-friendly messages and optionally log error details.</li>
+                    <li>Don't forget to suppress stack traces in production to prevent information leakage.</li>
+                </ul>
+                <h3>Debugging Tips</h3>
+                <ul>
+                    <li>
+                        Log request URI and exception message inside the handler:
+                        <pre>&lt;%@ page isErrorPage="true" %&gt;
+&lt;% log.error("Error occurred: " + exception.getMessage()); %&gt;</pre>
+                    </li>
+                    <li>Ensure the error handler scripts are allowed via dispatcher filters if accessed on publish.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Other Debugging Tools</h2>
+                <p>Besides logs and consoles, you can use external tools like <code>curl</code>, browser dev tools, and even dispatcher logs for deep inspection and debugging.</p>
+                <h3>Using <code>curl</code></h3>
+                <ul>
+                    <li>
+                        Test AEM endpoints, authentication, headers, and status codes:
+                        <pre>curl -u admin:admin http://localhost:4502/content/mysite.html -I</pre>
+                    </li>
+                    <li>
+                        Test POST requests or JSON APIs:
+                        <pre>curl -u admin:admin -F "title=Test" http://localhost:4502/bin/myservlet</pre>
+                    </li>
+                </ul>
+                <h3>Browser Developer Tools</h3>
+                <ul>
+                    <li>Inspect AJAX responses and JS errors.</li>
+                    <li>Check network status codes for 404/500 errors.</li>
+                    <li>Use the HTML tab to verify HTL variable outputs and script includes.</li>
+                    <li>Watch the request payload to debug POSTs to AEM servlets or OOTB endpoints.</li>
+                </ul>
+                <h3>Dispatcher Debugging (Advanced)</h3>
+                <ul>
+                    <li>Enable dispatcher logs to trace request caching and filtering behavior.</li>
+                    <li>Look for clues on blocked URLs, denied methods, or redirects.</li>
+                    <li>
+                        Common log files:
+                        <ul>
+                            <li><code>dispatcher.log</code></li>
+                            <li><code>access.log</code> (Apache/Nginx)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <p>To effectively debug and troubleshoot issues in AEM, follow these best practices to ensure safe, clean, and efficient investigation without compromising production stability.</p>
+                <h3>General Debugging Guidelines</h3>
+                <ul>
+                    <li>Always replicate issues in a local or staging environment before applying fixes to production.</li>
+                    <li>Use descriptive log messages that include key variable values and context.</li>
+                    <li>Never expose internal error messages or stack traces to end-users.</li>
+                </ul>
+                <h3>Logging Best Practices</h3>
+                <ul>
+                    <li>Set appropriate log levels: avoid <code>DEBUG</code> in production unless actively troubleshooting.</li>
+                    <li>Use package-level loggers to isolate logs from specific components or services.</li>
+                    <li>Clean up temporary loggers after debugging is complete.</li>
+                </ul>
+                <h3>Component & Model Debugging</h3>
+                <ul>
+                    <li>Log values in <code>@PostConstruct</code> methods to verify Sling model injection.</li>
+                    <li>Always validate <code>sling:resourceType</code> and ensure components are properly structured.</li>
+                    <li>Use test content or impersonation to simulate different user roles during testing.</li>
+                </ul>
+                <h3>Error Handling & Tools</h3>
+                <ul>
+                    <li>Create custom error pages for common error codes (e.g., 404, 500).</li>
+                    <li>Use <code>/system/console/status-slingmodels</code> to catch Sling model registration issues.</li>
+                    <li>Document and version custom error handlers just like any other component.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Summary</h2>
+                <p>Effective debugging in AEM requires a strong understanding of available tools such as log consoles, CRXDE, developer consoles, and error handlers. Combining these tools with good development hygiene, clear logging, and smart diagnostics will allow you to resolve issues faster and with more confidence.</p>
+                <p>Whether you're dealing with broken components, Sling model errors, or access control misconfigurations, this guide provides a solid foundation for diagnosing problems at every level of your AEM project.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

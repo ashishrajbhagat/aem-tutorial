@@ -18,9 +18,10 @@
             <div class="logo">
                 <h2>AEM Tutorial</h2>
             </div>
-            <nav class="nav">
-                <ul class="nav-list" id="navList"></ul>
-            </nav>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
             <div class="footer">
                 <p>&copy; 2025 AEM Tutorial</p>
             </div>
@@ -229,6 +230,89 @@
                 <p><strong>Component Overlaying</strong> refers to the practice of overriding or replacing an existing component or configuration by creating a new resource with the same name or path under a higher-priority folder in the JCR repository. This is typically done by creating a copy of a component from /libs and placing it under /apps.</p>
             </section>
             <section class="card">
+                <h2>Advanced Dialog Widgets: Multifield, Nested Multifield, and Coral/Granite Components</h2>
+                <p>AEM dialogs can include complex input structures using advanced widgets like <strong>multifield</strong> and <strong>nested multifield</strong>, often built using Coral UI or Granite UI components. These allow authors to enter lists or repeatable structured data.</p>
+                <h3>Multifield</h3>
+                <p>A multifield allows authors to enter a dynamic number of repeating values (e.g., list of FAQs, tabs, features). It can be used for simple strings or complex groups of fields.</p>
+                <pre>
+&lt;items jcr:primaryType="nt:unstructured"&gt;
+  &lt;myMultifield
+    jcr:primaryType="nt:unstructured"
+    sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+    fieldLabel="FAQs"&gt;
+    
+    &lt;field jcr:primaryType="nt:unstructured"
+           sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+           name="./faqs"/&gt;
+    
+  &lt;/myMultifield&gt;
+&lt;/items&gt;
+</pre>
+                <h3>Nested Multifield</h3>
+                <p>Nested multifields are used when each entry has multiple fields (e.g., a tab with both title and description). The <code>composite=true</code> property groups fields into one data object per entry.</p>
+                <p>Common use cases:</p>
+                <ul>
+                    <li>Tabs (title + content)</li>
+                    <li>Cards (image + title + description)</li>
+                    <li>Testimonials (avatar + name + quote)</li>
+                </ul>
+                <pre>
+&lt;myNestedMultifield
+    jcr:primaryType="nt:unstructured"
+    sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+    fieldLabel="Features"
+    composite="{Boolean}true"&gt;
+
+    &lt;field jcr:primaryType="nt:unstructured"
+           sling:resourceType="granite/ui/components/coral/foundation/container"&gt;
+      
+      &lt;items jcr:primaryType="nt:unstructured"&gt;
+        &lt;title
+          jcr:primaryType="nt:unstructured"
+          sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+          fieldLabel="Title"
+          name="./title"/&gt;
+
+        &lt;desc
+          jcr:primaryType="nt:unstructured"
+          sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+          fieldLabel="Description"
+          name="./desc"/&gt;
+      &lt;/items&gt;
+
+    &lt;/field&gt;
+&lt;/myNestedMultifield&gt;
+</pre>
+                <h3>Binding Dropdowns and Datasources Inside Multifields</h3>
+                <p>You can bind dynamic dropdowns using a datasource servlet inside nested multifields. Example:</p>
+                <pre>
+&lt;country
+  jcr:primaryType="nt:unstructured"
+  sling:resourceType="granite/ui/components/coral/foundation/form/select"
+  name="./country"
+  fieldLabel="Country"
+  datasource="countryListDatasource"/&gt;
+</pre>
+                <p>📌 Make sure your servlet returns JSON in the correct format and is mapped via <code>sling:resourceType</code> or <code>dataSource</code>.</p>
+                <h3>Coral UI vs Granite UI</h3>
+                <ul>
+                    <li><strong>Granite UI:</strong> AEM's server-side framework for building author dialogs using XML.</li>
+                    <li><strong>Coral UI:</strong> The client-side component library built by Adobe, used inside Granite (e.g., textfield, dropdown, checkbox).</li>
+                    <li>Most dialog widgets use Coral v3 via Granite's <code>sling:resourceType</code> bindings.</li>
+                </ul>
+                <h3>Common Coral Components</h3>
+                <ul>
+                    <li><code>granite/ui/components/coral/foundation/form/textfield</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/textarea</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/checkbox</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/select</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/multifield</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/autocomplete</code></li>
+                </ul>
+                <p>Coral/Granite-based dialogs are powerful and flexible, allowing structured authoring experiences inside Touch UI.</p>
+                <p>Advanced dialogs like these significantly improve authoring experience and encourage reuse of structured data patterns across multiple pages/components.</p>
+            </section>
+            <section class="card">
                 <h2>Using Sling Resource Merger in AEM</h2>
                 <p>Sling Resource Merger in AEM allows developers to extend, modify, and customize existing resources without altering the core structure. This approach ensures smooth upgrades and better maintainability.</p>
                 <h3>Capabilities of Sling Resource Merger</h3>
@@ -247,7 +331,7 @@
                 <p>Hides specific child nodes while keeping their properties intact. Using <code>*</code> hides all child nodes.</p>
                 <h4>4. <code>sling:orderBefore</code> (String)</h4>
                 <p>Determines the position of the current node by placing it before the specified sibling node in the merged hierarchy.</p>
-            </section>            
+            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

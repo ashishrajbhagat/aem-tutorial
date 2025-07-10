@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM as Headless CMS</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM as Headless CMS</h1>
+            <section class="card">
+                <h2>What is a Headless CMS?</h2>
+                <p>A Headless CMS decouples the content management backend from the front-end presentation. Instead of rendering HTML on the server, it exposes content via APIs, typically in JSON format, so that any front-end application (web, mobile, IoT, SPA, etc.) can consume and render it however it likes.</p>
+                <p>Adobe Experience Manager (AEM) supports headless delivery using multiple technologies like:</p>
+                <ul>
+                    <li><strong>Content Fragment APIs (REST & GraphQL)</strong></li>
+                    <li><strong>Sling Model Exporter (JSON Exporter)</strong></li>
+                    <li><strong>Page Model Exporter</strong> for structured content delivery</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Use Cases for AEM as Headless</h2>
+                <ul>
+                    <li>Building SPAs using React, Angular, Vue</li>
+                    <li>Mobile apps pulling content dynamically</li>
+                    <li>Serving content to smart TVs or kiosks</li>
+                    <li>Sharing content across multiple platforms from a single AEM instance</li>
+                </ul>
+                <p>AEM's hybrid capabilities also allow combining traditional authoring with headless delivery.</p>
+            </section>
+            <section class="card">
+                <h2>Content Fragments for Headless Delivery</h2>
+                <p><strong>Content Fragments</strong> are structured content objects created using fragment models. These are ideal for headless because they separate content from layout and support reusable, channel-neutral content.</p>
+                <h3>Steps to Set Up Content Fragments:</h3>
+                <ol>
+                    <li>Create a <strong>Content Fragment Model</strong> using schema editor under <code>/conf</code></li>
+                    <li>Create <strong>Content Fragments</strong> based on the model</li>
+                    <li>Expose them via <strong>GraphQL or REST APIs</strong></li>
+                </ol>
+                <p>They support nested references, multilingual content, versioning, and validations - making them ideal for headless delivery.</p>
+            </section>
+            <section class="card">
+                <h2>Using AEM GraphQL API</h2>
+                <p>AEM exposes a native <strong>GraphQL API</strong> for content fragments that allows flexible, efficient querying of structured content. You can:</p>
+                <ul>
+                    <li>Query only the fields you need</li>
+                    <li>Filter, paginate, and sort results</li>
+                    <li>Use persisted queries for performance and security</li>
+                </ul>
+                <h3>Endpoint:</h3>
+                <pre>/content/graphql/global/endpoint.json</pre>
+                <h3>Example Query:</h3>
+                <pre>
+query {
+  allProductList {
+    items {
+      title
+      description
+      price
+    }
+  }
+}</pre>
+                <p>GraphQL queries can be tested in the AEM GraphQL IDE or executed from any frontend.</p>
+            </section>
+            <section class="card">
+                <h2>Using JSON Exporter (Sling Model Exporter)</h2>
+                <p>Sling Model Exporter can expose any AEM component as JSON. You annotate your Java models using <code>@Exporter</code> and configure them to serialize as JSON.</p>
+                <h3>Sample Java Code:</h3>
+                <pre>
+@Model(adaptables = Resource.class, resourceType = "myproject/components/card", defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
+@Exporter(name = "jackson", extensions = "json")
+public class CardModel {
+    @ValueMapValue private String title;
+    @ValueMapValue private String description;
+    @ValueMapValue private String image;
+}</pre>
+                <p>Then, accessing the component via <code>.model.json</code> gives JSON output:</p>
+                <pre>/content/mysite/home/_jcr_content/root/container/card.model.json</pre>
+            </section>
+            <section class="card">
+                <h2>Page Model Exporter</h2>
+                <p>The Page Model Exporter provides a JSON representation of the entire page structure, useful for SPAs. It includes components and their content, layout structure, etc.</p>
+                <p>Used primarily with AEM SPA Editor (React/Vue).</p>
+                <h3>Example:</h3>
+                <pre>/content/mysite/home.model.json</pre>
+                <p>This output is typically consumed by frontend frameworks to render a page dynamically based on the JSON structure.</p>
+            </section>
+            <section class="card">
+                <h2>Authoring Experience for Headless</h2>
+                <ul>
+                    <li>Content authors still use the AEM interface to create fragments, manage metadata, and organize content</li>
+                    <li>Authors don't worry about layout — they focus on pure content</li>
+                    <li>Editors can preview API content via custom preview setups</li>
+                </ul>
+                <p>Headless doesn't mean losing authoring experience — AEM supports structured, reusable, and validated content models.</p>
+            </section>
+            <section class="card">
+                <h2>Hybrid CMS: Headless + Traditional</h2>
+                <p>AEM is not purely headless — it supports both traditional (full page rendering) and headless (API-driven) use cases. You can:</p>
+                <ul>
+                    <li>Use Experience Fragments in both SPA and traditional sites</li>
+                    <li>Use React/Vue in components inside traditional pages</li>
+                    <li>Expose only part of the site as API, rest via HTML</li>
+                </ul>
+                <p>This hybrid capability is a major strength of AEM compared to pure headless CMSes.</p>
+            </section>
+            <section class="card">
+                <h2>Security & API Considerations</h2>
+                <ul>
+                    <li>Use <strong>CSRF protection</strong> and <strong>authentication headers</strong> when exposing APIs publicly</li>
+                    <li>Restrict access using ACLs and custom filters</li>
+                    <li>Use <strong>Persisted Queries</strong> with GraphQL for performance and control</li>
+                </ul>
+                <p>AEM supports token-based auth and dispatcher-level caching for APIs as well.</p>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Design reusable and scalable content fragment models</li>
+                    <li>Use Sling Models Exporter for granular JSON control</li>
+                    <li>Always include metadata in your models (title, tags, etc.)</li>
+                    <li>Test GraphQL endpoints with tools like Postman or Altair</li>
+                    <li>Leverage Hybrid delivery when needed</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Conclusion</h2>
+                <p>AEM's support for headless content delivery makes it a powerful and flexible platform for modern digital experiences. Whether you're building a mobile app, an SPA, or delivering omnichannel content, AEM's headless capabilities — via GraphQL, JSON Exporter, and hybrid rendering — offer robust solutions with the power of enterprise-level content authoring.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

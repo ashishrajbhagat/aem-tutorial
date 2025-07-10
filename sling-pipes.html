@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Sling Pipes</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Sling Pipes</h1>
+            <section class="card">
+                <h2>What are Sling Pipes?</h2>
+                <p>Sling Pipes is an Apache Sling toolset that allows developers to perform complex, repeatable, and rule-based content manipulations within the AEM JCR repository using a declarative approach.</p>
+                <p>Unlike traditional Java code or Groovy scripts, Sling Pipes define the flow of operations using configuration in the repository, often under <code>/conf</code> or <code>/apps</code>. Pipes can be executed programmatically, via JMX, or using the provided console.</p>
+                <p>Think of them as "JCR pipelines" to read, write, transform, or query nodes efficiently.</p>
+            </section>
+            <section class="card">
+                <h2>When to Use Sling Pipes?</h2>
+                <ul>
+                    <li>Performing bulk content updates or creation</li>
+                    <li>Restructuring large parts of the JCR</li>
+                    <li>Reading/writing metadata at scale</li>
+                    <li>Creating pages or assets in loops</li>
+                    <li>Automating cleanup or migrations</li>
+                </ul>
+                <p><strong>Example Use Case:</strong> You need to update the title of 5000 pages based on a custom rule. A pipe can do this in a few lines.</p>
+            </section>
+            <section class="card">
+                <h2>Basic Concepts</h2>
+                <ul>
+                    <li><strong>Pipe:</strong> The unit of work — defines a step or transformation</li>
+                    <li><strong>Plumber:</strong> The service responsible for executing the pipe</li>
+                    <li><strong>Expr:</strong> Expressions used for dynamic values (like `${item.name}`)</li>
+                    <li><strong>Bindings:</strong> Parameters passed to the pipe</li>
+                    <li><strong>Writer Pipe:</strong> Pipe that modifies or writes JCR content</li>
+                    <li><strong>Container Pipe:</strong> Parent that can contain sub-pipes</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>How to Configure a Sling Pipe</h2>
+                <ol>
+                    <li>Create a node under <code>/conf</code> or <code>/apps</code> using <code>sling:Folder</code>.</li>
+                    <li>Under it, create a node of type <code>sling:Folder</code> with <code>sling:resourceType = "slingPipes/container"</code>.</li>
+                    <li>Add child nodes for each step (e.g., <code>slingPipes/write</code>, <code>slingPipes/path</code>).</li>
+                </ol>
+                <h4>Example Structure:</h4>
+                <pre>
+/conf/myproject/pipes/updateTitles
+    - sling:resourceType = slingPipes/container
+    + writeStep
+        - sling:resourceType = slingPipes/write
+        - path = /content/my-site
+        - name = jcr:title
+        - value = "Updated Title"
+        </pre>
+            </section>
+            <section class="card">
+                <h2>Common Pipe Types</h2>
+                <ul>
+                    <li><code>slingPipes/path</code> - Selects nodes by path</li>
+                    <li><code>slingPipes/echo</code> - Just returns its input (for debug/test)</li>
+                    <li><code>slingPipes/write</code> - Writes properties</li>
+                    <li><code>slingPipes/json</code> - Outputs to JSON</li>
+                    <li><code>slingPipes/container</code> - Holds child steps</li>
+                    <li><code>slingPipes/reference</code> - References another pipe (reusability)</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Executing a Pipe</h2>
+                <p>You can run Sling Pipes in the following ways:</p>
+                <ul>
+                    <li><strong>Via JMX Console:</strong> Go to <code>/system/console/jmx</code> → Sling Pipes → invokePlumber</li>
+                    <li><strong>Via Sling Pipes Console:</strong> Access <code>/bin/pipes.html</code> in your browser</li>
+                    <li><strong>Via Code:</strong> Use the <code>Plumber</code> OSGi service</li>
+                </ul>
+                <pre>
+@Reference
+Plumber plumber;
+
+Pipe pipe = plumber.getPipe(resourceResolver, "/conf/myproject/pipes/updateTitles");
+ExecutionResult result = pipe.getOutput();
+        </pre>
+            </section>
+            <section class="card">
+                <h2>Advanced Use Cases</h2>
+                <ul>
+                    <li>Creating dynamic content trees (e.g., sections, pages, folders)</li>
+                    <li>Pulling content from external sources and writing to JCR</li>
+                    <li>Batch tagging of assets or updating metadata</li>
+                    <li>Creating packages dynamically and replicating them</li>
+                </ul>
+                <p>You can also combine pipes with Sling Jobs, Scheduler, or custom logic for more automation.</p>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use a dedicated location like <code>/conf/</code> for your pipes</li>
+                    <li>Always test on lower environments first</li>
+                    <li>Use echo pipe and JSON output to debug logic</li>
+                    <li>Modularize reusable steps with reference pipes</li>
+                    <li>Monitor executions via logs or JMX</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Conclusion</h2>
+                <p>Sling Pipes offer a flexible, low-code approach to perform content changes at scale. Whether you're migrating old content, creating thousands of pages, or simply updating metadata — pipes can help simplify the effort and reduce boilerplate Java code.</p>
+                <p>They're fast, maintainable, and integrate well with AEM's core concepts.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>
