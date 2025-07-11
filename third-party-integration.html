@@ -92,6 +92,33 @@ x-api-key: abc123xyz</pre>
                 </ul>
             </section>
             <section class="card">
+                <h2>🔐 Secure Storage of Client ID and Tokens</h2>
+                <p>Storing sensitive credentials like Client ID, Client Secret, or API tokens directly in code is a security risk. AEM recommends using <strong>OSGi configurations</strong> or <strong>environment-based secrets</strong> to manage such credentials securely.</p>
+                <h4>✅ 1. Using OSGi Configuration</h4>
+                <ul>
+                    <li>Create a configuration interface using <code>@ObjectClassDefinition</code> and <code>@AttributeDefinition</code></li>
+                    <li>Store credentials securely in the OSGi Console or deploy via config files</li>
+                    <li>Example: <code>/apps/myproject/config.prod/com.myproject.core.services.impl.ApiAuthServiceImpl.cfg.json</code></li>
+                </ul>
+                <pre>
+{
+  "client.id": "******",
+  "client.secret": "******"
+}</pre>
+                <h4>✅ 2. Using Environment Variables (AEM as a Cloud Service)</h4>
+                <ul>
+                    <li>Use environment-specific variables and reference them in your <code>.env</code> or Cloud Manager Git repository</li>
+                    <li>Avoid committing secrets into Git</li>
+                    <li>Leverage <code>env.json</code> or secret references during build/deploy phase</li>
+                </ul>
+                <h4>✅ 3. Other Best Practices</h4>
+                <ul>
+                    <li>Use HTTPS for all outbound API communication</li>
+                    <li>Never log sensitive values (use masking if logging necessary)</li>
+                    <li>Restrict access to config consoles in lower and prod environments</li>
+                </ul>
+            </section>
+            <section class="card">
                 <h2>Calling External REST APIs</h2>
                 <p>Use <strong>Apache HttpComponents</strong> (bundled in AEM SDK) to make HTTP calls to external REST endpoints.</p>
                 <h3>Example using CloseableHttpClient</h3>

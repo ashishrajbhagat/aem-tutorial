@@ -222,18 +222,6 @@ const sections = [{
         ]
     },
     {
-        title: "Security & Administration",
-        items: [{
-                href: "authentication-and-user-management.html",
-                text: "Authentication and User Management"
-            },
-            {
-                href: "ssl-secure-login.html",
-                text: "SSL Secure Login"
-            }
-        ]
-    },
-    {
         title: "Tools & Extensions",
         items: [{
                 href: "acs-commons.html",
@@ -242,6 +230,10 @@ const sections = [{
             {
                 href: "dynamic-media.html",
                 text: "Dynamic Media"
+            },
+            {
+                href: "digital-asset-management.html",
+                text: "Digital Asset Management"
             },
             {
                 href: "sling-pipes.html",
@@ -258,6 +250,22 @@ const sections = [{
             {
                 href: "aem-forms.html",
                 text: "AEM Forms"
+            },
+            {
+                href: "console-customization.html",
+                text: "Console & UI Customization"
+            }
+        ]
+    },
+    {
+        title: "Security & Administration",
+        items: [{
+                href: "authentication-and-user-management.html",
+                text: "Authentication and User Management"
+            },
+            {
+                href: "ssl-secure-login.html",
+                text: "SSL Secure Login"
             }
         ]
     },

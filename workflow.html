@@ -165,6 +165,14 @@
                     </li>
                     <li>Save and Activate the Workflow</li>
                 </ul>
+                <h4>🔄 Usage of the Sync Button</h4>
+                <p>The <strong>Sync</strong> button in the AEM Workflow Model Editor is used to synchronize the edited workflow model with its runtime version. This ensures that structural changes—such as adding/removing steps or modifying branches—are applied correctly and are picked up during workflow execution.</p>
+                <ul>
+                    <li><strong>When to Use:</strong> After making changes to the workflow model structure but before executing it in a live environment.</li>
+                    <li><strong>Where it Appears:</strong> The Sync button appears in the toolbar of the Workflow Model Editor (Touch UI).</li>
+                    <li><strong>Behind the Scenes:</strong> AEM stores an editable version and a runtime version of a workflow model. Clicking Sync updates the runtime version.</li>
+                </ul>
+                <p><strong>Important:</strong> If you do not sync, your changes may not take effect even if the model appears updated in the UI.</p>
             </section>
             <section class="card">
                 <h2>Creating a Custom Workflow Process</h2>

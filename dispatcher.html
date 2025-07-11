@@ -546,9 +546,59 @@ curl -I http://localhost/content/mysite/en.html
 # Invalidate cache via flush agent
 curl -X POST http://localhost:4503/dispatcher/invalidate.cache</pre>
             </section>
+            <section class="card" id="resource-mapping">
+                <h2>📍 Resource Mapping and Clean URLs</h2>
+                <p>AEM's <strong>Resource Mapping</strong> feature allows you to define clean, user-friendly, and SEO-optimized URLs by mapping internal repository paths (like <code>/content/site/en</code>) to shorter, external URLs (like <code>/en</code> or <code>/home</code>).</p>
+                <h3>🔍 Why Use Resource Mapping?</h3>
+                <ul>
+                    <li>Remove internal prefixes like <code>/content</code> or <code>/etc</code> from URLs</li>
+                    <li>Redirect legacy URLs to new ones</li>
+                    <li>Support language-based paths like <code>/en</code>, <code>/fr</code>, etc.</li>
+                    <li>Improve SEO and user readability</li>
+                </ul>
+                <h3>📁 Where to Configure Resource Mapping</h3>
+                <p>Resource mapping is configured using the special path: <code>/etc/map</code> (or <code>/conf/global/settings/mapping</code> in newer AEM versions). You can create this structure via CRXDE or package manager.</p>
+                <ul>
+                    <li><strong>CRX Path:</strong> <code>/etc/map/http</code></li>
+                    <li><strong>Example Node:</strong> <code>/etc/map/http/localhost.4503</code></li>
+                </ul>
+                <p>Each node under <code>/etc/map</code> represents a mapping rule based on hostname and path.</p>
+                <h3>🛠 Example 1: Remove <code>/content</code> from URLs</h3>
+                <p>To convert <code>/content/mysite/en/home</code> to <code>/en/home</code>:</p>
+                <pre>
++ http (sling:Folder)
+  + localhost.4503 (sling:Mapping)
+    - sling:match = "/en/home"
+    - sling:internalRedirect = "/content/mysite/en/home"</pre>
+                <h3>🛠 Example 2: Redirect Legacy Path</h3>
+                <p>Redirect <code>/old-products</code> to <code>/products</code>:</p>
+                <pre>
++ http
+  + localhost.4503
+    - sling:match = "/old-products"
+    - sling:redirect = "/products"</pre>
+                <h3>⚙️ Tips</h3>
+                <ul>
+                    <li>Always test resource mapping with Dispatcher caching in mind — improper mappings can break cache invalidation.</li>
+                    <li>Mappings are resolved before the request hits the resource resolver. They should be optimized and minimal.</li>
+                    <li>Use AEM's <strong>Resource Resolver Factory</strong> to debug mappings in Java code.</li>
+                </ul>
+                <h3>📁 Resource Resolver Factory Config</h3>
+                <p>You can also control mapping behavior using the OSGi config: <code>org.apache.sling.jcr.resource.internal.JcrResourceResolverFactoryImpl</code></p>
+                <ul>
+                    <li><strong>resource.resolver.mapping:</strong> List of mappings (e.g., <code>/content/:/</code>)</li>
+                    <li><strong>resource.resolver.virtual:</strong> Virtual URLs to be recognized</li>
+                </ul>
+                <h3>🚀 Impact on Dispatcher</h3>
+                <p>Dispatcher caching is directly affected by URL structure. So when using Resource Mapping:</p>
+                <ul>
+                    <li>Ensure mapped URLs are covered in your <code>/rules</code> and <code>/cache</code> sections</li>
+                    <li>Update rewrite rules in <code>rewrite.rules</code> or <code>vhost.conf</code> (Apache/IIS)</li>
+                    <li>Enable statfileslevel accordingly for nested clean paths</li>
+                </ul>
+            </section>
             <section class="card">
-                <h2>
-                CDN Integration with AEM and Dispatcher</h3>
+                <h2>CDN Integration with AEM and Dispatcher</h2>
                 <p>A <strong>Content Delivery Network (CDN)</strong> is a distributed network of servers strategically located across the globe. CDNs cache and deliver static and dynamic web content (e.g., images, videos, HTML, JS, CSS) to end-users from the nearest edge location, reducing latency and improving performance.</p>
                 <h3>📌 Why Use CDN with AEM?</h3>
                 <ul>

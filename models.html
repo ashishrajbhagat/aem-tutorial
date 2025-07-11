@@ -404,7 +404,80 @@ private MyCustomService myService;</pre>
                     <li>Use expressions to control rendering, like <code>data-sly-test="${myModel.isValid}"</code>.</li>
                     <li>Always design models with clear, safe methods for consumption in HTL.</li>
                 </ul>
-            </section>                                      
+            </section>
+            <section class="card">
+  <h2>🔁 Sling Model Delegation</h2>
+  <p>Sling Model Delegation allows one model to wrap or extend another, enabling reuse and separation of logic across components. It is commonly used in component inheritance, proxy models, and shared business logic.</p>
+
+  <h3>🎯 Use Cases</h3>
+  <ul>
+    <li>Component inheritance: Child component reuses parent component logic</li>
+    <li>Composition: Reuse common fields or utility models in multiple components</li>
+    <li>Decouple resource structure from model implementation</li>
+  </ul>
+
+  <h3>📦 Delegation Using <code>@Via</code> and <code>@Self</code></h3>
+  <p>You can delegate to another model using <code>@Self</code> or <code>@Via</code>.</p>
+
+  <pre>
+@Model(adaptables = Resource.class)
+public class ChildComponent {
+
+    @Self
+    private Resource resource;
+
+    @Self
+    private ParentComponent parentComponent;
+
+    public String getTitle() {
+        return parentComponent.getTitle(); // delegate to parent logic
+    }
+}</pre>
+
+  <h3>🔗 Interface Delegation</h3>
+  <p>You can use <code>@Via</code> with <code>ResourceSuperType</code> to delegate behavior from a superclass model.</p>
+  <pre>
+@Model(adaptables = Resource.class, adapters = ComponentModel.class)
+public class ProxyComponentModel {
+
+    @Self
+    @Via(type = ResourceSuperType.class)
+    private ComponentModel delegate;
+
+    public String getDescription() {
+        return delegate.getDescription(); // use inherited logic
+    }
+}</pre>
+
+  <p>🔎 <strong>Tip:</strong> Delegation works well when components are using <code>sling:resourceSuperType</code> to inherit another component.</p>
+
+  <h3>🔁 Model Composition (Reusing Multiple Models)</h3>
+  <p>Inject reusable submodels in your main model using <code>@Self</code>:</p>
+
+  <pre>
+@Model(adaptables = Resource.class)
+public class CompositeModel {
+
+    @Self
+    private HeaderModel header;
+
+    @Self
+    private FooterModel footer;
+
+    public String getFullPageInfo() {
+        return header.getNav() + " - " + footer.getCopyright();
+    }
+}</pre>
+
+  <h3>⚠️ Best Practices</h3>
+  <ul>
+    <li>Always define shared interfaces for delegated models</li>
+    <li>Use <code>@Via(type = ResourceSuperType.class)</code> for component inheritance</li>
+    <li>Decouple Sling Models from deep resource hierarchies using delegation</li>
+    <li>Avoid circular delegation between models</li>
+  </ul>
+</section>
+
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>
