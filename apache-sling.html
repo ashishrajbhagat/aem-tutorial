@@ -90,7 +90,10 @@
             <section class="card">
                 <h2>Sling Resource Resolution</h2>
                 <p>Sling's resource resolution mechanism is responsible for mapping request URLs to JCR content nodes. It plays a crucial role in serving content dynamically in AEM.</p>
-                <img src="images/sling-resource-resolution.png" alt="Sling Resource Resolution">
+                <div class="image-container">
+                    <img src="images/sling-resource-resolution.png" alt="Sling Resource Resolution">
+                    <p>Sling Resource Resolution</p>
+                </div>
                 <h3>What is a Resource in Sling?</h3>
                 <ul>
                     <li>A resource in Sling represents any content node in the repository that can be accessed via a URL.</li>
@@ -240,8 +243,8 @@ public class MyModel {
                 <pre>
 Resource resource = request.getResource();
 MyModel model = resource.adaptTo(MyModel.class);</pre>
-            </div>
-            <div class="card">
+            </section>
+            <section class="card">
                 <h2>Sling Resource Types and Components</h2>
                 <p>Resource Types define how content is rendered in AEM.</p>
                 <h3>Understanding Sling Resource Types</h3>
@@ -264,10 +267,10 @@ MyModel model = resource.adaptTo(MyModel.class);</pre>
 &lt;sly data-sly-use.model="com.example.MyModel"&gt;
     &lt;h2&gt;${model.title}&lt;/h2&gt;
 &lt;/sly&gt;</pre>
-            </div>
+            </section>
             <section class="card">
                 <h2>Sling HTL (Sightly)</h2>
-                <p>HTL (HTML Template Language) is AEM’s recommended templating system.</p>
+                <p>HTL (HTML Template Language) is AEM's recommended templating system.</p>
                 <h3>Using HTL Expressions in Components</h3>
                 <ul>
                     <li>Use <code>${propertyName}</code> for variable binding.</li>
@@ -552,8 +555,8 @@ public class MyRewriter implements Transformer {
                     <li><strong>Uniform Interface - </strong>Resources are uniquely identified by URLs, and the representation of these resources (such as XML, JSON, or HTML) is separate from the actual resource (like a database entry). Clients interact with resources through these representations, provided they have the necessary permissions. Every message exchanged between the client and server is self-explanatory, containing all the information needed for processing. Hyperlinks and hypertext serve as the mechanism for transferring the state between the client and server.</li>
                     <li><strong>Stateless Interactions - </strong>Each client request is independent, meaning that the server does not retain any information about previous interactions. All necessary information to process a request must be included in the request itself, either through the URL, query parameters, headers, or body content.</li>
                     <li><strong>Cacheable - </strong>Responses sent by the server can be cached by the client to reduce unnecessary communication. The server must specify whether a response is cacheable or not to prevent outdated or inappropriate data from being used in subsequent requests.</li>
-                    <li><strong>Client-Server - </strong>The client and server operate independently from one another. The client is responsible for the user interface and user interaction, while the server handles data storage and management. This separation improves the client’s portability since it is not dependent on the server's internal data structures, and it simplifies the server, allowing for easier scalability.</li>
-                    <li><strong>Layered System - </strong>The architecture allows intermediates such as proxies, gateways, and load balancers between the client and the server. Clients cannot discern whether they are communicating with the end server or an intermediary. These intermediates can enhance system security and scalability by implementing policies like security and load-balancing without the client’s awareness.</li>
+                    <li><strong>Client-Server - </strong>The client and server operate independently from one another. The client is responsible for the user interface and user interaction, while the server handles data storage and management. This separation improves the client's portability since it is not dependent on the server's internal data structures, and it simplifies the server, allowing for easier scalability.</li>
+                    <li><strong>Layered System - </strong>The architecture allows intermediates such as proxies, gateways, and load balancers between the client and the server. Clients cannot discern whether they are communicating with the end server or an intermediary. These intermediates can enhance system security and scalability by implementing policies like security and load-balancing without the client's awareness.</li>
                     <li><strong>Code on Demand - </strong>In some cases, the server can extend the functionality of the client by transferring executable code. This is an optional constraint in REST and allows the client to temporarily run code provided by the server to execute certain tasks.</li>
                 </ul>
                 <h2>REST vs SOAP</h2>
