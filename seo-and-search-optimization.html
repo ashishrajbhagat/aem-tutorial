@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - SEO &amp; Search Optimization</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>SEO &amp; Search Optimization</h1>
+            <section class="card">
+                <h2>Search Engine Optimization in AEM</h2>
+                <p>SEO (Search Engine Optimization) is critical to ensure that your AEM-powered website is discoverable by search engines like Google and Bing. AEM provides powerful tools and flexibility to implement both on-page and technical SEO best practices.</p>
+                <h3>Importance of SEO for AEM Sites</h3>
+                <ul>
+                    <li>Improves organic visibility and traffic</li>
+                    <li>Supports multilingual and multisite SEO strategies</li>
+                    <li>Helps optimize performance, accessibility, and mobile readiness</li>
+                    <li>Enables structured metadata, improving click-through rates (CTR)</li>
+                </ul>
+                <h3>On-page vs. Technical SEO</h3>
+                <ul>
+                    <li><strong>On-page SEO:</strong> Deals with title tags, meta descriptions, headings, content quality, images, alt texts, etc.</li>
+                    <li><strong>Technical SEO:</strong> Involves sitemaps, robots.txt, canonical tags, page speed, structured data, and mobile-first optimization.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Sitemap Generation</h2>
+                <p>Sitemaps help search engines crawl your site effectively. AEM can generate sitemaps dynamically using custom logic or through tools like ACS AEM Commons Sitemap Servlet.</p>
+                <h3>Enabling sitemap.xml in AEM</h3>
+                <p>To generate sitemaps in AEM:</p>
+                <ul>
+                    <li>Install <strong>ACS AEM Commons</strong> (if not already installed)</li>
+                    <li>Create a Sitemap configuration under <code>/conf</code> or directly via the Sitemap Manager UI</li>
+                    <li>Access the sitemap at: <code>/content/your-site.sitemap.xml</code></li>
+                </ul>
+                <h3>Configuring Path Filters</h3>
+                <p>You can include or exclude specific paths from the sitemap using configuration:</p>
+                <pre>
+"includePaths": [
+  "/content/my-site/en",
+  "/content/my-site/fr"
+],
+"excludePaths": [
+  "/content/my-site/en/hidden",
+  "/content/my-site/en/error"
+]</pre>
+                <h3>Auto-generating Multilingual Sitemaps</h3>
+                <p>If your AEM site supports multiple languages using Language Copies or Live Copies, you can auto-generate separate sitemaps or use <code>hreflang</code> annotations for each locale.</p>
+                <p><strong>Example:</strong></p>
+                <pre>
+&lt;url&gt;
+  &lt;loc&gt;https://www.example.com/en/product.html&lt;/loc&gt;
+  &lt;xhtml:link rel="alternate" hreflang="fr" href="https://www.example.com/fr/product.html"/&gt;
+  &lt;xhtml:link rel="alternate" hreflang="es" href="https://www.example.com/es/product.html"/&gt;
+&lt;/url&gt;</pre>
+            </section>
+            <section class="card">
+                <h2>robots.txt Management</h2>
+                <p>The <code>robots.txt</code> file tells search engine crawlers which parts of your site should or should not be indexed. It's a critical part of your technical SEO setup in AEM.</p>
+                <h3>Where to Place robots.txt in AEM</h3>
+                <ul>
+                    <li>Place it under <code>/content/your-site/robots.txt</code> and configure a dispatcher rule to serve it as a flat file.</li>
+                    <li>Alternatively, you can create a specific Sling mapping at <code>/etc/robots.txt</code> and expose it as a system resource.</li>
+                    <li>Ensure the file is accessible at the root: <code>https://www.example.com/robots.txt</code></li>
+                </ul>
+                <h3>Dispatcher-Level Caching Considerations</h3>
+                <p>Since <code>robots.txt</code> rarely changes, cache it at the dispatcher level to improve performance and reduce unnecessary AEM hits.</p>
+                <pre>
+/cache {
+  /rules {
+    /0001 { /type "allow" /url "/robots.txt" }
+  }
+}</pre>
+                <h3>Allow/Disallow Rules (Examples)</h3>
+                <pre>
+User-agent: *
+Disallow: /content/secure/
+Disallow: /crx/
+Allow: /content/public/</pre>
+                <p>You can also create different rules for different crawlers if needed:</p>
+                <pre>
+User-agent: Googlebot
+Disallow: /private/
+
+User-agent: Bingbot
+Disallow: /admin/</pre>
+            </section>
+            <section class="card">
+                <h2>Meta Tags and Canonical URLs</h2>
+                <p>Properly setting page metadata and canonical URLs ensures that search engines understand your page content and avoid duplicate content issues.</p>
+                <h3>Setting &lt;title&gt; and &lt;meta&gt; Tags Dynamically</h3>
+                <ul>
+                    <li>Use the AEM Page Properties (like <code>jcr:title</code>, <code>dc:description</code>, <code>cq:tags</code>) to populate metadata</li>
+                    <li>Inject them dynamically in the page head using HTL or Sling Models</li>
+                </ul>
+                <h3>Using <code>cq:htmlTag</code> and Page Properties</h3>
+                <p>Use the <code>cq:htmlTag</code> property or custom components to dynamically include meta tags:</p>
+                <pre>
+&lt;head&gt;
+  &lt;title&gt;${currentPage.pageTitle} - My Site&lt;/title&gt;
+  &lt;meta name="description" content="${currentPage.description}" /&gt;
+  &lt;meta name="keywords" content="${currentPage['cq:tags']}" /&gt;
+&lt;/head&gt;</pre>
+                <h3>Handling Canonical URLs for SEO</h3>
+                <ul>
+                    <li>Use canonical tags to indicate the preferred version of a page</li>
+                    <li>Helpful for multilingual, multisite, or faceted navigation setups</li>
+                </ul>
+                <pre>&lt;link rel="canonical" href="https://www.example.com${currentPage.path}.html"/&gt;</pre>
+            </section>
+            <section class="card">
+                <h2>Structured Data (Schema.org Markup)</h2>
+                <p>Structured data helps search engines understand your content better. AEM sites can embed <strong>JSON-LD</strong> using custom components or via the page header.</p>
+                <h3>JSON-LD Script for Products, Articles, etc.</h3>
+                <p>Use JSON-LD (preferred by Google) to describe structured content like products, articles, breadcrumbs, and more:</p>
+                <pre>
+&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "Wireless Headphones",
+  "image": "https://www.example.com/images/headphones.jpg",
+  "description": "High-quality wireless headphones with noise cancellation.",
+  "sku": "WH-12345",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "99.99",
+    "availability": "https://schema.org/InStock"
+  }
+}
+&lt;/script&gt;</pre>
+                <h3>Embedding via Custom Components</h3>
+                <ul>
+                    <li>Create a component (e.g., <code>structured-data</code>) and bind values via Sling Models</li>
+                    <li>Include it in the page header or in relevant page templates</li>
+                    <li>Ensure the output is valid using <a href="https://search.google.com/test/rich-results" target="_blank">Google's Rich Results Test</a></li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Search Engine Integration</h2>
+                <p>Integrating with search engines allows you to monitor indexing, submit sitemaps, and improve discoverability.</p>
+                <h3>Google Search Console Verification</h3>
+                <ul>
+                    <li>Add a <code>meta</code> tag to the page header:</li>
+                    <pre>&lt;meta name="google-site-verification" content="your-verification-code" /&gt;</pre>
+                    <li>Or upload the verification file to the DAM or Dispatcher public directory and serve it from the root.</li>
+                    <li>Once verified, submit your sitemap URL (e.g., <code>https://www.example.com/sitemap.xml</code>) via the Search Console.</li>
+                </ul>
+                <h3>Bing Webmaster Integration</h3>
+                <ul>
+                    <li>Similar to Google, add the meta verification tag:</li>
+                    <pre>&lt;meta name="msvalidate.01" content="bing-verification-code" /&gt;</pre>
+                    <li>Or use the file-based method for verification.</li>
+                    <li>Submit your sitemap URL in the Bing Webmaster Tools dashboard.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>SEO Best Practices</h2>
+                <ul>
+                    <li><strong>Avoid Duplicate Content:</strong> Use canonical URLs, redirects, and proper hreflang tags.</li>
+                    <li><strong>SEO-Friendly URLs:</strong> Keep URLs clean and readable, avoid unnecessary extensions, and use Dispatcher rewrites.</li>
+                    <li><strong>Mobile-First:</strong> Ensure responsive design, use viewport meta tag, and optimize for mobile speed.</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

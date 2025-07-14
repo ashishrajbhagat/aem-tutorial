@@ -120,19 +120,6 @@
                     <li>Avoid using vanity URLs for internal-only pages or system pages</li>
                 </ul>
             </section>
-            <section class="card">
-                <h3>🔍 Troubleshooting: Pages Not Visible in Author</h3>
-                <ul>
-                    <li><strong>Check Permissions:</strong> The logged-in user might not have 'jcr:read' access on the page path. Use <code>useradmin</code> or the CRXDE to validate ACLs.</li>
-                    <li><strong>Check Page Filters:</strong> The Sites Console may have filters (e.g., by name, template, modified date). Clear filters and try again.</li>
-                    <li><strong>Check Blueprint/Rollout Config:</strong> If using MSM (Multi-Site Manager), rollout config issues may prevent visibility.</li>
-                    <li><strong>Check for Deleted or Deactivated Pages:</strong> Pages that have been deactivated (unpublished) might still exist in Author but may be hidden due to filter settings.</li>
-                    <li><strong>Check if Page was Moved or Renamed:</strong> Use CRXDE to look for the page under its expected path. You might be searching in the wrong location.</li>
-                    <li><strong>Replication Status:</strong> Ensure pages weren't replicated without proper approval (check Replication tab in Page Properties).</li>
-                    <li><strong>Check for Workspace Corruption:</strong> Rarely, inconsistencies in JCR may cause indexing issues. Restart or reindex if needed.</li>
-                </ul>
-                <p><strong>Tip:</strong> Use CRXDE Lite (<code>/crx/de</code>) to search for the page path directly and validate its node structure.</p>
-            </section>
             <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
         </main>
         <script src="js/script.js"></script>

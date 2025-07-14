@@ -78,7 +78,7 @@
                 <h2>Live Configuration Refresh (No Restart)</h2>
                 <p>When you deploy new or updated configuration files (e.g., via package or deployment pipeline), AEM automatically detects changes and applies them at runtime. There is <strong>no need to restart the server</strong>.</p>
                 <p>This live refresh mechanism is one of the key benefits of the OSGi modular framework.</p>
-                <p><strong>Tip:</strong> If changes are not reflecting, check that there’s no runtime config at <code>/apps/system/config</code> or <code>/var/config</code> overriding your code-based config.</p>
+                <p><strong>Tip:</strong> If changes are not reflecting, check that there's no runtime config at <code>/apps/system/config</code> or <code>/var/config</code> overriding your code-based config.</p>
             </section>
             <section class="card">
                 <h2>Configuration Resolution & Pitfalls</h2>
@@ -111,6 +111,64 @@
   "scheduler.expression": "0 0 12 * * ?",
   "description": "Daily cleanup task"
 }</pre>
+            </section>
+            <section class="card">
+                <h2>OSGi Configurations vs Environment Variables</h2>
+                <p>While both <strong>OSGi Configurations</strong> and <strong>Environment Variables</strong> are used to configure applications in AEM, they serve different purposes and are used in different contexts.</p>
+                <h3>1. OSGi Configurations</h3>
+                <ul>
+                    <li>Stored in the JCR at <code>/apps</code> or <code>/conf</code> as part of the codebase or deployed via packages</li>
+                    <li>Managed via the OSGi Web Console (<code>/system/console/configMgr</code>)</li>
+                    <li>Used to configure AEM-specific services (e.g., custom services, HTTP clients, schedulers)</li>
+                    <li>Supports factory configurations, inheritance, and PID-based targeting</li>
+                </ul>
+                <p><strong>Example:</strong> Configuring a custom scheduler via PID:</p>
+                <pre>
+com.ashish.aem.schedulers.MySchedulerImpl.cfg.json
+{
+  "scheduler.expression": "0 0/5 * * * ?",
+  "scheduler.enabled": true
+}</pre>
+                <h3>2. Environment Variables</h3>
+                <ul>
+                    <li>Defined at the system or container level (OS, Docker, Cloud Manager)</li>
+                    <li>Ideal for injecting secrets or environment-specific credentials (e.g., API keys, tokens)</li>
+                    <li>Not stored in the codebase — improves security and flexibility</li>
+                    <li>Common in AEM as a Cloud Service via Cloud Manager or Kubernetes secrets</li>
+                </ul>
+                <p><strong>Example:</strong> Accessing env vars in Java:</p>
+                <pre>String apiKey = System.getenv("PAYMENT_GATEWAY_API_KEY");</pre>
+                <h3>📌 When to Use What?</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Use OSGi Config</th>
+                                <th>Use Environment Variable</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Feature toggles (enabled/disabled flags)</td>
+                                <td>Sensitive values (client secrets, passwords)</td>
+                            </tr>
+                            <tr>
+                                <td>Configurable endpoints per environment</td>
+                                <td>Secrets required by custom REST clients</td>
+                            </tr>
+                            <tr>
+                                <td>Scheduler timing expressions</td>
+                                <td>Values that shouldn't be stored in git</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>🚀 Best Practices</h3>
+                <ul>
+                    <li>Use OSGi for service configurations you want editable via console or deployable via code</li>
+                    <li>Use env vars for sensitive or dynamic values not meant to be committed</li>
+                    <li>In AEMaaCS, define env vars in Cloud Manager and access via <code>System.getenv()</code></li>
+                </ul>
             </section>
             <section class="card">
                 <h2>Conclusion</h2>

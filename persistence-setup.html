@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Persistence Setup</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Persistence Setup in AEM</h1>
+            <section class="card">
+                <h2>Overview of Persistence in AEM</h2>
+                <p>Persistence in AEM refers to how the application stores and retrieves content, configuration, user data, and assets. Adobe Experience Manager uses the <strong>Apache Jackrabbit Oak</strong> repository, which implements the <a href="https://jackrabbit.apache.org/oak/" target="_blank">Java Content Repository (JCR)</a> specification for structured content storage.</p>
+                <h3>Segment Store vs. Data Store</h3>
+                <ul>
+                    <li><strong>Segment Store:</strong> Stores metadata, content structure, node information, and version history. It is used for fast reads and efficient garbage collection.</li>
+                    <li><strong>Data Store:</strong> Stores large binary files (like images, PDFs, videos). Binaries are stored outside the segment store to keep the repository compact and performant.</li>
+                </ul>
+                <h3>Role of Oak</h3>
+                <p>Oak is the underlying repository engine in AEM, responsible for:</p>
+                <ul>
+                    <li>Node storage and traversal</li>
+                    <li>Versioning and observation</li>
+                    <li>Access control enforcement</li>
+                    <li>Supporting multiple backends like TarMK and MongoMK</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>TarMK</h2>
+                <p><strong>TarMK</strong> is the default and recommended persistence backend for most AEM installations. It uses a <strong>tar file–based segment store</strong> to efficiently store content and perform compaction.</p>
+                <h3>How It Works</h3>
+                <ul>
+                    <li>All content metadata and structure are stored in TAR files (append-only, immutable segments).</li>
+                    <li>Binary files (assets) can be stored in a separate file data store or embedded inside the segment store.</li>
+                    <li>Garbage collection (revision cleanup) is periodically run to compact and optimize storage.</li>
+                </ul>
+                <h3>Ideal Use Cases</h3>
+                <ul>
+                    <li>Author or publish instances with local storage</li>
+                    <li>Single-node AEM setups</li>
+                    <li>Cloud-native deployments (AEMaaCS uses TarMK)</li>
+                </ul>
+                <h3>Pros and Cons</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pros</th>
+                                <th>Cons</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>High performance for most workloads</td>
+                                <td>Not suitable for clustered authoring environments</td>
+                            </tr>
+                            <tr>
+                                <td>Simple to maintain and back up</td>
+                                <td>No horizontal scalability for author</td>
+                            </tr>
+                            <tr>
+                                <td>Efficient GC and compaction</td>
+                                <td>Write operations not distributed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="card">
+                <h2>MongoMK</h2>
+                <p><strong>MongoMK</strong> is an Oak-based persistence backend that uses <strong>MongoDB</strong> as the document store. It is designed to support clustered AEM author instances in high-availability environments.</p>
+                <h3>Architecture</h3>
+                <ul>
+                    <li>Uses MongoDB for storing content nodes, properties, and version history (Document Store).</li>
+                    <li>Shares a <strong>blob store</strong> (e.g., file data store or Amazon S3) across all cluster nodes to store binaries like images and PDFs.</li>
+                    <li>Cluster nodes replicate writes through Oak's asynchronous journaling mechanism to maintain consistency.</li>
+                </ul>
+                <h3>When to Use MongoMK</h3>
+                <ul>
+                    <li>Clustered author environments where multiple author nodes are required for scalability or high availability.</li>
+                    <li>Geographically distributed authoring teams requiring failover capabilities.</li>
+                    <li>Enterprise deployments with strict uptime and scaling requirements.</li>
+                </ul>
+                <h3>Limitations & Challenges</h3>
+                <ul>
+                    <li>Not supported in AEM as a Cloud Service (AEMaaCS is TarMK-only).</li>
+                    <li>Higher complexity in deployment and maintenance.</li>
+                    <li>Requires careful tuning of MongoDB, Oak, and AEM configurations.</li>
+                    <li>Compaction and garbage collection can be slower than TarMK.</li>
+                </ul>
+                <h3>MongoDB Compatibility</h3>
+                <p>Supported MongoDB versions depend on the AEM version. Typically, Oak supports MongoDB 4.x or higher with WiredTiger storage engine. Always check the <a href="https://experienceleague.adobe.com/" target="_blank">Adobe compatibility matrix</a> before upgrading.</p>
+            </section>
+            <section class="card">
+                <h2>TarMK vs. MongoMK</h2>
+                <p>Choosing between TarMK and MongoMK depends on your AEM architecture and scaling needs. Here’s a comparison:</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>TarMK</th>
+                                <th>MongoMK</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Use Case</td>
+                                <td>Single-node (author/publish)</td>
+                                <td>Clustered author environments</td>
+                            </tr>
+                            <tr>
+                                <td>Scalability</td>
+                                <td>Vertical scaling</td>
+                                <td>Horizontal (multi-node) scaling</td>
+                            </tr>
+                            <tr>
+                                <td>Complexity</td>
+                                <td>Low</td>
+                                <td>High</td>
+                            </tr>
+                            <tr>
+                                <td>Performance</td>
+                                <td>Faster for most operations</td>
+                                <td>Slightly slower due to network overhead</td>
+                            </tr>
+                            <tr>
+                                <td>Storage Engine</td>
+                                <td>Tar file segments</td>
+                                <td>MongoDB documents</td>
+                            </tr>
+                            <tr>
+                                <td>Supported in AEMaaCS</td>
+                                <td>✅</td>
+                                <td>❌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Recommendation Summary</h3>
+                <ul>
+                    <li><strong>TarMK:</strong> Use for most AEM deployments — fast, simple, supported in AEMaaCS.</li>
+                    <li><strong>MongoMK:</strong> Use only if you require clustered authoring with high availability and are on AEM on-premise or AMS.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Data Store Options</h2>
+                <p>In AEM, content persistence is split into two layers:</p>
+                <ul>
+                    <li><strong>Segment Store:</strong> Stores structured content (nodes and properties).</li>
+                    <li><strong>Data Store:</strong> Stores large binary assets like images, videos, PDFs.</li>
+                </ul>
+                <h3>When to Use an External Data Store</h3>
+                <ul>
+                    <li>For large repositories with heavy asset usage (e.g., DAM-heavy environments).</li>
+                    <li>To improve backup/restore performance by isolating binaries from structured content.</li>
+                    <li>When using clustered environments — shared blob storage is mandatory.</li>
+                </ul>
+                <h3>Shared Data Store Configurations</h3>
+                <p>Data stores like <strong>FileDataStore</strong> or <strong>S3DataStore</strong> can be shared across TarMK or MongoMK nodes. These must be accessible with consistent paths or buckets and are configured via OSGi.</p>
+            </section>
+            <section class="card">
+                <h2>Amazon S3 Integration</h2>
+                <p><strong>S3DataStore</strong> enables storing AEM binary data in Amazon S3. This reduces local disk usage and leverages scalable, durable object storage.</p>
+                <h3>When to Use S3DataStore</h3>
+                <ul>
+                    <li>When managing large volumes of assets (hundreds of GBs or more).</li>
+                    <li>In cloud-first or hybrid environments where AWS is used.</li>
+                    <li>In AEM on AMS (Adobe Managed Service) or AEM on Cloud environments (S3 is pre-integrated).</li>
+                </ul>
+                <h3>Supported Deployment Environments</h3>
+                <ul>
+                    <li>✅ AEM On-Premise</li>
+                    <li>✅ AEM on AMS</li>
+                    <li>❌ Not configurable by customers in AEM as a Cloud Service (pre-managed)</li>
+                </ul>
+                <h3>Key Configuration Requirements</h3>
+                <ul>
+                    <li>Create an AWS S3 bucket.</li>
+                    <li>Assign an IAM Role or user credentials with full access to that bucket.</li>
+                    <li>Provide region and bucket details in the AEM config file.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Configuring S3 DataStore</h2>
+                <p>Below is a sample configuration for using Amazon S3 with AEM. The config is applied using the Felix Console or via filesystem in <code>crx-quickstart/install</code>.</p>
+                <h3>Sample Configuration File</h3>
+                <pre>{
+  "accessKey": "your-access-key",
+  "secretKey": "your-secret-key",
+  "bucket": "aem-binary-bucket",
+  "region": "us-east-1",
+  "path": "/mnt/data/datastore",
+  "cacheSize": "64GB",
+  "maxConnections": "50",
+  "upload": "parallel"
+}</pre>
+                <p>Configuration PID: <code>org.apache.jackrabbit.oak.plugins.blob.datastore.S3DataStore</code></p>
+                <h3>Cloud Manager vs. On-Premise Setup</h3>
+                <ul>
+                    <li><strong>Cloud Manager:</strong> Upload configuration to Git repo under <code>/ui.config</code> in the correct runmode folders (e.g., <code>author</code> or <code>all</code>).</li>
+                    <li><strong>On-Premise:</strong> Drop the config file directly in <code>crx-quickstart/install</code> or configure through Web Console (Felix).</li>
+                </ul>
+                <h3>Testing & Mounting</h3>
+                <ul>
+                    <li>Validate that the S3 bucket is being populated after asset uploads.</li>
+                    <li>Check for logs indicating successful connections to AWS.</li>
+                    <li>Monitor asset replication and response times after enabling the config.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>GC & Compaction</h2>
+                <p>Garbage Collection (GC) is critical in AEM's persistence layer to free up disk space from deleted or updated content that is no longer referenced.</p>
+                <h3>TarMK Compaction</h3>
+                <ul>
+                    <li>Uses <strong>segment-based storage</strong> that requires <em>offline or online compaction</em> to remove stale segments.</li>
+                    <li><strong>Offline compaction:</strong> Recommended during maintenance windows. Performed using <code>oak-run.jar</code>.</li>
+                    <li><strong>Online compaction:</strong> Supported in newer AEM versions but not as thorough as offline.</li>
+                </ul>
+                <h3>Running Offline Compaction</h3>
+                <pre>java -jar oak-run.jar compact /path/to/crx-quickstart/repository/segmentstore</pre>
+                <p>Make sure AEM is shut down before running offline compaction.</p>
+                <h3>Scheduling GC Jobs</h3>
+                <ul>
+                    <li>Use OSGi configuration for <code>org.apache.jackrabbit.oak.segment.SegmentNodeStoreService</code></li>
+                    <li>Define compaction schedule and thresholds (e.g., every Sunday at midnight).</li>
+                </ul>
+                <h3>MongoMK Compaction</h3>
+                <ul>
+                    <li>Relies on MongoDB's internal mechanisms. No offline compaction is required.</li>
+                    <li>Background GC runs periodically to remove orphaned blobs and references.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Performance Considerations</h2>
+                <p>Persistence performance directly affects repository responsiveness and scalability.</p>
+                <h3>Key Factors</h3>
+                <ul>
+                    <li><strong>Disk I/O:</strong> TarMK is disk-intensive; use SSDs for faster read/write.</li>
+                    <li><strong>Network Latency:</strong> MongoMK and S3 setups require low-latency network access for responsiveness.</li>
+                    <li><strong>Blob Fetch Delays:</strong> Using S3? Monitor latency when fetching large assets.</li>
+                </ul>
+                <h3>Monitoring Storage</h3>
+                <ul>
+                    <li>Use AEM Operations Dashboard or JMX monitoring.</li>
+                    <li>Track segment size, datastore size, and asset growth trends.</li>
+                    <li>Set up alerts when disk space or blob storage reaches thresholds.</li>
+                </ul>
+                <h3>Avoiding Corruption</h3>
+                <ul>
+                    <li>Always shut down AEM gracefully — avoid forced kills.</li>
+                    <li>Perform regular backups and verify snapshot consistency.</li>
+                    <li>Compact repositories regularly to maintain healthy segment structures.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li><strong>Use TarMK</strong> unless MongoMK is specifically required (e.g., large author clusters).</li>
+                    <li><strong>Store binaries externally</strong> using FileDataStore or S3 to offload large binary data.</li>
+                    <li><strong>Monitor growth</strong> of both segment and data stores — especially in DAM-heavy implementations.</li>
+                    <li><strong>Automate backups</strong> and segment compactions to avoid repository bloat.</li>
+                    <li><strong>Use latest Oak versions</strong> and update regularly for performance, GC, and stability improvements.</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="js/script.js"></script>
+    </body>
+</html>

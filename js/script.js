@@ -218,6 +218,18 @@ const sections = [{
             {
                 href: "content-migration.html",
                 text: "Content Migration Best Practices"
+            },
+            {
+                href: "seo-and-search-optimization.html",
+                text: "SEO & Search Optimization"
+            },
+            {
+                href: "persistence-setup.html",
+                text: "Persistence Setup"
+            },
+            {
+                href: "build-deployment.html",
+                text: "Build & Deployment"
             }
         ]
     },
@@ -248,12 +260,16 @@ const sections = [{
                 text: "Debugging & Troubleshooting"
             },
             {
+                href: "console-customization.html",
+                text: "Console & UI Customization"
+            },
+            {
                 href: "aem-forms.html",
                 text: "AEM Forms"
             },
             {
-                href: "console-customization.html",
-                text: "Console & UI Customization"
+                href: "aem-commerce.html",
+                text: "AEM Commerce Integration"
             }
         ]
     },
@@ -282,6 +298,27 @@ const sections = [{
             href: "cloud-manager.html",
             text: "Cloud Manager in AEMaaCS"
         }]
+    },
+    {
+        title: "Interview Questions",
+        items: [
+            {
+            href: "aem-interview.html",
+            text: "AEM Interview (Basic → Advanced)"
+            },
+            {
+            href: "aem-scenarios.html",
+            text: "AEM Scenarios & Gotchas"
+            },
+            {
+            href: "java-for-aem.html",
+            text: "Core Java for AEM Developers"
+            },
+            {
+            href: "frontend-interview.html",
+            text: "JavaScript / React / Angular"
+            }
+        ]
     }
 ];
 
