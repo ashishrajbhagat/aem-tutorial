@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Personalization and Targeting</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Personalization and Targeting</h1>
+            <section class="card">
+                <h2>What is Personalization?</h2>
+                <p>Personalization in Adobe Experience Manager (AEM) refers to the ability to tailor website content for specific audiences or user segments. Instead of delivering the same experience to all visitors, personalization allows you to show different content based on who the user is, where they are located, their browsing behavior, and more.</p>
+                <p>This enhances user engagement, improves conversion rates, and increases satisfaction by making the experience more relevant to the individual visitor.</p>
+            </section>
+            <section class="card">
+                <h2>Understanding ContextHub</h2>
+                <p><strong>ContextHub</strong> is a client-side data layer framework in AEM that collects and stores information about a user's session. It enables authors to define targeting conditions and preview how different users will experience the page using a simulator interface.</p>
+                <p>ContextHub can store various types of data such as:</p>
+                <ul>
+                    <li>Geolocation</li>
+                    <li>Browser and device info</li>
+                    <li>Previously viewed pages or products</li>
+                    <li>Logged-in user attributes</li>
+                </ul>
+                <p>It uses JavaScript stores and UI modules, which authors and developers can extend to meet specific project needs.</p>
+            </section>
+            <section class="card">
+                <h2>Creating and Managing Segments</h2>
+                <p><strong>Segments</strong> define the audience you want to target. Each segment contains one or more rules that determine whether a user matches the segment. You can create segments based on:</p>
+                <ul>
+                    <li>Profile attributes (e.g., age, location, gender)</li>
+                    <li>Visit behavior (e.g., number of visits, time spent)</li>
+                    <li>Device type or screen size</li>
+                    <li>Custom logic defined by developers</li>
+                </ul>
+                <p><strong>Steps to create a segment:</strong></p>
+                <ol>
+                    <li>Navigate to <code>Tools &gt; Personalization &gt; Segments</code> in AEM Author environment.</li>
+                    <li>Click “Create” and choose a segment template.</li>
+                    <li>Define your rules using the visual segment editor.</li>
+                    <li>Assign a title and description to your segment for clarity.</li>
+                    <li>Test the segment using the ContextHub toolbar.</li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>Targeting with Experience Fragments</h2>
+                <p><strong>Experience Fragments (XFs)</strong> are reusable content blocks that can include text, images, banners, buttons, and layouts. They’re perfect for delivering personalized content because you can create variations for different segments.</p>
+                <p><strong>Example use case:</strong> Show a different homepage hero banner to first-time visitors vs returning users.</p>
+                <p><strong>Steps:</strong></p>
+                <ol>
+                    <li>Create an Experience Fragment and add default content.</li>
+                    <li>Create variations of the XF for each target segment.</li>
+                    <li>Drag the XF into your page using the component browser.</li>
+                    <li>Enable targeting in the page editor, and associate each XF variation with a segment.</li>
+                    <li>Use ContextHub simulator to preview content for each segment.</li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>Adobe Target Integration (Optional)</h2>
+                <p>If your AEM instance is integrated with <strong>Adobe Target</strong>, you can take advantage of advanced targeting capabilities such as:</p>
+                <ul>
+                    <li>A/B testing and multivariate testing</li>
+                    <li>Automated personalization using AI/ML</li>
+                    <li>Audience sharing between AEM and Adobe Target via Experience Cloud</li>
+                </ul>
+                <p><strong>To integrate Adobe Target:</strong></p>
+                <ol>
+                    <li>Ensure your AEM is connected to Adobe IMS and has proper Target configuration.</li>
+                    <li>Use Adobe Launch or the AEM Cloud Service UI to embed Target scripts.</li>
+                    <li>Authors can define offers and targeting rules using the Target UI or directly from AEM.</li>
+                </ol>
+                <p><em>Note: Adobe Target is a paid solution and often used in enterprise-grade personalization workflows.</em></p>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Start with basic segments (like geo or device) before moving to complex rules.</li>
+                    <li>Use Experience Fragments to modularize and reuse personalized content.</li>
+                    <li>Always test segments using ContextHub to ensure targeting works as expected.</li>
+                    <li>Use Adobe Target only when you need AI-based or analytics-driven targeting at scale.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Conclusion</h2>
+                <p>Personalization and targeting in AEM let you deliver smarter, user-specific experiences. Whether you're using built-in segmentation with ContextHub or external tools like Adobe Target, AEM gives you the flexibility to manage and preview content tailored to different audiences.</p>
+                <p>Start small, use the tools effectively, and scale personalization as your site grows.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

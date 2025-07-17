@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Sites & Pages</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Sites & Pages</h1>
+            <section class="card">
+                <h2>AEM Sites, Pages, and Templates</h2>
+                <p>Adobe Experience Manager (AEM) Sites is a powerful platform that allows organizations to create and manage digital experiences. AEM Sites is built around the concept of creating, managing, and publishing content across multiple channels. Understanding how AEM organizes Sites, Pages, and Templates is crucial for developers working with the platform.</p>
+            </section>
+            <section class="card">
+                <h2>Understanding AEM Sites</h2>
+                <p>AEM Sites is the foundation for managing content. It enables the creation of a well-structured web environment where you can build and organize your websites. AEM Sites provides a central location to manage all your digital content and layouts.</p>
+                <p>Some key points about AEM Sites:</p>
+                <ul>
+                    <li><strong>Multisite Management:</strong> AEM Sites allows you to manage content across multiple sites, languages, and regions. It enables the creation of consistent digital experiences globally, while still supporting localization and personalization for each market.</li>
+                    <li><strong>Site Hierarchy:</strong> The structure of AEM Sites is hierarchical, where the root of the site is typically the parent node, and child nodes represent sub-sites, pages, and other content structures.</li>
+                    <li><strong>Site Configuration:</strong> You can configure site properties such as branding, language settings, and other key configurations directly within the Sites section in AEM.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>What are AEM Pages?</h2>
+                <p>Pages in AEM are individual pieces of content that are structured based on templates. Pages are often created and managed by authors to provide content for end-users, such as landing pages, blog posts, product pages, and more.</p>
+                <p>Key concepts of AEM Pages:</p>
+                <ul>
+                    <li><strong>Page Creation:</strong> In AEM, pages are created by authors through the use of templates. Once a page is created, it can be populated with content using components that define the layout and functionality of the page.</li>
+                    <li><strong>Page Types:</strong> AEM supports various types of pages, including static and dynamic pages. Static pages contain content that remains fixed unless manually updated, while dynamic pages may pull content dynamically based on context, such as a personalized homepage.</li>
+                    <li><strong>Versioning and Workflow:</strong> Pages in AEM can be versioned, allowing authors to make changes and revert to previous versions if necessary. Workflow processes can also be applied to pages, controlling the content approval and publishing processes.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Key Differences Between AEM Sites and AEM Pages</h2>
+                <p>While both AEM Sites and AEM Pages are part of the AEM platform, their purposes differ significantly:</p>
+                <ul>
+                    <li><strong>Purpose:</strong> AEM Sites serve as a container or organizational structure for your web presence, whereas AEM Pages are individual pieces of content that make up the website and provide the user-facing experience.</li>
+                    <li><strong>Scope:</strong> Sites manage the structure, branding, and configuration for the entire website, while Pages are the building blocks of content that can be created, edited, and published.</li>
+                    <li><strong>Granularity:</strong> Sites are broader, dealing with overall site-level configurations, while Pages are more granular, focusing on specific content that will appear on the website.</li>
+                    <li><strong>Content Management:</strong> Sites are often managed by administrators or developers for configuration purposes (such as multisite management, global settings), whereas Pages are typically managed by authors to update content and design the website experience.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Example: A Site and Its Pages</h2>
+                <p>Let's say you're managing a global website for a company:</p>
+                <ul>
+                    <li><strong>Site:</strong> The root structure could be the company's website, "www.company.com", managed as an AEM Site. Within this site, you can manage global configurations, branding, and content structure.</li>
+                    <li><strong>Pages:</strong> Within this site, you will have multiple pages like "Home", "About Us", "Contact", "Products", and "Blog", which are AEM Pages created from templates and populated with content.</li>
+                </ul>
+                <p>The Site serves as the overarching framework, while the Pages make up the individual content experiences for the user.</p>
+            </section>
+            <section class="card">
+                <h2>Visual: Site > Page > Component Hierarchy</h2>
+                <p>This diagram helps visualize the structure in AEM where a <strong>Site</strong> contains multiple <strong>Pages</strong>, and each Page is composed of reusable <strong>Components</strong>. This hierarchy is foundational to understanding how content is organized and rendered in AEM.</p>
+                <div class="image-container">
+                    <img src="/images/site-page-component.png" alt="AEM Site Page Component Hierarchy" >
+                    <p>AEM Site Page Component Hierarchy</p>
+                </div>
+            </section>
+            <section class="card">
+                <h2>How to Create an AEM Site</h2>
+                <p>Creating an AEM Site is the first step in structuring your website within AEM. Follow these steps:</p>
+                <ol>
+                    <li><strong>Access AEM Sites Console:</strong> Log into the AEM author environment and go to the Sites console. This is where you will manage and create new sites.</li>
+                    <li><strong>Click on the 'Create' Button:</strong> In the Sites console, click on the 'Create' button and select the 'Create Site' option from the dropdown menu.</li>
+                    <li><strong>Choose a Site Template:</strong> AEM will present several predefined templates for your new site. Choose the template that fits the needs of your new site. This template will define the initial layout and structure for your site.</li>
+                    <li><strong>Enter Site Details:</strong> Provide necessary details for the new site, including the name, title, language, and other configurations. These details are critical for managing and organizing your site.</li>
+                    <li><strong>Configure Site Settings:</strong> Configure any additional settings such as site properties, root node, localization, and region-specific configurations.</li>
+                    <li><strong>Create the Site:</strong> Once all settings and details are filled in, click 'Create' to initialize the site. AEM will create the site and its structure.</li>
+                    <li><strong>Review and Edit:</strong> Once the site is created, navigate through the site structure, review its layout, and make any necessary adjustments to the configurations or components.</li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>How to Create an AEM Page</h2>
+                <p>Pages are the core units of content within an AEM Site. Follow these steps to create an AEM Page:</p>
+                <ol>
+                    <li><strong>Navigate to the Site:</strong> From the Sites console, navigate to the site where you want to create the page.</li>
+                    <li><strong>Choose the Template:</strong> Once inside the site, click on the 'Create' button and select 'Create Page'. You'll be prompted to choose a template for the page. Select an existing page template that matches your content needs. Templates define the structure and layout of your page.</li>
+                    <li><strong>Enter Page Details:</strong> Provide details for the new page, such as the page title, name, URL slug, and language settings. Make sure to set the page properties correctly to ensure it's visible and searchable.</li>
+                    <li><strong>Set Page Hierarchy:</strong> Define where the page should be placed in the site's hierarchy. Choose the parent page and determine whether the new page will be a sub-page of an existing one.</li>
+                    <li><strong>Add Content to the Page:</strong> Once the page is created, open the page editor and begin adding content. You can add various AEM components such as text, images, carousels, forms, and navigation elements. Drag and drop the components into the desired layout sections.</li>
+                    <li><strong>Preview the Page:</strong> Before publishing the page, preview it to ensure that everything looks as expected. AEM provides a preview feature to see how the page will appear on the live website.</li>
+                    <li><strong>Publish the Page:</strong> Once you're satisfied with the content and layout, click on 'Publish' to make the page live. The page is now available for public viewing.</li>
+                    <li><strong>Versioning and Workflow (Optional):</strong> If necessary, set up versioning for the page and use workflows for approval before publishing it. This is especially useful in collaborative environments where multiple authors or teams are involved in content creation.</li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>Page Templates: The Bridge Between Sites and Pages</h2>
+                <p>In AEM, <strong>Page Templates</strong> act as a critical link between Sites and Pages. While Sites provide the structure and Pages deliver content, Templates define <em>how</em> those pages are built.</p>
+                <ul>
+                    <li><strong>Reusable Blueprint:</strong> Templates provide a predefined layout, structure, and allowed components that authors can reuse to create consistent pages across the site.</li>
+                    <li><strong>Authoring Experience:</strong> They define what fields are available for authors, and control the page structure via editable templates and policies.</li>
+                    <li><strong>Flexibility:</strong> Developers define templates using structure components, and authors use them to generate new pages aligned with brand and UX standards.</li>
+                </ul>
+                <p>Templates ensure that every page created under a site follows a standardized structure, making them a vital part of site governance and user experience.</p>
+            </section>
+            <section class="card">
+                <h2>Visual Hierarchy: Site > Page > Component</h2>
+                <p>This diagram shows how AEM content is structured from a high-level site down to individual components:</p>
+                <div class="image-container">
+                    <svg width="100%" height="240" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="230" y="10" width="140" height="40" fill="#3f51b5" rx="8"/>
+                        <text x="300" y="35" font-size="14" font-family="Arial" text-anchor="middle" fill="#fff">Site</text>
+                        <rect x="130" y="80" width="140" height="40" fill="#2196f3" rx="8"/>
+                        <text x="200" y="105" font-size="14" font-family="Arial" text-anchor="middle" fill="#fff">Page 1</text>
+                        <rect x="330" y="80" width="140" height="40" fill="#2196f3" rx="8"/>
+                        <text x="400" y="105" font-size="14" font-family="Arial" text-anchor="middle" fill="#fff">Page 2</text>
+                        <rect x="50" y="160" width="100" height="40" fill="#4caf50" rx="8"/>
+                        <text x="100" y="185" font-size="13" font-family="Arial" text-anchor="middle" fill="#fff">Component A</text>
+                        <rect x="180" y="160" width="100" height="40" fill="#4caf50" rx="8"/>
+                        <text x="230" y="185" font-size="13" font-family="Arial" text-anchor="middle" fill="#fff">Component B</text>
+                        <rect x="310" y="160" width="100" height="40" fill="#4caf50" rx="8"/>
+                        <text x="360" y="185" font-size="13" font-family="Arial" text-anchor="middle" fill="#fff">Component C</text>
+                        <rect x="440" y="160" width="100" height="40" fill="#4caf50" rx="8"/>
+                        <text x="490" y="185" font-size="13" font-family="Arial" text-anchor="middle" fill="#fff">Component D</text>
+                        <line x1="300" y1="50" x2="200" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <line x1="300" y1="50" x2="400" y2="80" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <line x1="200" y1="120" x2="100" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <line x1="200" y1="120" x2="230" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <line x1="400" y1="120" x2="360" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <line x1="400" y1="120" x2="490" y2="160" stroke="#333" stroke-width="2" marker-end="url(#arrow)"/>
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#333" />
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p>Each site contains multiple pages, and each page is composed of reusable components.</p>
+                </div>
+            </section>
+            <section class="card">
+                <h2>Language Copies and Live Copies</h2>
+                <p>When managing multilingual websites, AEM provides robust features like Language Copies and Live Copies. These help in efficiently localizing and maintaining content across languages and regions.</p>
+                <ul>
+                    <li><strong>Language Copy:</strong> A direct copy of the original site structure for translation purposes. Useful when each region manages content independently.</li>
+                    <li><strong>Live Copy:</strong> Created using AEM's Multi-Site Manager (MSM), where content structure and updates can be inherited and rolled out from a Blueprint.</li>
+                    <li><strong>Blueprints:</strong> Define the source content used to create Live Copies.</li>
+                    <li><strong>Rollout Configs:</strong> Define when and how content changes in the Blueprint are pushed to Live Copies.</li>
+                </ul>
+                <p>👉 For a full breakdown of MSM, check the <a href="/headless/multi-site-manager.html">Multi-Site Manager page</a>.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

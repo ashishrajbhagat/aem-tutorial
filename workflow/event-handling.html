@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Event Handling</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Event Handling</h1>
+            <section class="card">
+                <h2>Introduction to Event Handling in AEM</h2>
+                <p>Event handling in AEM is a powerful mechanism that allows developers to respond to various changes occurring within the system. These changes can be related to content updates, workflow executions, or custom application logic.</p>
+                <h3>What is an Event in AEM?</h3>
+                <ul>
+                    <li>An event in AEM is a triggered action that can be listened to and processed.</li>
+                    <li>Events can be generated from JCR (repository changes), OSGi (services), or Sling (resource modifications).</li>
+                    <li>Event handling enables asynchronous processing, logging, notifications, and automation.</li>
+                </ul>
+                <h3>Importance of Event-Driven Development</h3>
+                <ul>
+                    <li>Allows real-time response to content modifications.</li>
+                    <li>Improves performance and scalability by reducing direct dependencies.</li>
+                    <li>Enables decoupled architecture by handling tasks asynchronously.</li>
+                </ul>
+                <h3>Different Types of Event-Handling Mechanisms in AEM</h3>
+                <h4>1. Event Handler (OSGi-based)</h4>
+                <ul>
+                    <li>Listens to OSGi events such as service lifecycle changes.</li>
+                    <li>Useful for tracking OSGi configurations, system start/stop events, and other backend operations.</li>
+                    <li><strong>Example:</strong></li>
+                    <pre>
+@Component(service = EventHandler.class, immediate = true)
+public class EventHandlerExample implements EventHandler {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    @Override
+    public void handleEvent(Event event) {
+        String eventType = (String) event.getProperty("event.topics");
+        logger.info("OSGi Event Triggered :: {}", eventType);
+    }
+}</pre>
+                </ul>
+                <h4>2. Event Listener (JCR-based)</h4>
+                <ul>
+                    <li>Monitors changes in the JCR repository (e.g., node creation, modification, deletion).</li>
+                    <li>Used for tracking content updates, page activations, and workflow executions.</li>
+                    <li><strong>Example:</strong></li>
+                    <pre>
+@Component(service = EventListener.class, immediate = true)
+public class EventListenerExample implements EventListener {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Reference
+    private ResourceResolverFactory resolverFactory;
+
+    public void onEvent(EventIterator events) {
+        while (events.hasNext()) {
+            logger.info("JCR Event :: {}", events.nextEvent().getPath());
+        }
+    }
+}</pre>
+                </ul>
+                <h4>3. Resource Change Listener (Sling-based)</h4>
+                <ul>
+                    <li>Listens to resource changes at a specific path in Sling.</li>
+                    <li>More efficient than JCR event listeners for tracking content updates in AEM.</li>
+                    <li><strong>Example:</strong></li>
+                    <pre>
+@Component(service = ResourceChangeListener.class, immediate = true,
+            property = {ResourceChangeListener.PATHS + "=/content/my-site"})
+public class ResourceChangeListenerExample implements ResourceChangeListener {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Override
+    public void onChange(List&lt;ResourceChange&gt; changes) {
+        changes.forEach(change -> logger.info("Sling Resource Changed :: {}", change.getPath()));
+    }
+}</pre>
+                </ul>
+                <h3>When to Use Each Type of Event-Handling Mechanism?</h3>
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>Event Type</th>
+                            <th>Use Case</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Event Handler</strong></td>
+                            <td>For handling OSGi service lifecycle events, system changes, and configuration updates.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Event Listener</strong></td>
+                            <td>For tracking repository changes (node creation, modification, deletion).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Resource Change Listener</strong></td>
+                            <td>For listening to resource changes in AEM content efficiently.</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+            <section class="card">
+                <h2>Event Handler in AEM</h2>
+                <p>The <code>org.osgi.service.event.EventHandler</code> interface is used in AEM to listen and respond to system-level events using the <strong>OSGi Event Admin Service</strong>. It allows asynchronous communication between services for efficient event-driven behavior in AEM.</p>
+                <h3>What is an Event Handler?</h3>
+                <ul>
+                    <li>Listens to system-level or custom-defined topics within the OSGi framework.</li>
+                    <li>Handles events like page activation, workflow events, user activity, and more.</li>
+                    <li>Ideal for handling non-resource-specific events, unlike JCR EventListeners.</li>
+                    <li>Supports asynchronous processing via publish-subscribe pattern.</li>
+                </ul>
+                <h3>How OSGi Event Admin Works</h3>
+                <ul>
+                    <li>Follows the publish-subscribe model where components can publish and listen to events.</li>
+                    <li>Events are published to specific <strong>topics</strong> and consumed by subscribers.</li>
+                    <li>Reduces tight coupling between services for better modularity.</li>
+                </ul>
+                <h3>Common Use Cases in AEM</h3>
+                <ul>
+                    <li>Reacting to page activation/deactivation.</li>
+                    <li>Workflow start/completion/failure events.</li>
+                    <li>Tag creation, deletion, and updates.</li>
+                    <li>Configuration updates and user actions.</li>
+                </ul>
+                <h3>Event Topics in AEM</h3>
+                <h4>Sling Resource Events</h4>
+                <ul>
+                    <li><code>org/apache/sling/api/resource/Resource/ADDED</code></li>
+                    <li><code>org/apache/sling/api/resource/Resource/CHANGED</code></li>
+                    <li><code>org/apache/sling/api/resource/Resource/REMOVED</code></li>
+                </ul>
+                <h4>JCR Observation Events</h4>
+                <ul>
+                    <li><code>javax/jcr/observation/Event.NODE_ADDED</code></li>
+                    <li><code>javax/jcr/observation/Event.NODE_REMOVED</code></li>
+                    <li><code>javax/jcr/observation/Event.PROPERTY_CHANGED</code></li>
+                </ul>
+                <h4>Replication Events</h4>
+                <ul>
+                    <li><code>com/day/cq/replication/ReplicationAction/ACTIVATE</code></li>
+                    <li><code>com/day/cq/replication/ReplicationAction/DEACTIVATE</code></li>
+                    <li><code>com/day/cq/replication/ReplicationAction/DELETE</code></li>
+                </ul>
+                <h4>Workflow Events</h4>
+                <ul>
+                    <li><code>com/day/cq/workflow/event/WorkflowEvent/TYPE_STARTED</code></li>
+                    <li><code>TYPE_COMPLETED</code>, <code>TYPE_FAILED</code>, <code>TYPE_ABORTED</code></li>
+                </ul>
+                <h4>Page and Tagging Events</h4>
+                <ul>
+                    <li><code>com/day/cq/wcm/core/page/ReplicationEvent/ACTIVATED</code></li>
+                    <li><code>com/day/cq/tagging/TagManager/ADDED</code>, <code>REMOVED</code>, <code>RENAMED</code></li>
+                </ul>
+                <h4>OSGi Service and Bundle Events</h4>
+                <ul>
+                    <li><code>org/osgi/framework/BundleEvent/STARTED</code>, <code>STOPPED</code>, <code>INSTALLED</code></li>
+                    <li><code>org/osgi/service/event/EventConstants/SERVICE_EVENT_REGISTERED</code></li>
+                </ul>
+                <h3>Implementing an Event Handler in AEM</h3>
+                <h4>Step-by-Step Example: Listen to Page Activation</h4>
+                <pre>
+@Component(
+  service = EventHandler.class,
+  immediate = true,
+  property = {
+    EventConstants.EVENT_TOPIC + "=com/day/cq/replication",
+    EventConstants.EVENT_FILTER + "=(path=/content/my-site/en)"
+  }
+)
+public class PageActivationHandler implements EventHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(PageActivationHandler.class);
+
+    @Override
+    public void handleEvent(Event event) {
+        String action = (String) event.getProperty("type");
+        String path = (String) event.getProperty("path");
+
+        if ("ACTIVATE".equalsIgnoreCase(action)) {
+            log.info("Page activated: {}", path);
+        } else if ("DEACTIVATE".equalsIgnoreCase(action)) {
+            log.info("Page deactivated: {}", path);
+        }
+    }
+}
+  </pre>
+                <h3>Key Properties in Event Handler</h3>
+                <ul>
+                    <li><strong>EVENT_TOPIC:</strong> Specifies the category of events (e.g., replication, workflow).</li>
+                    <li><strong>EVENT_FILTER:</strong> Filters events based on properties such as <code>path</code>.</li>
+                    <li><strong>Event Properties:</strong> Provide event metadata (e.g., path, userId, type).</li>
+                </ul>
+                <h3>Asynchronous Processing</h3>
+                <ul>
+                    <li>EventHandlers are processed asynchronously by default.</li>
+                    <li>This avoids blocking the main application thread and improves performance.</li>
+                    <li>Heavy logic should still be offloaded to background jobs or workflows.</li>
+                </ul>
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Subscribe to only necessary topics and paths to reduce overhead.</li>
+                    <li>Use proper logging and error handling to trace issues.</li>
+                    <li>Always validate event properties before processing.</li>
+                    <li>For custom topics, document the event schema clearly for reusability.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Event Listener in AEM</h2>
+                <p>An <code>EventListener</code> in AEM is a low-level API provided by JCR (<code>javax.jcr.observation.EventListener</code>) that listens for changes in the content repository such as node creation, deletion, property updates, etc. It enables backend automation in response to repository-level events.</p>
+                <h3>What is an Event Listener?</h3>
+                <ul>
+                    <li>Listens to content repository changes such as node or property modifications.</li>
+                    <li>Executes logic automatically when a configured event occurs.</li>
+                    <li>Used for backend automation and JCR-level observation.</li>
+                </ul>
+                <h3>How AEM Handles Repository Events</h3>
+                <ul>
+                    <li>AEM leverages the <code>javax.jcr.observation.ObservationManager</code> to register listeners.</li>
+                    <li>Listeners can be scoped to specific paths and event types for performance and relevance.</li>
+                </ul>
+                <h3>Types of JCR Events</h3>
+                <ul>
+                    <li><strong>NODE_ADDED</strong> - Triggered when a new node is added.</li>
+                    <li><strong>NODE_REMOVED</strong> - Triggered when a node is deleted.</li>
+                    <li><strong>PROPERTY_ADDED</strong> - Fires when a new property is added.</li>
+                    <li><strong>PROPERTY_CHANGED</strong> - Fires when a property value is updated.</li>
+                    <li><strong>PROPERTY_REMOVED</strong> - Fires when a property is deleted.</li>
+                    <li><strong>NODE_MOVED</strong> - Triggered when a node is moved.</li>
+                    <li><strong>PERSIST</strong> - Fires when a session is saved.</li>
+                </ul>
+                <h3>Step-by-Step: Implementing an Event Listener in AEM</h3>
+                <ol>
+                    <li>Create an OSGi component that implements <code>javax.jcr.observation.EventListener</code>.</li>
+                    <li>Use <code>ResourceResolverFactory</code> to get a service-based session.</li>
+                    <li>Use <code>ObservationManager</code> to register the listener for specific paths and events.</li>
+                    <li>Process logic in the <code>onEvent()</code> method when triggered.</li>
+                    <li>Clean up in the <code>@Deactivate</code> method by logging out the session.</li>
+                </ol>
+                <h3>Example: Listening for Node Creation and Property Changes under /content/mysite</h3>
+                <pre>@Component(service = EventListener.class, immediate = true)
+public class PageEventListener implements EventListener {
+
+    private static final Logger log = LoggerFactory.getLogger(PageEventListener.class);
+
+    @Reference
+    private ResourceResolverFactory resolverFactory;
+
+    private Session session;
+
+    @Activate
+    protected void activate() {
+        try {
+            Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
+            params.put(ResourceResolverFactory.SUBSERVICE, "event-listener-service");
+            ResourceResolver resolver = resolverFactory.getServiceResourceResolver(params);
+            session = resolver.adaptTo(Session.class);
+
+            if (session != null) {
+                ObservationManager observationManager = session.getWorkspace().getObservationManager();
+
+                observationManager.addEventListener(
+                    this,
+                    Event.NODE_ADDED | Event.PROPERTY_CHANGED,
+                    "/content/mysite",
+                    true,
+                    null,
+                    null,
+                    false
+                );
+
+                log.info("JCR EventListener registered for /content/mysite");
+            }
+        } catch (Exception e) {
+            log.error("Failed to register JCR EventListener", e);
+        }
+    }
+
+    @Override
+    public void onEvent(EventIterator events) {
+        while (events.hasNext()) {
+            try {
+                Event event = events.nextEvent();
+                log.info("Event Type: {}, Path: {}", event.getType(), event.getPath());
+            } catch (RepositoryException e) {
+                log.error("Error handling JCR Event", e);
+            }
+        }
+    }
+
+    @Deactivate
+    protected void deactivate() {
+        if (session != null && session.isLive()) {
+            session.logout();
+            log.info("Session closed in EventListener");
+        }
+    }
+}</pre>
+                <h3>Best Practices for Event Listeners</h3>
+                <h4>1. Performance Optimization</h4>
+                <ul>
+                    <li>Always filter events by path and type.</li>
+                    <li>Avoid heavy processing inside <code>onEvent()</code> — defer logic to background jobs or queues.</li>
+                    <li>Use system user with minimum permissions via service mapping.</li>
+                </ul>
+                <h4>2. Use the Right Listener Type</h4>
+                <ul>
+                    <li><strong>JCR EventListener</strong> — Best for repository-level, low-level changes.</li>
+                    <li><strong>Sling ResourceChangeListener</strong> — Preferred for content/resource-level observation.</li>
+                    <li><strong>OSGi EventHandler</strong> — For AEM system-level events like bundle activation, workflows, etc.</li>
+                </ul>
+                <h4>3. When to Use This</h4>
+                <ul>
+                    <li>You need to track backend repository changes like page creation, asset updates, or metadata changes.</li>
+                    <li>Business logic must trigger automatically after repository updates.</li>
+                    <li>You want to monitor low-level JCR events without relying on UI or Sling layers.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Resource Change Listener in AEM</h2>
+                <p>
+                    The <code>org.apache.sling.api.resource.observation.ResourceChangeListener</code> in AEM is a lightweight and efficient mechanism for tracking changes to resources (like pages, components, or assets) under the Sling resource hierarchy. It is an alternative to JCR-level event listeners and is better suited for Sling-based applications.
+                </p>
+                <h3>What is a Resource Change Listener?</h3>
+                <ul>
+                    <li>Monitors additions, modifications, and deletions of Sling resources.</li>
+                    <li>Operates at the resource level, not the raw JCR node level.</li>
+                    <li>Does not require long-lived JCR sessions, making it more performant and scalable.</li>
+                </ul>
+                <h3>How it Works in AEM</h3>
+                <ul>
+                    <li>Uses Sling's Observation framework to detect resource changes.</li>
+                    <li>Processes change events without relying on deep repository scanning.</li>
+                    <li>Ideal for monitoring content structure changes in AEM.</li>
+                </ul>
+                <h3>Resource Change Types</h3>
+                <ul>
+                    <li><strong>ADDED</strong> - A new resource is added under the observed path.</li>
+                    <li><strong>CHANGED</strong> - An existing resource is modified.</li>
+                    <li><strong>REMOVED</strong> - A resource is deleted.</li>
+                </ul>
+                <h3>Comparison with JCR Event Listener</h3>
+                <ul>
+                    <li><strong>ResourceChangeListener:</strong> Focused on Sling-level resource changes, efficient and recommended for most AEM use cases.</li>
+                    <li><strong>JCR EventListener:</strong> Operates at the lower JCR node/property level, heavier, and less efficient.</li>
+                </ul>
+                <h3>Path-Based Listening</h3>
+                <ul>
+                    <li>You can register the listener to watch specific resource paths like <code>/content/mysite</code> or <code>/content/dam</code>.</li>
+                    <li>Listening to narrower paths improves performance by avoiding unnecessary processing.</li>
+                </ul>
+                <h3>Example: Resource Change Listener Implementation</h3>
+                <pre>
+@Component(service = ResourceChangeListener.class,
+           immediate = true,
+           property = {
+             ResourceChangeListener.PATHS + "=/content/my-site",
+             ResourceChangeListener.CHANGES + "=" + "ADDED",
+             ResourceChangeListener.CHANGES + "=" + "CHANGED",
+             ResourceChangeListener.CHANGES + "=" + "REMOVED"
+           })
+public class ResourceChangeListenerExample implements ResourceChangeListener {
+
+    private static final Logger log = LoggerFactory.getLogger(ResourceChangeListenerExample.class);
+
+    @Override
+    public void onChange(List&lt;ResourceChange&gt; changes) {
+        for (ResourceChange change : changes) {
+            switch (change.getType()) {
+                case ADDED:
+                    log.info("Resource added at path: {}", change.getPath());
+                    break;
+                case CHANGED:
+                    log.info("Resource changed at path: {}", change.getPath());
+                    break;
+                case REMOVED:
+                    log.info("Resource removed at path: {}", change.getPath());
+                    break;
+                default:
+                    log.debug("Unhandled event type: {}", change.getType());
+            }
+        }
+    }
+}
+  </pre>
+                <h3>Best Practices</h3>
+                <h4>Limit Scope for Better Performance</h4>
+                <ul>
+                    <li>Only listen to specific resource paths where events are relevant.</li>
+                    <li>Avoid listening to <code>/content</code> or other broad paths unless necessary.</li>
+                </ul>
+                <h4>Choose the Right Listener Type</h4>
+                <ul>
+                    <li>Use <strong>ResourceChangeListener</strong> for lightweight, resource-level changes.</li>
+                    <li>Use <strong>EventListener</strong> for deeper JCR-level changes when absolutely needed.</li>
+                    <li>ResourceChangeListener avoids long-lived JCR sessions and Oak observation queue issues.</li>
+                </ul>
+                <h4>Batch and Async Processing</h4>
+                <ul>
+                    <li>Group resource changes in batch operations inside <code>onChange</code> for efficient handling.</li>
+                    <li>If heavy logic is involved, consider delegating processing to background jobs or workflows.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Comparing Event Handlers, Event Listeners, and Resource Change Listeners</h2>
+                <p>In AEM, different types of event-handling mechanisms exist for various purposes. Here's a comparison between OSGi Event Handlers, JCR Event Listeners, and Sling Resource Change Listeners based on their scope, usage, performance, and implementation.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>OSGi Event Handler</th>
+                                <th>JCR Event Listener</th>
+                                <th>Sling Resource Change Listener</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Scope</strong></td>
+                                <td>System-level events</td>
+                                <td>JCR repository events</td>
+                                <td>Resource changes in Sling</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Used For</strong></td>
+                                <td>Workflow events, user login/logout, replication events</td>
+                                <td>Content modifications in JCR</td>
+                                <td>Changes in content nodes, DAM assets, configurations</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Performance</strong></td>
+                                <td>Lightweight, event-driven</td>
+                                <td>Requires JCR session, can impact performance</td>
+                                <td>Optimized for Sling-based resource observation</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Implementation</strong></td>
+                                <td>@Component with EventConstants.EVENT_TOPIC</td>
+                                <td>javax.jcr.observation.EventListener</td>
+                                <td>ResourceChangeListener with @Component</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Summary</h3>
+                <p>OSGi Event Handlers are typically used for system-level events such as user logins and workflow events. JCR Event Listeners work with repository-level changes but can impact performance due to their dependency on JCR sessions. Sling Resource Change Listeners, on the other hand, are optimized for tracking changes in the Sling-based content structure, making them ideal for resource-level changes like DAM assets and content nodes.</p>
+            </section>
+            <section class="card">
+                <h2>Debugging and Troubleshooting Event Handling in AEM</h2>
+                <p>Debugging event handling is crucial for ensuring smooth performance and identifying issues in AEM's event-driven environment. Below are some techniques and best practices for debugging and troubleshooting event handlers, listeners, and resource change listeners.</p>
+                <h3>Logging Events for Debugging</h3>
+                <ul>
+                    <li>Use SLF4J logging to log important events and variables during event handling. This will help trace event execution and catch errors.</li>
+                    <li>For example, you can log information when a specific event type is triggered, such as page activation or content updates.</li>
+                    <pre>logger.info("Event triggered :: {}", event.getTopic());</pre>
+                </ul>
+                <h3>Monitoring Event Execution in AEM's Web Console</h3>
+                <ul>
+                    <li>AEMs Web Console provides a view of all OSGi components, event handlers, and listeners.</li>
+                    <li>Monitor event handler execution and service status in real-time through the Apache Felix Web Console.</li>
+                    <li>You can filter events and check for issues related to incorrect event configurations or unregistered listeners.</li>
+                </ul>
+                <h3>Common Issues and Best Practices for Debugging</h3>
+                <ul>
+                    <li>Event Handling Performance: Ensure that event processing does not block the main thread. Opt for asynchronous handling where applicable.</li>
+                    <li>Event Filters: Use filters to limit events to only necessary changes, improving both performance and debugging clarity.</li>
+                    <li>Resource Management: When handling large numbers of events, use batch processing techniques to handle events efficiently.</li>
+                    <li>Asynchronous vs Synchronous Processing: For critical or long-running processes, consider making event handling asynchronous to avoid performance bottlenecks.</li>
+                    <li>Check Event Configurations: Ensure that event configurations are correct in the Felix console (e.g., subscribing to the correct topics and managing event queues).</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

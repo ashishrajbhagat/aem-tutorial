@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM Commerce Integration</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM Commerce Integration</h1>
+            <section class="card">
+                <h2>Introduction to AEM Commerce</h2>
+                <h3>What is AEM Commerce?</h3>
+                <p>AEM Commerce refers to the integration of Adobe Experience Manager with e-commerce platforms to deliver personalized and content-rich shopping experiences. It allows marketers and merchandisers to blend content and commerce in a unified interface — combining storytelling with product data.</p>
+                <h3>Headless vs. Integrated Commerce</h3>
+                <ul>
+                    <li><strong>Headless Commerce:</strong> AEM acts as the front-end consuming APIs from a commerce engine (like Magento, SAP, etc.). Offers maximum flexibility and scalability.</li>
+                    <li><strong>Integrated Commerce:</strong> Tight coupling of AEM and commerce platform using connectors and APIs. Offers out-of-the-box templates, components, and product data integrations.</li>
+                </ul>
+                <h3>Real-world Use Cases</h3>
+                <ul>
+                    <li>Creating immersive product landing pages with editorial content and dynamic pricing</li>
+                    <li>Building SPAs or PWAs for online shopping using React and AEM</li>
+                    <li>Personalized merchandising using Experience Fragments + product data</li>
+                    <li>Global multi-site commerce deployment using AEM + CIF</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>AEM Commerce Architecture</h2>
+                <h3>Overview of AEM-CIF (Commerce Integration Framework)</h3>
+                <p>AEM CIF is Adobe's framework for integrating commerce systems into AEM Sites. It provides a standardized, extensible way to expose product data, carts, categories, and checkout functionality.</p>
+                <ul>
+                    <li>Built-in GraphQL APIs to communicate with Adobe Commerce or other commerce engines</li>
+                    <li>Pre-built commerce components (product teasers, carousels, PDPs, etc.)</li>
+                    <li>Support for product browsing, filtering, search, and variants</li>
+                    <li>Compatible with AEM Sites (on-premise or Cloud Service)</li>
+                </ul>
+                <h3>Role of CIF Add-ons and Magento/3rd Party Connectors</h3>
+                <ul>
+                    <li><strong>CIF Add-ons:</strong> Adobe-provided add-ons that install CIF core libraries, GraphQL client support, and commerce console UI into your AEM instance</li>
+                    <li><strong>Magento Integration:</strong> CIF includes ready-made GraphQL connectors to integrate with Adobe Commerce (Magento 2), enabling real-time product data, cart, and order sync</li>
+                    <li><strong>3rd Party Commerce Engines:</strong> CIF can be extended to connect with SAP Commerce, Salesforce Commerce Cloud, commercetools, and others via custom GraphQL or REST clients</li>
+                </ul>
+                <p>This architecture separates AEM as the content layer from the commerce engine, giving you flexibility in choosing or switching platforms.</p>
+            </section>
+            <section class="card">
+                <h2>Supported Commerce Backends</h2>
+                <h3>Adobe Commerce (Magento)</h3>
+                <p>Adobe Commerce (formerly Magento) is the primary backend supported out-of-the-box by AEM CIF. Integration is based on GraphQL APIs exposed by Magento, and CIF offers pre-built components and connectors to quickly integrate product data, carts, pricing, and more.</p>
+                <h3>External Systems via GraphQL or REST</h3>
+                <p>AEM CIF is backend-agnostic. You can integrate with any commerce engine that supports GraphQL or REST APIs, including:</p>
+                <ul>
+                    <li>commercetools</li>
+                    <li>SAP Commerce Cloud (Hybris)</li>
+                    <li>Salesforce Commerce</li>
+                    <li>Custom-built commerce solutions</li>
+                </ul>
+                <p>Custom GraphQL clients can be developed to map AEM CIF core components to your API structure.</p>
+                <h3>Sample CIF Reference Implementation</h3>
+                <p>Adobe provides a CIF Reference Site that demonstrates all CIF components, templates, and integrations in action. This reference site is great for developers to understand how to build a full-fledged commerce experience in AEM.</p>
+                <p><strong>GitHub Repo:</strong> <a href="https://github.com/adobe/aem-cif-guides-venia" target="_blank">aem-cif-guides-venia</a></p>
+            </section>
+            <section class="card">
+                <h2>CIF Add-on Installation</h2>
+                <h3>How to Install CIF Add-on</h3>
+                <p>You can install the CIF Add-on in your AEM instance via:</p>
+                <ul>
+                    <li><strong>Package Manager (On-Prem):</strong> Upload and install the latest CIF Add-on package from Adobe Software Distribution</li>
+                    <li><strong>Cloud Manager (AEMaaCS):</strong> Add CIF Add-on as a dependency in your <code>pom.xml</code> and deploy via the Cloud Manager pipeline</li>
+                </ul>
+                <h3>Enabling the CIF Core Components</h3>
+                <p>After installing, enable CIF components in your editable templates and configure the commerce endpoint via the AEM Tools console:</p>
+                <ol>
+                    <li>Go to <code>Tools &gt; Cloud Services &gt; Commerce</code></li>
+                    <li>Create a new <strong>Commerce Endpoint</strong> configuration pointing to your backend (Magento or other)</li>
+                    <li>Assign the configuration to your site's root page or template</li>
+                </ol>
+                <p>Now CIF components like product carousel, PDP, and category listing can be used in your pages.</p>
+            </section>
+            <section class="card">
+                <h2>GraphQL Integration with Commerce</h2>
+                <h3>Adobe Commerce GraphQL Endpoint</h3>
+                <p>Magento (Adobe Commerce) exposes a robust GraphQL API at:</p>
+                <pre>https://<your-magento-site>/graphql</pre>
+                <p>This API allows querying products, categories, cart, checkout, and more.</p>
+                <h3>Sample GraphQL Query to Fetch Product Data</h3>
+                <p>Example query to retrieve basic product details:</p>
+                <pre>
+query {
+  products(filter: { sku: { eq: "24-MB01" } }) {
+    items {
+      name
+      sku
+      price {
+        regularPrice {
+          amount {
+            value
+            currency
+          }
+        }
+      }
+      description {
+        html
+      }
+    }
+  }
+}</pre>
+                <h3>Customizing GraphQL Queries</h3>
+                <p>You can customize queries to fetch additional attributes, such as images, variants, reviews, and inventory. CIF components can also be extended to support custom fields returned from your commerce backend.</p>
+                <p>For performance and security, AEM supports <strong>Persisted GraphQL Queries</strong>, which are stored server-side and referenced via aliases in frontend code.</p>
+                <p>You can use tools like <a href="https://altair.sirmuel.design/" target="_blank">Altair</a> or <a href="https://graphql.org/swapi-graphql" target="_blank">GraphQL Playground</a> to test and build queries.</p>
+            </section>
+            <section class="card">
+                <h2>Commerce Console in AEM</h2>
+                <p>The Commerce Console in AEM provides a centralized interface for managing and interacting with commerce-related content.</p>
+                <h3>Using the Product Console in AEM Sites</h3>
+                <ul>
+                    <li>Access via <code>Tools &gt; Commerce &gt; Products</code> in AEM.</li>
+                    <li>Browse catalogs imported from Adobe Commerce or other integrated backends.</li>
+                    <li>Quickly search, sort, and filter products by attributes like SKU, category, and title.</li>
+                </ul>
+                <h3>Importing Product Catalogs</h3>
+                <ul>
+                    <li>Product data is imported into AEM via GraphQL from commerce backends like Adobe Commerce.</li>
+                    <li>Catalogs are synced and cached locally for fast access and preview.</li>
+                    <li>Catalog structure mirrors the taxonomy defined in the commerce backend.</li>
+                </ul>
+                <h3>Browsing and Previewing Products</h3>
+                <ul>
+                    <li>Authors can preview product detail data directly inside AEM.</li>
+                    <li>SKUs, prices, images, and availability are shown in real-time.</li>
+                    <li>Preview product data before binding it to components like Teasers or PDPs.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Product Teaser and PDP Components</h2>
+                <p>AEM CIF provides prebuilt components that make it easy to showcase products with minimal configuration.</p>
+                <h3>CIF Core Components Overview</h3>
+                <ul>
+                    <li><strong>Product Teaser:</strong> Highlight a featured product with image, title, price, and CTA.</li>
+                    <li><strong>Product Carousel:</strong> Horizontal slider to display a list of products from a category or search query.</li>
+                    <li><strong>Product Collection:</strong> Grid/list view of multiple products.</li>
+                    <li><strong>Product Detail Page (PDP):</strong> Full product information with options, pricing, image gallery, and “Add to Cart”.</li>
+                </ul>
+                <h3>Component Configuration and Bindings</h3>
+                <ul>
+                    <li>Each component provides dialog-based configuration to bind it to a product SKU or category.</li>
+                    <li>Supports both static and dynamic product bindings.</li>
+                    <li>Automatic data fetching via GraphQL based on the configured SKU or selector.</li>
+                    <li>Authors can adjust layout, display options, and fallback content via Touch UI dialogs.</li>
+                </ul>
+                <p>These components integrate seamlessly into AEM templates and support editable template structure.</p>
+            </section>
+            <section class="card">
+                <h2>Authoring Experience with Commerce</h2>
+                <p>AEM Commerce enhances the authoring experience by providing intuitive tools and dialogs tailored for merchandisers and marketers.</p>
+                <h3>Product Selection Dialog</h3>
+                <ul>
+                    <li>Authors can easily select products via an integrated product picker dialog.</li>
+                    <li>Supports live search, category-based navigation, and SKU lookup.</li>
+                    <li>Auto-populates product details in the component on selection.</li>
+                </ul>
+                <h3>Smart Completion Using Product SKUs</h3>
+                <ul>
+                    <li>Auto-suggest and validate SKUs while typing in dialogs.</li>
+                    <li>Prevents binding to invalid or non-existent products.</li>
+                    <li>Product preview thumbnails help authors confirm selections.</li>
+                </ul>
+                <h3>Authoring Dynamic Product Pages</h3>
+                <ul>
+                    <li>Templates and components dynamically fetch product data based on the URL or selector.</li>
+                    <li>Allows building reusable PDPs and category pages that scale automatically.</li>
+                    <li>Minimizes duplication of templates and enables faster content rollout.</li>
+                </ul>
+                <p>These tools empower authors to deliver commerce experiences without deep technical knowledge, boosting agility and time-to-market.</p>
+            </section>
+            <section class="card">
+                <h2>Routing and URL Mapping</h2>
+                <p>AEM Commerce uses URL mapping and Sling resolution to dynamically render product detail pages (PDPs) based on product SKUs or category paths.</p>
+                <h3>How AEM Resolves <code>/products/{sku}</code> URLs</h3>
+                <ul>
+                    <li>AEM uses Sling resource resolution and URL mapping to extract the product SKU from the request URL.</li>
+                    <li>The CIF URL handler service intercepts requests like <code>/products/ABC123</code> and maps them to a generic PDP template.</li>
+                    <li>The SKU is passed as a parameter to the component, which then queries Adobe Commerce via GraphQL to fetch product data.</li>
+                </ul>
+                <h3>Product Page Templates and URL Resolvers</h3>
+                <ul>
+                    <li>You can configure Sling mappings in <code>/etc/map</code> or use the CIF URL Resolver OSGi service.</li>
+                    <li>Templates for product pages (e.g., PDPs) are created once and reused dynamically with different product SKUs.</li>
+                    <li>Supports SEO-friendly URLs like <code>/products/shoes/sneakers/abc123</code>.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Extending CIF Components</h2>
+                <p>The CIF Core Components are built using Sling Models and HTL and can be extended like any other AEM component.</p>
+                <h3>Using Sling Models and Resource Mappings</h3>
+                <ul>
+                    <li>Each CIF component is backed by a Sling Model that adapts from the AEM resource and injects product data.</li>
+                    <li>You can extend the model to include additional logic, such as custom pricing, promotions, or inventory rules.</li>
+                    <li>Use <code>/apps</code> overlays to customize dialogs or templates.</li>
+                </ul>
+                <h3>Custom GraphQL Bindings</h3>
+                <ul>
+                    <li>You can define custom GraphQL queries or use persisted queries to fetch additional attributes or relationships.</li>
+                    <li>Bind the result of the query to a Sling Model and expose it to the frontend via HTL.</li>
+                    <li>Ideal for integrating related products, cross-sells, or review data.</li>
+                </ul>
+                <h3>Styling & Layout Customization</h3>
+                <ul>
+                    <li>CIF components are frontend-framework agnostic and can be styled using standard CSS or SASS pipelines.</li>
+                    <li>Design dialogs allow marketers to control layout variants (e.g., grid, list, large image).</li>
+                    <li>You can integrate them with your site's design system or theme.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>AEM Commerce with SPA</h2>
+                <p>You can build full headless e-commerce sites using AEM and Single Page Applications (SPAs) written in React or Vue.js.</p>
+                <h3>Headless Commerce using React/Vue</h3>
+                <ul>
+                    <li>Build SPAs using the AEM SPA Editor framework, allowing authors to drag-and-drop CIF components in editable pages.</li>
+                    <li>SPAs communicate with Adobe Commerce via GraphQL for real-time product data, pricing, and inventory.</li>
+                    <li>This approach offers faster performance, dynamic UI, and seamless personalization.</li>
+                </ul>
+                <h3>Example: Product Grid Rendered via GraphQL</h3>
+                <pre>
+query {
+  products(filter: { category_uid: { eq: "12" } }) {
+    items {
+      name
+      sku
+      url_key
+      image {
+        url
+      }
+      price_range {
+        minimum_price {
+          regular_price {
+            value
+            currency
+          }
+        }
+      }
+    }
+  }
+}</pre>
+                <p>The returned JSON data can be rendered in a grid/list format using frontend components in React or Vue.</p>
+                <h3>Integration with AEM SPA Editor</h3>
+                <ul>
+                    <li>Use the AEM SPA SDK to bind frontend components with AEM JSON model output and GraphQL data.</li>
+                    <li>Supports authoring experience via editable templates and real-time preview.</li>
+                    <li>Allows deep integration with AEM workflows, targeting, and analytics.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Performance & Caching</h2>
+                <p>Optimizing performance is critical in AEM Commerce setups, especially when working with dynamic product data fetched via APIs.</p>
+                <h3>Dispatcher Considerations for Commerce Data</h3>
+                <ul>
+                    <li>Commerce data like PDPs, category pages, and product teasers can be cached if the product data doesn't change frequently.</li>
+                    <li>For stock levels or pricing, it's recommended to fetch data live unless caching is explicitly safe.</li>
+                    <li>Use caching headers and Dispatcher rules to control what is cached and for how long.</li>
+                </ul>
+                <h3>When to Cache vs. When to Fetch Live</h3>
+                <ul>
+                    <li><strong>Cache static elements:</strong> banners, product descriptions, metadata, product images, and layout.</li>
+                    <li><strong>Fetch live data:</strong> inventory, dynamic pricing, promotional offers, or customer-specific pricing.</li>
+                    <li>Consider hybrid approaches using Edge Side Includes (ESI) or client-side rendering for dynamic elements.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Security & API Access</h2>
+                <p>Securing communication between AEM and Adobe Commerce (or third-party backends) is essential to protect sensitive business and customer data.</p>
+                <h3>Secure API Calls to Adobe Commerce</h3>
+                <ul>
+                    <li>Use HTTPS and secure firewalls for all commerce API endpoints.</li>
+                    <li>Restrict public GraphQL access by enforcing access rules or whitelisting IPs.</li>
+                    <li>Leverage persisted GraphQL queries to prevent exposure of raw API calls.</li>
+                </ul>
+                <h3>Authentication Strategies (OAuth, Tokens)</h3>
+                <ul>
+                    <li>Use OAuth 2.0 or token-based authentication for secure communication between AEM and Adobe Commerce.</li>
+                    <li>Rotate API tokens periodically and manage them securely in environment variables or OSGi configs.</li>
+                    <li>For third-party commerce platforms, use their supported secure authentication methods (e.g., JWT, Basic Auth).</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li><strong>Use Catalog Models properly:</strong> Ensure content fragment or CIF models align with the structure of your product catalog.</li>
+                    <li><strong>Don't hardcode SKUs:</strong> Always use dynamic bindings and data-driven rendering to keep templates reusable.</li>
+                    <li><strong>Reuse Experience Fragments:</strong> Use XF-based banners, promos, or cross-sell sections across PDPs and category pages.</li>
+                    <li><strong>Test GraphQL Performance:</strong> Optimize complex queries, limit nested fields, and leverage persisted queries.</li>
+                    <li><strong>Leverage SPA Editor:</strong> For full headless commerce experiences, integrate CIF components in editable React/Vue pages.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Resources & References</h2>
+                <ul>
+                    <li><a href="https://experienceleague.adobe.com/docs/experience-manager-cloud-service/content/headless/cif/overview.html" target="_blank">Adobe CIF Documentation</a></li>
+                    <li><a href="https://github.com/adobe/commerce-cif-connector" target="_blank">CIF GitHub Example Connector</a></li>
+                    <li><a href="https://commerce.adobe.io/graphql" target="_blank">Adobe Commerce GraphQL IDE</a></li>
+                    <li><a href="https://opensource.adobe.com/aem-core-cif-components/" target="_blank">CIF Core Components Overview</a></li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

@@ -3,275 +3,284 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>AEM Tutorial - Introduction</title>
+        <title>AEM Tutorial</title>
         <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
         <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
         <meta name="author" content="Ashish Raj">
-        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+        <meta property="og:title" content="Learn AEM with Real-World Tutorials" />
+        <meta property="og:description" content="Your go-to hub for mastering Adobe Experience Manager with practical examples, interview prep, and architectural guides." />
+        <meta property="og:image" content="/images/og-thumbnail.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
         <link rel="manifest" href="/site.webmanifest">
-        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="/css/home.css">
     </head>
     <body>
-        <div class="sidebar" id="sidebar">
-            <div class="logo">
-                <h2>AEM Tutorial</h2>
+        <header class="site-header">
+            <div class="container">
+                <h2 class="site-logo"><a href="/">AEM Tutorial</a></h2>
+                <nav class="site-nav">
+                    <a href="#about">About</a>
+                    <a href="#docs">Docs</a>
+                    <a href="#contact">Contact</a>
+                </nav>
             </div>
-            <div class="sidebar-search">
-                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
-            </div>
-            <nav class="nav" id="sidebar-nav"></nav>
-            <div class="footer">
-                <p>&copy; 2025 AEM Tutorial</p>
-            </div>
-        </div>
-        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
-        <main class="content" id="content">
-            <h1>Introduction to AEM</h1>
-            <section class="card">
-                <h2>What is Adobe Experience Manager?</h2>
-                <p>Adobe Experience Manager (AEM) is a comprehensive content management system (CMS) and digital experience platform designed to help businesses create, manage, and optimize digital content across multiple channels. It enables organizations to deliver personalized and engaging experiences to users through websites, mobile apps, and other digital touchpoints. AEM integrates powerful tools for content authoring, asset management, and workflow automation, making it easier for teams to collaborate efficiently. With features like headless CMS capabilities, cloud scalability, and AI-powered automation, AEM is widely used by enterprises to enhance customer engagement, improve operational efficiency, and drive digital transformation.</p>
+        </header>
+        <main>
+            <section>
+                <div class="container hero-section">
+                    <h1>Welcome to the Ultimate AEM Learning Hub</h1>
+                    <p class="tagline">Learn AEM the way real developers use it.</p>
+                    <p class="intro">Whether you're a beginner trying to wrap your head around AEM or a seasoned developer looking for real-world guidance, this site is built just for you. Here you'll find practical tutorials, deep dives, and tips drawn from actual projects - with real-world context and hands-on guidance.</p>
+                    <p class="personal-touch">I'm Ashish Raj, an AEM developer passionate about simplifying concepts and sharing knowledge that sticks. Let's grow together as we decode Adobe Experience Manager, one concept at a time.</p>
+                    <a href="fundamentals/introduction.html" class="cta-button">Start Learning →</a>
+                </div>
             </section>
-            <section class="card">
-                <h2>How AEM is different from other CMS platforms?</h2>
-                <ul>
-                    <li><strong>Integration with Adobe Ecosystem - </strong>AEM seamlessly integrates with other Adobe tools like Adobe Analytics, Adobe Target, and Adobe Campaign, enabling powerful marketing and personalization capabilities.</li>
-                    <li><strong>Content Fragments and Experience Fragments - </strong>AEM offers modular content creation through Content Fragments and Experience Fragments, allowing content reuse across various channels.</li>
-                    <li><strong>Digital Asset Management (DAM) - </strong>Unlike many CMS platforms, AEM includes a robust DAM system to manage and organize digital assets effectively.</li>
-                    <li><strong>Cloud Scalability - </strong>AEM as a Cloud Service provides auto-scaling, continuous updates, and reduced infrastructure management compared to traditional CMS platforms.</li>
-                    <li><strong>Multi-Site and Multi-Language Support - </strong>With tools like Multi-Site Manager (MSM) and language copy, AEM simplifies the management of global and multilingual websites.</li>
-                    <li><strong>Customizable Workflows - </strong>AEM enables the creation of tailored workflows for content approval, publishing, and other business processes.</li>
-                </ul>
+            <section>
+                <div class="container getting-started">
+                    <h2>Getting Started</h2>
+                    <p class="intro">🧭 New to AEM or this site? Here's how to make the most of it - explore the essentials, follow step-by-step guides, and start building confidently.</p>
+                    <div class="steps">
+                        <div class="step">
+                            <h3>1. Set Up Your Environment</h3>
+                            <p>If you're following hands-on, install the AEM SDK locally or get access to an AEMaaCS instance to start modern development.</p>
+                        </div>
+                        <div class="step">
+                            <h3>2. Understand the Fundamentals</h3>
+                            <p>Learn the core building blocks: JCR, Sling, OSGi, Components, and Templates - everything else builds on this foundation.</p>
+                        </div>
+                        <div class="step">
+                            <h3>3. Explore Authoring Features</h3>
+                            <p>See how content authors work in AEM - page editing, templates, content reuse, and localization tools.</p>
+                        </div>
+                        <div class="step">
+                            <h3>4. Move into Backend Development</h3>
+                            <p>Dive into Servlets, Sling Models, OSGi services, Workflows, and Dispatcher setup - the real developer stuff.</p>
+                        </div>
+                        <div class="step">
+                            <h3>5. Use the Sidebar to Navigate</h3>
+                            <p>The sidebar is organized by topic. Follow it in order or jump to any section you need at your own pace.</p>
+                        </div>
+                        <div class="step">
+                            <h3>6. Go Beyond: Advanced Topics</h3>
+                            <p>Explore deeper concepts like Content Fragments, GraphQL APIs, MSM, and Personalization when you're ready.</p>
+                        </div>
+                    </div>
+                </div>
             </section>
-            <section class="card">
-                <h2>Different versions of AEM</h2>
-                <div>
-                    <h3>AEM 5.x</h3>
-                    <ul>
-                        <li>The earlier versions of AEM (formerly CQ).</li>
-                        <li>Basic CMS features with limited scalability.</li>
-                        <li>Introduced foundational technologies like Apache Sling and JCR.</li>
+            <section>
+                <div class="container explore-topics">
+                    <h2>Explore Topics</h2>
+                    <p class="intro">🔍 Explore Adobe Experience Manager (AEM) through a structured learning path—from setup to backend, workflows, headless CMS, and DevOps. Whether you're starting out or leveling up, learn with real-world examples and practical guidance.</p>
+                    <div class="topics" id="topics-container"></div>
+                </div>
+            </section>
+            <section>
+                <div class="container what-youll-learn">
+                    <h2>🎓 What You'll Learn</h2>
+                    <p class="intro">This site guides you through the full journey of becoming an expert AEM developer - starting from the fundamentals and evolving into advanced development, integration, optimization, and real-world use cases. Every topic is crafted to help you build both understanding and confidence.</p>
+                    <ul class="skills-list">
+                        <li><strong>📄 Authoring & Templates:</strong> Build and manage pages using editable templates, components, and the Touch UI interface.</li>
+                        <li><strong>🧩 Components & HTL:</strong> Create powerful, reusable components using Sling Models, dialogs, and HTML Template Language (HTL).</li>
+                        <li><strong>🔧 Backend Development:</strong> Develop services, servlets, schedulers, and workflows using OSGi and Sling APIs.</li>
+                        <li><strong>🔗 API & Integrations:</strong> Integrate AEM with REST APIs, external systems, and handle secure tokens and headers.</li>
+                        <li><strong>🚀 Dispatcher & Caching:</strong> Improve performance and scalability using caching strategies, invalidation rules, and CDN integration.</li>
+                        <li><strong>🔐 Security & User Management:</strong> Implement role-based access control, secure login, ACLs, and authentication methods.</li>
+                        <li><strong>🔁 Workflows & Events:</strong> Automate business logic using custom workflows and event-driven programming.</li>
+                        <li><strong>🧠 Headless CMS:</strong> Use Content Fragments, Experience Fragments, and GraphQL APIs to enable headless delivery.</li>
+                        <li><strong>🛠️ Tools & Debugging:</strong> Work with ACS Commons, Groovy Console, Sling Pipes, and effective debugging practices.</li>
+                        <li><strong>🧪 Real-World Practice:</strong> Get ready for job interviews and real projects with scenario-based questions and best practices.</li>
                     </ul>
                 </div>
-                <div>
-                    <h3>AEM 6.0 to 6.5</h3>
-                    <ul>
-                        <li>Enhanced stability and features over AEM 5.x.</li>
-                        <li>Introduced editable templates, Content Fragments, and Experience Fragments.</li>
-                        <li>Stronger DAM capabilities and multi-site support.</li>
-                        <li>Focus on improving developer and authoring experiences.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>AEM 6.5</h3>
-                    <ul>
-                        <li>The most robust and widely used on-premise version.</li>
-                        <li>Added advanced features like SPA Editor, headless CMS support, and enhanced Cloud Manager integration.</li>
-                        <li>Better support for omnichannel delivery and personalization.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3>AEM as a Cloud Service (AEMaaCS)</h3>
-                    <ul>
-                        <li>Introduced in 2020 as a fully cloud-native solution.</li>
-                        <li>Automatic scaling, continuous updates, and reduced maintenance overhead.</li>
-                        <li>Designed for faster deployments and better performance.</li>
-                        <li>Ideal for organizations aiming to adopt modern cloud technologies.</li>
-                    </ul>
+            </section>
+            <section>
+                <div class="container featured-articles">
+                    <h2>🌟 Featured Articles</h2>
+                    <p class="intro">Discover the most popular and developer-recommended guides every AEM professional should explore.</p>
+                    <div class="articles-grid">
+                        <a href="/components/creating-component.html" class="article-card">
+                            <h3>🔧 Creating a Custom Component from Scratch</h3>
+                            <p>From dialog to Sling Model - learn the full lifecycle of building your first real AEM component.</p>
+                        </a>
+                        <a href="/dispatcher/dispatcher.html" class="article-card">
+                            <h3>🚀 Dispatcher Setup Explained Visually</h3>
+                            <p>Clear diagrams and step-by-step flow to help you master AEM Dispatcher and caching.</p>
+                        </a>
+                        <a href="/interview/aem-scenario.html" class="article-card">
+                            <h3>🎯 10 AEM Interview Gotchas You Must Know</h3>
+                            <p>Real-world edge cases that trip up even experienced developers during interviews.</p>
+                        </a>
+                    </div>
                 </div>
             </section>
-            <section class="card">
-                <h2>AEM as a Cloud Service vs. On-Premise</h2>
-                <p>AEM as a Cloud Service offers a scalable, always-updated solution with lower maintenance overhead, while on-premise AEM provides greater control but requires more management effort. The choice depends on your organization's needs.</p>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>AEM as a Cloud Service</th>
-                                <th>AEM On Premise</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Content Publish/Unpublish</strong></td>
-                                <td>Utilizes preferred Sling Content Distribution and optionally replication agents for content publish/unpublish</td>
-                                <td>Primarily relies on Replication agents for content publish/unpublish</td>
-                            </tr>
-                            <tr>
-                                <td><strong>CRX/DE Access</strong></td>
-                                <td>CRX/DE access is restricted on higher STAGE and PROD environments</td>
-                                <td>CRX/DE access is available on both STAGE and PROD environments</td>
-                            </tr>
-                            <tr>
-                                <td><strong>OSGi Configuration</strong></td>
-                                <td>Allows creation of secrets and environment variables as part of the Cloud Manager, used as OSGi configuration</td>
-                                <td>Permits creation of secrets and environment variables as part of OSGi configuration</td>
-                            </tr>
-                            <tr>
-                                <td><strong>License Cost</strong></td>
-                                <td>License cost depends on infrastructure and usage</td>
-                                <td>License cost includes AEM instance and infrastructure hardware</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Environment</strong></td>
-                                <td>Local AEM SDK is not a replica of the cloud service</td>
-                                <td>AEM Jar is a replica of the On Premise instance</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Deployment Architecture</strong></td>
-                                <td>Recommends using Adobe CDN, enterprise-level license required for other CDNs</td>
-                                <td>No such CDN restriction</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Tenancy</strong></td>
-                                <td>Follows a multi-tenant architecture for code deployment</td>
-                                <td>No specific restriction on deployment architecture</td>
-                            </tr>
-                            <tr>
-                                <td><strong>CI (Continuous Integration)</strong></td>
-                                <td>Code can only be deployed with the help of Cloud Manager</td>
-                                <td>Any custom CI tool can be used for code deployment</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Maintenance</strong></td>
-                                <td>Low maintenance cost, managed by Adobe</td>
-                                <td>High maintenance cost, managed by the client with required infrastructure</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Scaling</strong></td>
-                                <td>Allows on-demand auto-scaling due to infrastructure flexibility</td>
-                                <td>On-demand auto-scaling is not allowed due to infrastructure and licensing costs</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Logs</strong></td>
-                                <td>Author, publisher, and dispatcher logs can be easily downloaded for all environments via Cloud Manager</td>
-                                <td>Requires server-specific access through tools like Putty to download logs</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Cost</strong></td>
-                                <td>Built on a microservices-based architecture, doesn't require extra costs for instance setup</td>
-                                <td>Built on a monolithic environment, involves significant effort to set up an AEM environment and its components</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Repo</strong></td>
-                                <td>Works exclusively with Adobe GIT repo</td>
-                                <td>Any code repository can be used</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Content type</strong></td>
-                                <td>Follows a strict approach to mutable and immutable content</td>
-                                <td>No such strict restriction on content management</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Run mode</strong></td>
-                                <td>Allows custom runmode on runtime</td>
-                                <td>Does not allow custom runmode on runtime</td>
-                            </tr>
-                            <tr>
-                                <td><strong>User Management</strong></td>
-                                <td>User and group management is done by the admin console</td>
-                                <td>User and group management can be handled through author user admin pages</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Publish Instance</strong></td>
-                                <td>Possible to make changes directly on publish instance</td>
-                                <td>Not possible to make changes directly on the publish instance</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <section>
+                <div class="container shortcuts">
+                    <h2>⚡ Quick Access</h2>
+                    <p class="intro">Jump straight into key areas of AEM learning.</p>
+                    <div class="shortcut-grid">
+                        <a href="authoring.html" class="shortcut-card">📄 Authoring</a>
+                        <a href="workflows.html" class="shortcut-card">🔁 Workflows</a>
+                        <a href="security.html" class="shortcut-card">🔐 Security</a>
+                        <a href="dispatcher.html" class="shortcut-card">🌐 Dispatcher</a>
+                        <a href="backend.html" class="shortcut-card">⚙️ Backend Dev</a>
+                        <a href="headless.html" class="shortcut-card">🧠 Headless CMS</a>
+                        <a href="aem-interview.html" class="shortcut-card">🧪 Interview Prep</a>
+                        <a href="deployment.html" class="shortcut-card">☁️ Cloud & DevOps</a>
+                        <a href="rest-integration.html" class="shortcut-card">🔌 REST & Integration</a>
+                        <a href="best-practices.html" class="shortcut-card">🔨 Best Practices</a>
+                    </div>
                 </div>
             </section>
-            <section class="card">
-                <h2>Author & Publish Architecture</h2>
-                <p>
-                    Adobe Experience Manager (AEM) uses a decoupled architecture based on Author and Publish instances to separate content creation from content delivery. This setup enhances security, scalability, and performance while enabling collaboration among authors and a smooth publishing workflow.
-                </p>
-                <h3>What is an Author Instance?</h3>
-                <p>
-                    The <strong>Author instance</strong> is the backend environment where content authors create and manage websites, assets, templates, workflows, and configurations.
-                </p>
-                <ul>
-                    <li>Used by authors, admins, and marketers.</li>
-                    <li>Secure internal access only (behind firewall/VPN).</li>
-                    <li>Supports workflows, versioning, approvals, and testing.</li>
-                    <li>URL Example: <code>http://localhost:4502</code></li>
-                </ul>
-                <h3>What is a Publish Instance?</h3>
-                <p>
-                    The <strong>Publish instance</strong> is the frontend environment that serves published content to end users. It contains only approved and activated content from the Author instance.
-                </p>
-                <ul>
-                    <li>Public-facing environment (behind Dispatcher).</li>
-                    <li>No authoring tools or content creation UI.</li>
-                    <li>Used for final content delivery to users.</li>
-                    <li>URL Example: <code>http://localhost:4503</code></li>
-                </ul>
-                <h3>How Replication Works</h3>
-                <p>
-                    <strong>Replication</strong> is the mechanism to publish content from Author to Publish. It can be triggered manually, via workflow, or automatically using launchers.
-                </p>
-                <ul>
-                    <li>Replication agents handle the transport of content.</li>
-                    <li>Uses queues to ensure content is delivered correctly.</li>
-                    <li>Also supports reverse replication (from Publish to Author, e.g., for form data).</li>
-                    <li>Includes content pages, assets, code packages, and configurations.</li>
-                </ul>
-                <h3>Dispatcher: Role in AEM Architecture</h3>
-                <p>
-                    The <strong>Dispatcher</strong> is Adobe's caching and load balancing tool that sits in front of the Publish instance. It enhances performance and security.
-                </p>
-                <ul>
-                    <li>Caches static content (HTML, JS, CSS, images).</li>
-                    <li>Protects Publish instance from direct access.</li>
-                    <li>Can load balance multiple Publish instances.</li>
-                    <li>Applies filter rules for access control.</li>
-                </ul>
-                <h3>Preview vs Live Environments</h3>
-                <p>
-                    Many AEM projects include a <strong>Preview</strong> Publish instance to allow content authors and QA teams to review content before it goes live.
-                </p>
-                <ul>
-                    <li>Preview = Internal content testing (non-public).</li>
-                    <li>Live = Final content delivery to public users.</li>
-                    <li>Helps validate content and personalization.</li>
-                </ul>
-                <h3>Multi-Publish and Failover Support</h3>
-                <p>
-                    Enterprise-grade AEM setups often use multiple Publish instances to ensure high availability and scalability.
-                </p>
-                <ul>
-                    <li>Dispatcher load balances requests among multiple Publish instances.</li>
-                    <li>If one Publish server fails, others continue serving content.</li>
-                    <li>Ideal for global websites and high-traffic apps.</li>
-                </ul>
-                <h3>Diagram: Author-Publish-Dispatcher Flow</h3>
-                <p>
-                    Here's a simplified visual representation of how content flows through the AEM architecture:
-                </p>
-                <div class="image-container">
-                    <img src="images/author-publish-dispatcher-diagram.png" alt="AEM Author Publish Dispatcher Architecture" />
-                    <p>AEM Author Publish Dispatcher Architecture</p>
-                </div>
-                <h3>Benefits of Author-Publish Architecture</h3>
-                <ul>
-                    <li>Improves scalability by separating concerns.</li>
-                    <li>Enhances security with isolated authoring.</li>
-                    <li>Increases performance through caching.</li>
-                    <li>Enables collaborative, workflow-driven content creation.</li>
-                </ul>
-            </section>
-            <section class="card">
-                <h2>AEM Architecture Stack</h2>
-                <p>The architecture stack of Adobe Experience Manager (AEM) is based on several key open-source technologies. Three of the most important components are <code>Apache Felix</code>, <code>Apache Jackrabbit</code>, and <code>Apache Sling</code>. These technologies work together to provide the foundational framework for AEM.</p>
-                <div class="image-container">
-                    <img src="images/architecture-stack.png" alt="AEM Architecture Stack">
-                    <p>AEM Architecture Stack</p>
+            <section>
+                <div class="container learning-path">
+                    <h2>🗺️ Learning Path / Roadmap</h2>
+                    <p class="intro">
+                        Not sure where to begin? Follow this step-by-step roadmap to become a confident AEM developer—from foundational topics to advanced architecture, integrations, and real-world mastery.
+                    </p>
+                    <div class="roadmap-track">
+                        <div class="roadmap-step">
+                            <span class="badge beginner">Beginner</span>
+                            <h3>🔰 AEM Fundamentals</h3>
+                            <p>Understand AEM architecture, Apache Sling, JCR, runmodes, OSGi, and set up your local development environment.</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <h3>📄 Authoring Basics</h3>
+                            <p>Learn how to create and manage pages using templates, editable components, Touch UI, and page properties.</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <h3>🧩 Component Development</h3>
+                            <p>Build custom components using HTL, dialogs, Sling Models, and client libraries (ClientLibs).</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <h3>🔁 Workflows & Event Handling</h3>
+                            <p>Automate tasks using AEM Workflows and listen to content-level events with event handlers.</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <span class="badge intermediate">Intermediate</span>
+                            <h3>🔧 Backend Development</h3>
+                            <p>Implement OSGi services, servlets, schedulers, and integrate business logic using Sling and JCR APIs.</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <h3>🛠️ Dispatcher & DevOps</h3>
+                            <p>Configure Dispatcher, caching, invalidation, and set up CI/CD using Cloud Manager and Maven.</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <h3>🔐 Security & Permissions</h3>
+                            <p>Set up ACLs, authentication, secure endpoints, and manage user groups and access controls.</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <span class="badge advanced">Advanced</span>
+                            <h3>🚀 Headless & API Integrations</h3>
+                            <p>Leverage Content Fragments, GraphQL, JSON Exporter, and connect AEM with external APIs securely.</p>
+                        </div>
+                        <div class="roadmap-step">
+                            <h3>🎯 Real-World Scenarios & Interview Prep</h3>
+                            <p>Explore real project challenges, scenario-based questions, performance tips, and advanced best practices.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
-            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+            <section>
+                <div class="container about-author">
+                    <h2>About the Author</h2>
+                    <p class="intro">👋 Hi, I'm Ashish Raj - a passionate AEM developer.</p>
+                    <p>With years of hands-on experience working on real-world AEM projects, I've seen firsthand the challenges developers face - from understanding core concepts to dealing with production issues. I currently work as an AEM Developer at Concentrix, where I build enterprise-level digital experiences and solve complex CMS problems every day.</p>
+                    <p>I created this site to share everything I've learned - the practical way. No fluffy tutorials. Just clear, real-world explanations, code examples, and solutions to problems you'll actually encounter.</p>
+                    <p class="closing">Whether you're just getting started or preparing for a tough AEM interview, I hope this site becomes your go-to learning companion. 🚀</p>
+                </div>
+            </section>
+            <section>
+                <div class="container faq">
+                    <h2>📘 FAQ & Site Tour</h2>
+                    <p class="intro">New to this site or AEM in general? This section answers common questions and shows you how to make the most of the content here.</p>
+                    <div class="faq-list">
+                        <details class="faq-item">
+                            <summary>❓ Why was this AEM tutorial site created?</summary>
+                            <p>This site was built to fill the gap between theoretical AEM documentation and hands-on, real-world development experience. Whether you're preparing for interviews or building production-grade AEM projects, you'll find examples, explanations, and best practices curated specifically for practical learning.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>👨‍💻 Who can benefit from using this site?</summary>
+                            <p>This tutorial platform is ideal for complete beginners, front-end developers transitioning into AEM, backend Java developers exploring Sling and OSGi, and experienced AEM engineers looking to refresh concepts or prepare for interviews. It’s structured so learners of all levels can follow along and upskill at their own pace.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>🤝 Can I suggest a topic or contribute content?</summary>
+                            <p>Absolutely! This site grows with community input. If you’ve discovered a useful trick, faced a real-world problem, or want to expand the content with a topic you didn’t find here — you're welcome to contribute. Suggestions, feedback, or pull requests via the GitHub repository are highly encouraged and appreciated.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>📬 How do I contact the site author or stay connected?</summary>
+                            <p>You can reach out to the creator via LinkedIn or GitHub for collaboration, queries, or feedback. There’s also a discussion section on the GitHub repo where you can post questions or share your thoughts. If you'd like to stay updated, keep an eye on the GitHub commit activity or follow the author’s social media handles.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>🧩 What version of AEM does this site focus on?</summary>
+                            <p>Most examples are based on AEM 6.5 and AEM as a Cloud Service (AEMaaCS). Where needed, version-specific differences are highlighted, so you can apply the concepts whether you're working with on-premise or cloud deployments.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>💻 How do I set up AEM on my local machine?</summary>
+                            <p>The site provides a full guide to setting up AEM locally using the Quickstart JAR for AEM 6.5 or via Cloud SDK for AEMaaCS. It also covers prerequisites like Java, Maven, and Developer Tools, with steps for Windows, macOS, and Linux.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>🗂️ How is the content organized?</summary>
+                            <p>The site is structured into beginner-friendly modules: Fundamentals, Authoring, Backend, Dispatcher & DevOps, Headless, Security, Tools, and Interview Prep. You can follow the roadmap or jump into a specific topic you're working on.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>🎓 Does this help with AEM certification?</summary>
+                            <p>Yes! While not an official prep course, this site covers nearly all practical and theoretical areas tested in Adobe AEM Developer and Architect certifications — including workflows, Sling models, OSGi, Dispatcher, and more.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>🧠 Is this site updated with new features or topics?</summary>
+                            <p>Definitely. The site is actively maintained and expanded as new AEM features are released. You’ll also find content based on real-world project scenarios, industry trends, and updates in Cloud Service architecture.</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>📦 Are code examples or GitHub projects included?</summary>
+                            <p>Yes! Many tutorials come with code snippets or full examples linked to GitHub repositories. You can clone them, run locally, and customize to match your learning or project needs.</p>
+                        </details>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container testimonials">
+                    <h2>🌟 What People Are Saying</h2>
+                    <p class="intro">Here's what developers and learners have shared after using this site—from cracking interviews to applying AEM concepts in real-world projects.</p>
+                    <div class="testimonial-grid">
+                        <blockquote class="testimonial">
+                            <p>“One of the most practical AEM learning resources I've come across — straight to the point and backed by real-world usage!”</p>
+                            <footer>- Ravi Kumar, AEM Developer</footer>
+                        </blockquote>
+                        <blockquote class="testimonial">
+                            <p>“Ashish's content helped me crack my first AEM job interview. Loved the Interview Scenarios section!”</p>
+                            <footer>- Priya Sharma, AEM Fresher</footer>
+                        </blockquote>
+                        <blockquote class="testimonial">
+                            <p>“I used this site while migrating a legacy AEM 6.3 project to Cloud Service. The DevOps and Dispatcher sections were lifesavers!”</p>
+                            <footer>- Ankit Verma, AEM Architect</footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="container newsletter">
+                    <h2>📬 Stay Updated with New AEM Insights</h2>
+                    <p class="intro">Get notified whenever new tutorials, interview Q&As, or tools are published. Only updates that matter - no spam.</p>
+                    <form class="newsletter-form" action="#" method="post"  onsubmit="alert('Newsletter coming soon!'); return false;">
+                        <input type="email" placeholder="Enter your email" name="email" required />
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </section>
         </main>
-        <script src="js/script.js"></script>
+        <footer class="site-footer">
+            <p>&copy; 2025 Ashish Raj. All rights reserved.</p>
+            <p>Built with ❤️ for AEM learners.</p>
+            <div class="footer-links">
+                <a href="https://github.com/ashishrajbhagat/aem-tutorial" target="_blank">GitHub</a>
+                <span>•</span>
+                <a href="https://www.linkedin.com/in/ashishrajbhagat" target="_blank">LinkedIn</a>
+                <span>•</span>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </footer>
+        <script src="/js/home.js"></script>
     </body>
 </html>

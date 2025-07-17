@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Sightly</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Sightly</h1>
+            <section class="card">
+                <h2>Introduction to Sightly (HTL)</h2>
+                <p>Sightly, now officially known as HTL (HTML Template Language), is a server-side templating language introduced by Adobe for AEM. It is designed to separate presentation logic from business logic, making components more secure, readable, and maintainable. HTL allows developers to build HTML templates that are dynamic, clean, and safe. It replaces traditional JSP (JavaServer Pages) and eliminates the need to embed Java code directly into HTML. HTL allows access to backend data using expressions like <code>${}</code> and promotes a logic-less, declarative approach to building components.</p>
+            </section>
+            <section class="card">
+                <h2>Why Adobe Introduced HTL Over JSP?</h2>
+                <p>Adobe introduced HTL to address the issues with JSP, such as:</p>
+                <ul>
+                    <li>JSP mixes Java code with HTML, which leads to poor separation of concerns.</li>
+                    <li>Harder for frontend developers to read or contribute due to embedded Java code.</li>
+                    <li>Security risks such as XSS (Cross-site Scripting) when developers forget to escape output.</li>
+                    <li>JSPs are harder to maintain and scale in large AEM projects.</li>
+                </ul>
+                <p>HTL offers a clean alternative where logic stays in Java classes (like Sling Models), and templates are written in readable and safe HTML.</p>
+                <h3>Difference Between HTL and JSP</h3>
+                <ul>
+                    <li><strong>Syntax:</strong> HTL uses HTML with attributes like <code>data-sly-use</code>, <code>data-sly-test</code> etc., while JSP embeds Java code using tags like <code>&lt;% %&gt;</code>.</li>
+                    <li><strong>Logic Handling:</strong> HTL keeps logic in Java files (e.g., Sling Models), whereas JSP allows logic inside the markup.</li>
+                    <li><strong>Security:</strong> HTL provides automatic context-aware escaping; JSP does not, increasing XSS risk.</li>
+                    <li><strong>Maintainability:</strong> HTL is more maintainable and readable, especially for teams with frontend developers.</li>
+                    <li><strong>Performance:</strong> HTL performs better due to its optimized server-side processing.</li>
+                </ul>
+                <h3>Benefits of Using Sightly in AEM</h3>
+                <ul>
+                    <li>Clean separation between business logic and presentation layer.</li>
+                    <li>Improved security with automatic HTML context-aware escaping.</li>
+                    <li>Better collaboration between frontend and backend developers.</li>
+                    <li>More readable, maintainable, and scalable templates.</li>
+                    <li>No need to manage or compile JSP files manually.</li>
+                    <li>Upgrade-safe templating that aligns with modern AEM architecture.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Basic Syntax and Features</h2>
+                <p>HTL provides a powerful and secure way to create dynamic HTML templates in AEM. Below are some of the most commonly used features and syntax elements that help build flexible and maintainable components.</p>
+                <h3>HTL Expression Language (${})</h3>
+                <p>HTL uses `${}` syntax to evaluate and display values from Java objects, Sling Models, or request attributes. For example, `${title}` will print the value of the "title" variable. This syntax ensures automatic HTML escaping by default to prevent XSS vulnerabilities.</p>
+                <h3>Text vs Unescaped HTML Output</h3>
+                <p>By default, HTL escapes HTML to prevent malicious code injection. If you want to render raw HTML (like from a rich text field), use the `context='html'` attribute with your expression:</p>
+                <ul>
+                    <li><code>${text}</code> - Escaped output</li>
+                    <li><code>${text @ context='html'}</code> - Unescaped/raw HTML output</li>
+                </ul>
+                <h3>data-sly-test, data-sly-if, data-sly-else</h3>
+                <p>HTL provides conditional rendering using `data-sly-test`, `data-sly-if`, and `data-sly-else`:</p>
+                <ul>
+                    <li><code>&lt;div data-sly-test="${title}"&gt;</code> - Renders only if "title" exists or is true.</li>
+                    <li><code>&lt;div data-sly-if="${title}"&gt;</code> - Alternative to test.</li>
+                    <li><code>&lt;div data-sly-else&gt;</code> - Renders when the `if/test` condition fails.</li>
+                </ul>
+                <h3>data-sly-list and data-sly-repeat</h3>
+                <p>Used to iterate over arrays or collections:</p>
+                <ul>
+                    <li><code>&lt;li data-sly-list.item="${items}"&gt;${item}&lt;/li&gt;</code> - Iterates over "items".</li>
+                    <li><code>&lt;li data-sly-repeat.item="${items}"&gt;${item}&lt;/li&gt;</code> - Similar to list; used when you want repeated nodes instead of wrapping in a container.</li>
+                </ul>
+                <h3>data-sly-use (Calling Java objects and Sling Models)</h3>
+                <p>This directive is used to bind a Java class or Sling Model to an alias that can be used in the template:</p>
+                <ul>
+                    <li><code>data-sly-use.model="com.example.models.MyModel"</code></li>
+                    <li><code>${model.title}</code> - Accessing methods/properties of the Java class.</li>
+                </ul>
+                <h3>data-sly-resource (Embedding components)</h3>
+                <p>Embeds other AEM components within the current template:</p>
+                <ul>
+                    <li><code>&lt;div data-sly-resource="${'componentName' @ resourceType='my/components/title'}"&gt;&lt;/div&gt;</code></li>
+                    <li>This renders another component dynamically inside the current component.</li>
+                </ul>
+                <h3>data-sly-include vs data-sly-resource</h3>
+                <ul>
+                    <li><strong>data-sly-include:</strong> Includes static content from another file (like a header.html snippet). Use it when you want to include static markup or fragment from the same component.</li>
+                    <li><strong>data-sly-resource:</strong> Used for including AEM components dynamically with resource resolution. Preferred when you want to render full components.</li>
+                </ul>
+                <h3>data-sly-template and data-sly-call</h3>
+                <p>HTL allows creation of reusable blocks of markup using templates:</p>
+                <ul>
+                    <li><code>data-sly-template.greet="${@ name}"</code> - Defines a reusable block named "greet" with a parameter "name".</li>
+                    <li><code>data-sly-call="${greet @ name='Ashish'}"</code> - Calls the template with the value "Ashish".</li>
+                </ul>
+                <p>This is useful for reducing duplicate code and maintaining consistency across templates.</p>
+            </section>
+            <section class="card">
+                <h2>Working with JavaScript Use-API</h2>
+                <p>The JavaScript Use-API allows HTL (Sightly) templates to interact with JavaScript logic for component-specific functionality. It's useful for simpler business logic that doesn't require full Java class structures and is especially helpful for frontend-heavy components.</p>
+                <h3>Using clientlibs and JavaScript logic</h3>
+                <p>To include custom JavaScript in your component, you typically use AEM ClientLibs. These are organized under <code>/apps/your-project/clientlibs</code>. Use categories and embed those via:</p>
+                <ul>
+                    <li><code>&lt;head&gt;&lt;cq:includeClientLib categories="my.project.component" /&gt;&lt;/head&gt;</code></li>
+                    <li>This ensures your component-specific JS or CSS is loaded when the component is rendered.</li>
+                </ul>
+                <h3>use object in Sightly</h3>
+                <p>In HTL, the <code>use</code> object allows you to load JavaScript or Java logic into the template. For JavaScript:</p>
+                <ul>
+                    <li><code>data-sly-use.helper="helper.js"</code> - Loads a helper JavaScript file in the same component folder.</li>
+                    <li><code>${helper.message}</code> - Accesses a property or function defined inside the helper file.</li>
+                </ul>
+                <p>Example <strong>helper.js</strong>:</p>
+                <pre>
+use(function () {
+    return {
+        message: "Hello from JS"
+    };
+});</pre>
+                <h4>Different Example</h4>
+                <p>custom.js</p>
+                <pre>
+"use strict";
+use( function() {
+    var data = {};
+    data.pageTitle = currentPage.properties["jcr:title"];
+    data.title = granite.resource.properties["title"];
+    data.description = granite.resource.properties["description"];
+    return data;
+});
+</pre>
+                <p>custom.html</p>
+                <pre>&lt;sly data-sly-use.data=”${'custom.js'}”&gt;
+	&lt;h2&gt;Page Title: ${data.pageTitle}&lt;/h2&gt;
+	&lt;p&gt;Title: ${data.title}&lt;/p&gt;
+	&lt;p&gt;Description: ${data.description}&lt;/p&gt;
+&lt;/sly&gt;</pre>
+                <h3>Differences between Java Use API and JS Use API</h3>
+                <ul>
+                    <li><strong>Language:</strong> Java Use API is written in Java, while JS Use API uses server-side JavaScript (Rhino engine).</li>
+                    <li><strong>Performance:</strong> Java Use API performs better and is recommended for complex logic; JS Use API is slower due to script evaluation at runtime.</li>
+                    <li><strong>Maintainability:</strong> Java is more structured, testable, and reusable; JavaScript is simpler for quick or lightweight use cases.</li>
+                    <li><strong>Best Practice:</strong> Use Java Use API (or Sling Models) for business logic, and JS Use API for basic templating or minor value manipulation.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Pass data from HTL to JavaScript</h2>
+                <pre>&lt;div data-user-name="${currentPage.properties['jcr:title']}"&gt;&lt;/div&gt;
+&lt;script&gt;
+    const userName = document.querySelector('div').getAttribute('data-user-name');
+    console.log(userName); // Outputs the value of the jcr:title property
+&lt;script&gt;</pre>
+            </section>
+            <section class="card">
+                <h2>Calling Sling Models from HTL</h2>
+                <p>Sling Models are POJOs annotated with <code>@Model</code> and are the standard way to provide dynamic data from the backend to the HTL templates in AEM. They allow developers to inject resource properties, request data, and OSGi services into components.</p>
+                <h3>How to use <code>data-sly-use</code> with Sling Models</h3>
+                <p>The <code>data-sly-use</code> attribute is used in HTL to bind a Sling Model to a variable. This makes the model's properties and methods accessible within the HTML template.</p>
+                <ul>
+                    <li>Step 1: Create a Sling Model in Java and annotate it with <code>@Model(adaptables = Resource.class)</code> or <code>HttpServletRequest.class</code>.</li>
+                    <li>Step 2: Use the model in your component's HTL using:
+                        <br><code>data-sly-use.model="com.myproject.models.MyComponentModel"</code>
+                    </li>
+                    <li>Step 3: Access the model properties using expressions like <code>${model.propertyName}</code>.</li>
+                </ul>
+                <h3>Accessing model properties and methods in HTL</h3>
+                <p>Once a model is bound using <code>data-sly-use</code>, all its public methods (getters) or fields are accessible in HTL.</p>
+                <ul>
+                    <li><code>${model.title}</code> - Accesses the <code>getTitle()</code> method in the model.</li>
+                    <li><code>${model.getDescription}</code> - Also valid, but HTL automatically resolves getters, so <code>model.description</code> is preferred.</li>
+                    <li>Methods with custom logic or computed values can also be used, making HTL more dynamic without embedding logic directly in the template.</li>
+                </ul>
+                <h3>Best practices for exposing data to HTL</h3>
+                <ul>
+                    <li>Always use <code>@ValueMapValue</code> or <code>@Inject</code> to bind resource properties and services.</li>
+                    <li>Make all model fields <code>private</code> and expose them via <code>public</code> getters to maintain encapsulation.</li>
+                    <li>Keep Sling Models lean - one model per component or resource type to avoid tight coupling.</li>
+                    <li>Avoid complex logic in HTL - use models to prepare data in advance.</li>
+                    <li>Use <code>@Default</code> to handle fallback values safely when a property is missing.</li>
+                    <li>Use adaptable = <code>{Resource.class, SlingHttpServletRequest.class}</code> for maximum flexibility when adapting models.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Custom Sightly Contexts and Escaping</h2>
+                <p>HTL (Sightly) uses context-aware escaping to protect against XSS (Cross-Site Scripting) vulnerabilities by default. It automatically escapes output based on where the expression is placed in the HTML structure. This ensures that malicious scripts cannot be executed via user-generated content.</p>
+                <h3>Context-aware escaping in HTL</h3>
+                <p>HTL detects the context in which a value is rendered—whether it's plain text, inside an attribute, a JavaScript block, or part of an HTML tag—and escapes it accordingly. For example:</p>
+                <ul>
+                    <li>Inside an HTML element body: content is escaped as plain text.</li>
+                    <li>Inside an attribute: value is escaped for attribute safety.</li>
+                    <li>Inside a JavaScript block: value is escaped to be JS-safe.</li>
+                </ul>
+                <p>This automatic context-based escaping removes the need for manual escaping functions and makes HTL more secure by design.</p>
+                <h3>Avoiding XSS vulnerabilities</h3>
+                <ul>
+                    <li>Always use HTL expressions like <code>${value}</code> rather than hardcoding untrusted input.</li>
+                    <li>Never disable escaping unless you're absolutely certain the output is safe (e.g., HTML from a trusted author).</li>
+                    <li>If needed, use <code>context="unsafe"</code> with caution for safe HTML snippets.</li>
+                    <li>Validate and sanitize input on the backend before passing it to HTL.</li>
+                    <li>Use Sling Models to handle business logic and expose only clean, validated data to the frontend.</li>
+                </ul>
+                <h3>Output contexts: text, attribute, HTML, JS, etc.</h3>
+                <ul>
+                    <li><strong>Text:</strong> <code>&lt;p&gt;${value}&lt;/p&gt;</code> - Escapes as plain text (default).</li>
+                    <li><strong>Attribute:</strong> <code>&lt;img src="${imagePath}" /&gt;</code> - Escaped for attribute context.</li>
+                    <li><strong>HTML:</strong> Use <code>context="html"</code> for injecting trusted HTML safely.</li>
+                    <li><strong>JavaScript:</strong> <code>&lt;script&gt;var msg = "${message}";&lt;/script&gt;</code> - Escaped for JavaScript.</li>
+                    <li><strong>URI:</strong> Escaped to prevent injection in links and image paths.</li>
+                </ul>
+                <p>Understanding output contexts helps developers use HTL effectively while maintaining application security and integrity.</p>
+            </section>
+            <section class="card">
+            <h2>Conditionals and Iterations in HTL</h2>
+            <p>HTL provides clean, logic-less ways to add conditions and loops in your HTML templates. Common use cases include rendering content based on values and looping through arrays or lists of items dynamically.</p>
+            <h3>data-sly-test vs data-sly-if</h3>
+            <p>Both <code>data-sly-test</code> and <code>data-sly-if</code> are used for conditional rendering in HTL. However, there are subtle differences:</p>
+            <ul>
+                <li><strong>data-sly-test:</strong> Can assign the condition to a variable and reuse it multiple times within the block.</li>
+                <li><strong>data-sly-if:</strong> Directly checks a condition and renders the block if true.</li>
+                <li><strong>Example:</strong> <code>&lt;div data-sly-test.isVisible="${properties.show}"&gt;Visible if true&lt;/div&gt;</code></li>
+                <li><strong>Note:</strong> <code>data-sly-test</code> is preferred when the condition needs to be reused in the same block.</li>
+            </ul>
+            <h3>data-sly-list with index, count, first, last</h3>
+            <p><code>data-sly-list</code> is used to iterate over collections such as arrays or lists. HTL also provides helpful loop metadata within the loop:</p>
+            <ul>
+                <li><code>${itemList.index}</code> - Zero-based index of the current item.</li>
+                <li><code>${itemList.count}</code> - One-based index.</li>
+                <li><code>${itemList.first}</code> - Returns <code>true</code> if it's the first item.</li>
+                <li><code>${itemList.last}</code> - Returns <code>true</code> if it's the last item.</li>
+            </ul>
+            <p><strong>Example:</strong></p>
+            <pre>&lt;ul data-sly-list.item="${properties.items}"&gt;
+    &lt;li&gt;${item} (Index: ${itemList.index})&lt;/li&gt;
+&lt;/ul&gt;</pre>
+            <h3>Using empty or else blocks for fallback content</h3>
+            <p>HTL supports fallback content if a list is empty or a condition is not met using <code>data-sly-else</code> or checking for empty values.</p>
+            <ul>
+                <li><strong>data-sly-else:</strong> Used with <code>data-sly-test</code> or <code>data-sly-if</code> to define alternate content.</li>
+                <li><strong>Empty check:</strong> <code>data-sly-test="${!properties.items}"</code> - Checks if the list is empty.</li>
+                <li><strong>Example:</strong></li>
+            </ul>
+            <pre>&lt;div data-sly-test="${properties.items}"&gt;
+    &lt;p&gt;List has content.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div data-sly-else&gt;
+    &lt;p&gt;No items found.&lt;/p&gt;
+&lt;/div&gt;</pre>
+            <p>These conditional techniques make HTL powerful and efficient for dynamic content rendering without mixing in business logic.</p>
+            </div>
+            <section class="card">
+                <h2>URI Manipulation in Sightly (HTL)</h2>
+                <p>URI manipulation can be performed by adding any of the following options to an expression to modify different parts of the URI dynamically:</p>
+                <ul>
+                    <li>scheme</li>
+                    <li>domain</li>
+                    <li>path</li>
+                    <li>prependPath</li>
+                    <li>appendPath</li>
+                    <li>selectors</li>
+                    <li>addSelectors</li>
+                    <li>removeSelectors</li>
+                    <li>extension</li>
+                    <li>suffix</li>
+                    <li>prependSuffix</li>
+                    <li>appendSuffix</li>
+                    <li>query</li>
+                    <li>addQuery</li>
+                    <li>removeQuery</li>
+                    <li>fragment</li>
+                </ul>
+                <p>Examples of URI manipulation expressions:</p>
+                <pre>${'//example.com/path/page.html' @ scheme='http'}
+&lt;!-- outputs: http://example.com/path/page.html --&gt;
+
+${'///path/page.html' @ domain='example.org'}
+&lt;!-- outputs: //example.org/path/page.html --&gt;
+
+${'one' @ appendPath='two'}
+&lt;!-- outputs: one/two --&gt;
+
+${'path' @ prependPath='..'}
+&lt;!-- outputs: ../path --&gt;
+
+${'path/page.woo.foo.html' @ selectors='foo.bar'}
+&lt;!-- outputs: path/page.foo.bar.html --&gt;
+
+${'path/page.woo.foo.html' @ addSelectors='foo.bar'}
+&lt;!-- outputs: path/page.woo.foo.foo.bar.html --&gt;
+
+${'path/page.woo.foo.html' @ removeSelectors='foo.bar'}
+&lt;!-- outputs: path/page.woo.html --&gt;
+
+${'path/page' @ extension='html'}
+&lt;!-- outputs: path/page.html --&gt;
+
+${'path/page.html' @ suffix='my/suffix'}
+&lt;!-- outputs: path/page.html/my/suffix --&gt;
+
+${'path/page.html/suffix' @ prependSuffix='prepended'}
+&lt;!-- outputs: path/page.html/prepended/suffix --&gt;
+
+${'path/page.html/suffix' @ appendSuffix='appended'}
+&lt;!-- outputs: path/page.html/suffix/appended --&gt;
+
+${'http://www.example.org/search' @ query=jsuse.query, context='uri'}
+&lt;!-- outputs: http://www.example.org/search?q=htl&array=1&array=2&array=3 --&gt;
+
+${'http://www.example.org/search?s=1' @ addQuery=jsuse.query, context='uri'}
+&lt;!-- outputs: http://www.example.org/search?s=1&q=htl&array=1&array=2&array=3 --&gt;
+
+${'http://www.example.org/search?s=1&q=htl' @ removeQuery='q', context='uri'}
+&lt;!-- outputs: http://www.example.org/search?s=1 --&gt;
+
+${'path/page' @ fragment='fragment'}
+&lt;!-- outputs: path/page#fragment --&gt;</pre>
+            </section>
+            <section class="card">
+                <h2>Advanced Sightly Concepts</h2>
+                <p>HTL (Sightly) supports advanced features to create modular, reusable, and configurable components that improve maintainability and flexibility of AEM projects.</p>
+                <h3>Template inheritance and reusability</h3>
+                <p>HTL allows templates to inherit from other templates, enabling reuse of common markup and structure. This promotes a DRY (Don't Repeat Yourself) approach by defining base templates that can be extended by child templates.</p>
+                <ul>
+                    <li>Use <code>data-sly-include</code> or <code>data-sly-resource</code> to include shared templates or components.</li>
+                    <li>Define reusable parts as <code>data-sly-template</code> blocks which can be called or overridden.</li>
+                    <li>Child templates can override or add specific markup while reusing common layout or scripts from the parent.</li>
+                </ul>
+                <h3>Nested templates and blocks</h3>
+                <p>HTL supports nesting of templates and blocks inside other templates for granular reuse and customization. This means you can define smaller template blocks inside a main template and selectively call or override them as needed.</p>
+                <ul>
+                    <li><code>data-sly-template</code> defines a named template block.</li>
+                    <li><code>data-sly-call</code> invokes a previously defined template block.</li>
+                    <li>Nesting helps break down complex UI structures into manageable and reusable pieces.</li>
+                </ul>
+                <h3>Content policies and HTL-based component configuration</h3>
+                <p>Content policies in AEM define how components behave and appear. HTL templates can leverage these policies to read configuration such as styles, allowed components, or default values.</p>
+                <ul>
+                    <li>Policies are managed via the AEM Template Editor and exposed as properties to the component.</li>
+                    <li>HTL uses Sling Models or Java Use APIs to access these policies and render components accordingly.</li>
+                    <li>This enables component authors to customize behavior without code changes.</li>
+                </ul>
+                <h3>Using custom helpers with data-sly-use</h3>
+                <p>The <code>data-sly-use</code> attribute can also reference custom helper Java classes or JavaScript files to provide additional logic or utility methods accessible in HTL.</p>
+                <ul>
+                    <li>Helpers encapsulate reusable functions, such as formatting, calculations, or fetching external data.</li>
+                    <li>Java helpers are regular Java classes registered as Sling Models or Use-API classes.</li>
+                    <li>JavaScript helpers can be client-side or server-side scripts providing logic to the template.</li>
+                    <li>This separation keeps HTL clean and logic-less, while still powerful and dynamic.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>HTL Best Practices</h2>
+                <p>To write clean, efficient, and maintainable HTL code, following best practices is essential. These practices help keep templates secure, readable, and easier to maintain over time.</p>
+                <h3>Separation of logic and markup</h3>
+                <p>HTL is designed to keep business logic separate from HTML markup. The logic should reside in Sling Models, Java Use-API classes, or JavaScript helpers, while HTL handles only the presentation layer.</p>
+                <ul>
+                    <li>Do not embed Java code or complex logic directly in HTL.</li>
+                    <li>Use <code>data-sly-use</code> to call Java or JavaScript classes for logic.</li>
+                    <li>Keep HTL focused on rendering and structure, improving readability.</li>
+                </ul>
+                <h3>Keeping HTL readable and maintainable</h3>
+                <p>Write HTL code that is easy to read and maintain by following these guidelines:</p>
+                <ul>
+                    <li>Use meaningful variable names and consistent indentation.</li>
+                    <li>Break complex templates into smaller reusable <code>data-sly-template</code> blocks.</li>
+                    <li>Add comments to explain non-obvious parts or business rules.</li>
+                    <li>Avoid deeply nested conditions or iterations where possible.</li>
+                </ul>
+                <h3>Avoiding scriptlets or inline Java code</h3>
+                <p>Unlike JSP, HTL completely avoids scriptlets or inline Java code for security and maintainability reasons.</p>
+                <ul>
+                    <li>Never use scriptlets (<code>&lt;% %&gt;</code>) in HTL files.</li>
+                    <li>Delegate all logic and data retrieval to backend classes or models.</li>
+                    <li>This reduces risk of errors and vulnerabilities such as XSS or injection attacks.</li>
+                    <li>Promotes a clear MVC architecture where HTL is purely a view technology.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Common Mistakes and Debugging Tips in HTL</h2>
+                <p>When working with HTL, developers may encounter common pitfalls that affect functionality or performance. Understanding these mistakes and debugging strategies helps build more robust components.</p>
+                <h3>Misuse of data-sly-resource</h3>
+                <p><code>data-sly-resource</code> is used to embed other components or resources dynamically. Common mistakes include:</p>
+                <ul>
+                    <li>Embedding components that create infinite loops or circular references.</li>
+                    <li>Using it unnecessarily for static content which could be included with <code>data-sly-include</code>.</li>
+                    <li>Failing to specify correct resource paths or selectors, leading to missing or incorrect renderings.</li>
+                </ul>
+                <h3>Incorrect model binding</h3>
+                <p>HTL binds to Java Use-API or Sling Models via <code>data-sly-use</code>. Mistakes include:</p>
+                <ul>
+                    <li>Using wrong class names or package paths, causing the model not to load.</li>
+                    <li>Not registering Sling Models properly, resulting in null or empty data.</li>
+                    <li>Not handling null values in HTL, which can break the rendering.</li>
+                </ul>
+                <h3>HTL errors and how to debug them</h3>
+                <p>Debugging HTL issues requires specific techniques as it does not throw traditional Java exceptions visibly in markup.</p>
+                <ul>
+                    <li>Check the AEM error.log for detailed stack traces and errors.</li>
+                    <li>Enable HTL debugging by adding <code>?debug</code> parameter in the URL to see component rendering details.</li>
+                    <li>Use logging in your Sling Models or Java Use classes to trace data flow.</li>
+                    <li>Validate that your expressions (e.g., <code>${model.property}</code>) return expected values or fallback gracefully.</li>
+                    <li>Use the CRX/DE Lite to inspect component properties and structure.</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

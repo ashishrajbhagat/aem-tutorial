@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Core Java for AEM Developers</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Core Java for AEM Developers</h1>
+            <section class="questions">
+                <details class="item">
+                    <summary>What are the core OOP principles in Java and how are they applied in AEM development?</summary>
+                    <p>The core Object-Oriented Programming (OOP) principles in Java are Encapsulation, Abstraction, Inheritance, and Polymorphism. In AEM development, these principles are applied through Sling Models and Java services. Encapsulation is used to hide implementation details behind Sling Models. Abstraction is applied via interfaces and service contracts. Inheritance allows component and service reusability. Polymorphism enables flexible component behavior via overridden methods or interface implementations, such as using different servlet logic for different resource types.</p>
+                </details>
+                <details class="item">
+                    <summary>How is method overloading different from method overriding?</summary>
+                    <p>Method overloading occurs within the same class when multiple methods have the same name but different parameter lists. It's resolved at compile time. Method overriding occurs when a subclass provides its own implementation of a method defined in the superclass. It's resolved at runtime. In AEM, overloading might be used within utility classes, while overriding is often used in extending WCMUsePojo or custom services to change inherited behavior.</p>
+                </details>
+                <details class="item">
+                    <summary>Explain the difference between an abstract class and an interface. When should each be used?</summary>
+                    <p>An abstract class can have both abstract and concrete methods and may maintain state (variables). Interfaces can only declare methods (until Java 8) and provide default/static methods without state. In AEM, use interfaces to define service contracts or component APIs. Abstract classes are useful when providing a base class with shared logic (like a base Sling Model). Choose interfaces for flexibility and multiple implementations, and abstract classes when enforcing a common base behavior.</p>
+                </details>
+                <details class="item">
+                    <summary>What is a Java Bean? How does AEM use beans or POJOs internally?</summary>
+                    <p>A Java Bean is a simple Java class that follows certain conventions: it must have a no-argument constructor, private fields, and public getter/setter methods. In AEM, Java Beans or POJOs are commonly used in Sling Models or WCMUsePojo-based components to map and access resource properties. These beans help separate business logic from presentation, promote reusability, and are often serialized to JSON when exposing content through APIs.</p>
+                </details>
+                <details class="item">
+                    <summary>What is dependency injection in Java? How does it relate to OSGi services in AEM?</summary>
+                    <p>Dependency Injection (DI) is a design pattern where dependencies (objects) are provided rather than instantiated inside the class. In AEM, DI is achieved using annotations like <code>@Inject</code> in Sling Models and <code>@Reference</code> in OSGi services. This makes the code modular, testable, and decoupled. AEM leverages the OSGi framework to manage service lifecycles and inject them where needed.</p>
+                </details>
+                <details class="item">
+                    <summary>What are access modifiers in Java? How do they affect component encapsulation in AEM?</summary>
+                    <p>Java provides four access modifiers: <code>public</code>, <code>protected</code>, <code>default</code> (package-private), and <code>private</code>. These define the visibility of classes, methods, and variables. In AEM, proper use of access modifiers supports encapsulation, helping developers hide internal component logic and expose only required behavior. For example, <code>private</code> fields in Sling Models ensure they are only modified through controlled <code>@Inject</code> points and public getters.</p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between HashMap and ConcurrentHashMap?</summary>
+                    <p><code>HashMap</code> is not thread-safe; if multiple threads access it concurrently and at least one thread modifies it, it must be externally synchronized. <code>ConcurrentHashMap</code>, on the other hand, is designed for concurrent access with thread-safety guarantees. It achieves this using internal locking at the bucket level, allowing better performance in multi-threaded environments. In AEM, <code>ConcurrentHashMap</code> is preferred in OSGi services or utility classes that are shared across threads.</p>
+                </details>
+                <details class="item">
+                    <summary>How do you ensure thread-safety in Java code?</summary>
+                    <p>Thread-safety in Java can be ensured by avoiding shared mutable state or by synchronizing access using mechanisms like <code>synchronized</code> blocks, <code>ReentrantLock</code>, thread-safe collections like <code>ConcurrentHashMap</code>, or using atomic variables. In AEM, thread-safety is critical when writing OSGi services or schedulers, as a single service instance may serve multiple threads concurrently. Marking shared data as <code>volatile</code>, using <code>ThreadLocal</code>, or stateless design are common patterns.</p>
+                </details>
+                <details class="item">
+                    <summary>What are generics in Java? How are they useful in Sling Models or service APIs?</summary>
+                    <p>Generics allow Java classes and methods to operate on typed parameters while providing compile-time type safety and reducing the need for casting. In AEM Sling Models, generics can be used for injecting collections like <code>List&lt;String&gt;</code> or <code>Map&lt;String, Object&gt;</code>. Similarly, when designing service APIs in AEM, generics improve reusability and maintainability by supporting typed contracts (e.g., <code>Result&lt;T&gt;</code> or <code>ResponseDTO&lt;PageInfo&gt;</code>).</p>
+                </details>
+                <details class="item">
+                    <summary>What's the difference between ArrayList and LinkedList?</summary>
+                    <p><code>ArrayList</code> is backed by a dynamic array, making it efficient for random access (O(1) for get operations) but slower for insertions or deletions in the middle (O(n)). <code>LinkedList</code> is backed by a doubly linked list, making it efficient for insertions/deletions (O(1) if position is known) but slower for random access (O(n)). In AEM development, <code>ArrayList</code> is commonly used for static or ordered data, while <code>LinkedList</code> might be used in queue-like processing scenarios (e.g., workflow steps).</p>
+                </details>
+                <details class="item">
+                    <summary>Explain the concept of immutability. How would you create an immutable class?</summary>
+                    <p>Immutability means an object's state cannot be changed after it is created. An immutable class in Java is created by: 1. marking the class as <code>final</code>, 2. making all fields <code>private final</code>, 3. setting values only in the constructor, and 4. not providing setters or exposing internal references. Example: <code>String</code> class is immutable. In AEM, immutable data objects are useful in Sling Models or DTOs passed between services to ensure thread-safety.</p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between equals() and == in Java?</summary>
+                    <p><code>==</code> checks for reference equality — whether two references point to the same object in memory. <code>equals()</code> checks for value/content equality, and can be overridden in custom classes (e.g., <code>String</code>, <code>Integer</code>). In AEM, when comparing Sling Models or JavaBeans, always use <code>equals()</code> if you're checking for logical equivalence, especially with persisted or serialized objects.</p>
+                </details>
+                <details class="item">
+                    <summary>What are functional interfaces and how are they used with Java 8 lambdas?</summary>
+                    <p>A functional interface is an interface with a single abstract method (SAM), annotated with <code>@FunctionalInterface</code>. They are used to enable lambda expressions in Java 8. Common examples include <code>Runnable</code>, <code>Predicate</code>, <code>Consumer</code>, and <code>Function</code>. In AEM, functional interfaces can simplify business logic within services or utility classes.</p>
+                </details>
+                <details class="item">
+                    <summary>How do Java Streams work? Provide an example of filtering a list of strings.</summary>
+                    <p>Java Streams provide a declarative way to process collections using a pipeline of operations like <code>filter</code>, <code>map</code>, and <code>collect</code>. Example:<br>
+                    <pre>
+List&lt;String&gt; names = Arrays.asList("AEM", "Java", "Sling", "JCR");
+List&lt;String&gt; filtered = names.stream()
+                        .filter(name -&gt; name.startsWith("J"))
+                        .collect(Collectors.toList());</pre>
+                    This results in <code>["Java", "JCR"]</code>. In AEM, streams can be used to process lists of resources or DTOs efficiently.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is Optional in Java 8? How can it help reduce null pointer exceptions?</summary>
+                    <p><code>Optional&lt;T&gt;</code> is a container object that may or may not hold a non-null value. It helps reduce null pointer exceptions by forcing developers to explicitly handle the absence of a value using methods like <code>isPresent()</code>, <code>orElse()</code>, or <code>ifPresent()</code>. In AEM Sling Models or services, it is useful for safely accessing request parameters or properties from the JCR.</p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between final, finally, and finalize()?</summary>
+                    <p>
+                        <strong>final</strong>: A keyword used to declare constants, prevent method overriding, or inheritance of classes.<br>
+                        <strong>finally</strong>: A block that always executes after a try-catch block, used for resource cleanup.<br>
+                        <strong>finalize()</strong>: A method called by the Garbage Collector before destroying an object. It's deprecated in newer Java versions and rarely used in modern AEM projects.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Explain try-with-resources. How does it help with resource management?</summary>
+                    <p>
+                        <code>try-with-resources</code> is a Java feature (since Java 7) that automatically closes resources (e.g., streams, readers) that implement <code>AutoCloseable</code>. It ensures that resources are closed properly even if exceptions occur, reducing memory leaks. In AEM, it's commonly used when working with JCR sessions, input streams, or file APIs.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are the different types of exceptions in Java? How does AEM use custom exceptions?</summary>
+                    <p>
+                        Java has two main types of exceptions:<br>
+                        - <strong>Checked exceptions</strong> (e.g., <code>IOException</code>) must be declared or handled.<br>
+                        - <strong>Unchecked exceptions</strong> (e.g., <code>NullPointerException</code>, <code>IllegalArgumentException</code>) are runtime exceptions.<br><br>
+                        AEM often defines custom exceptions (extending <code>RuntimeException</code> or <code>Exception</code>) to represent business or service-specific errors. For example, a custom <code>PageNotFoundException</code> could be thrown if a requested page is missing.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the singleton pattern and how do you implement it in Java?</summary>
+                    <p>
+                        The Singleton pattern ensures that only one instance of a class exists in the application. It's useful for shared resources like service objects or configurations.<br><br>
+                        <strong>Example (Thread-safe using lazy initialization):</strong>
+                    <pre>
+public class Singleton {
+    private static volatile Singleton instance;
+    private Singleton() {}
+    public static Singleton getInstance() {
+        if (instance == null) {
+            synchronized (Singleton.class) {
+                if (instance == null) instance = new Singleton();
+            }
+        }
+        return instance;
+    }
+}</pre>
+                    In AEM, OSGi services are effectively singletons managed by the container.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the Factory design pattern? How is it commonly used in AEM?</summary>
+                    <p>
+                        The Factory pattern provides a way to create objects without specifying the exact class. It defines an interface for creating an object but lets subclasses alter the type.<br><br>
+                        <strong>In AEM:</strong> It's used when creating service objects dynamically—like using the <code>@Reference</code> with <code>FactoryConfiguration</code> in OSGi or when resolving models/components based on runtime input.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you serialize and deserialize objects in Java? Why is it relevant in AEM?</summary>
+                    <p>
+                        <strong>Serialization</strong> is the process of converting an object into a byte stream, and <strong>deserialization</strong> is the reverse.<br><br>
+                        A class must implement <code>java.io.Serializable</code> and declare a <code>serialVersionUID</code>.<br><br>
+                        <strong>Relevance in AEM:</strong> AEM sometimes serializes session data, caches, or objects passed across clusters. Careful serialization ensures data consistency and prevents class mismatch issues. It's also relevant when using external systems (e.g., storing state in Redis or transferring via API).
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the role of the transient keyword during serialization?</summary>
+                    <p>
+                        The <code>transient</code> keyword is used to indicate that a field should not be serialized when an object is converted into a byte stream.<br><br>
+                        This is useful for fields that are sensitive (like passwords), non-serializable (like database connections), or dynamically calculated.<br><br>
+                        <strong>Example:</strong>
+                    <pre>
+class User implements Serializable {
+    private String username;
+    private transient String password; // won't be serialized
+}</pre>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does garbage collection work in Java?</summary>
+                    <p>
+                        Garbage collection (GC) in Java is the process of automatically identifying and reclaiming memory used by unreachable objects. This prevents memory leaks and reduces manual memory management.<br><br>
+                        <strong>How it works:</strong><br>
+                        - Java uses generational GC (Young, Old, and sometimes Permanent Generation).<br>
+                        - Objects are first allocated in the Young Generation (Eden space).<br>
+                        - Surviving objects are promoted to the Old Generation.<br>
+                        - GC algorithms (like G1, CMS, or ZGC) clean up unused objects.<br><br>
+                        <strong>In AEM:</strong> Efficient GC is critical for long-running instances. Memory leaks in custom code (e.g., holding references in static fields) can degrade performance.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You have three Java classes. Class A (with constructor printing "Class A"). Class B extends A (constructor prints "Class B"). Class C extends B (constructor prints "Class C"). If you run Class C, what will be the output?</summary>
+                    <p>
+                        When you create an object of Class C, Java will first invoke the constructors of its parent classes in the inheritance hierarchy.<br><br>
+                        <strong>Output:</strong><br>
+                        Class A<br>
+                        Class B<br>
+                        Class C<br><br>
+                        This is due to the constructor chaining from superclass to subclass.
+                    </p>
+                </details>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM Scenarios & Gotchas</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM Scenarios & Gotchas</h1>
+            <section class="questions">
+                <details class="item">
+                    <summary>How do you handle component dialog breaking after deployment?</summary>
+                    <p>
+                        A component dialog may break after deployment due to various reasons:
+                    <ul>
+                        <li><strong>Missing or incorrect clientlibs:</strong> Ensure required client libraries (`cq.authoring.dialog`, etc.) are included in the component's `cq:dialog` or `extraClientlibs` node.</li>
+                        <li><strong>Dialog structure issues:</strong> Invalid node structure or typos (e.g., missing `sling:resourceType`) in the `cq:dialog` definition can cause it to not render.</li>
+                        <li><strong>JS/CSS conflicts:</strong> Conflicting or broken custom JavaScript/CSS in the dialog's clientlib can cause authoring UI failure.</li>
+                        <li><strong>Cache issues:</strong> Clear dispatcher, browser, and AEM caches (`/libs/granite/ui/content/dumplibs.rebuild.html`) to ensure new dialog changes are reflected.</li>
+                        <li><strong>Touch UI vs Classic UI mismatch:</strong> Make sure you're not mixing dialog types (`cq:dialog` vs `dialog` vs `cq:editConfig`).</li>
+                    </ul>
+                    Use developer tools in the browser console and CRXDE Lite to inspect and validate dialog rendering issues.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>A newly authored page is not appearing in the publish instance. What could be wrong?</summary>
+                    <p>
+                        If a page is not visible on the Publish instance after authoring, consider the following checks:
+                    <ul>
+                        <li><strong>Page not published:</strong> Make sure the page has been activated (replicated) from Author to Publish.</li>
+                        <li><strong>Parent not published:</strong> If the parent page or structure isn't published, the child page may not be resolvable on Publish.</li>
+                        <li><strong>Replication agent misconfigured:</strong> Check if the replication agents are running and properly set up.</li>
+                        <li><strong>Dispatcher cache issue:</strong> The page might be cached incorrectly or blocked by rules in the `dispatcher.any` config.</li>
+                        <li><strong>Runmode-specific filters:</strong> Ensure content is not hidden based on runmodes (e.g., code hiding things for `author` only).</li>
+                        <li><strong>User permissions:</strong> The anonymous or publish user may not have read access to the page or content.</li>
+                    </ul>
+                    Use the CRXDE, replication logs, and dispatcher flush agent to diagnose the exact cause.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Why is a custom servlet not getting triggered even though the path looks correct?</summary>
+                    <p>
+                        A custom servlet not triggering despite matching the path usually means one of the following issues:
+                    <ul>
+                        <li><strong>Incorrect path/type mapping:</strong> Ensure the servlet is registered with correct `sling.servlet.paths`, `sling.servlet.resourceTypes`, or selectors/extensions.</li>
+                        <li><strong>Path override by default servlet or filter:</strong> Another servlet or AEM filter might be intercepting the request. Check `/system/console/requests` to see the resolution path.</li>
+                        <li><strong>Bundle not active:</strong> Check the OSGi Console to make sure the bundle containing your servlet is active and not in an error state.</li>
+                        <li><strong>Wrong method:</strong> Ensure you're using the correct `doGet`, `doPost`, etc., based on the request type.</li>
+                        <li><strong>Servlet not annotated properly:</strong> Verify your servlet uses `@Component(service = Servlet.class)` and proper `@SlingServlet*` annotations.</li>
+                        <li><strong>Dispatcher blocked path:</strong> Your path may be blocked by dispatcher filters or cache rules.</li>
+                    </ul>
+                    Use `/system/console/configMgr`, `/system/console/bundles`, and request tracing tools to debug the servlet registration and resolution flow.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you debug an OSGi config that is not being picked up in the environment?</summary>
+                    <p>
+                        First, check if the configuration file is placed under the correct runmode folder (e.g., <code>/apps/project/config.prod</code>). Ensure the filename matches the PID of the target service and uses the right format (<code>.config</code> or <code>.cfg.json</code>). Go to <code>/system/console/configMgr</code> to verify if the configuration is loaded and applied. If not visible, confirm the bundle is active and that there are no typos or missing properties. Also, check for factory configuration suffix issues (e.g., <code>~my-instance</code>) or conflicts between multiple config sources.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>A content fragment variation is not showing up in GraphQL API — why?</summary>
+                    <p>
+                        This typically happens when the variation is not included in the Content Fragment Model or the GraphQL persisted query doesn't reference it. Ensure the variation is created and properly authored within the content fragment. Check that the corresponding model has GraphQL enabled and is published, along with the content fragment itself. Also, regenerate and re-publish the persisted GraphQL query to reflect any schema changes. Finally, validate that the GraphQL schema includes the variation by testing via the GraphiQL editor.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Dispatcher is caching a dynamic page that should not be cached — how do you fix it?</summary>
+                    <p>
+                        To prevent a dynamic page from being cached by Dispatcher, update the <code>/cache</code> and <code>/rules</code> sections in the <code>dispatcher.any</code> file to exclude that path or file type. You can also configure the backend response to send the <code>Dispatcher: no-cache</code> header. Another approach is using <code>statfileslevel</code> and <code>.stat</code> files to trigger invalidation. Check if any <code>Cache-Control</code> or <code>Expires</code> headers are being set incorrectly from AEM, which might cause unwanted caching. Always clear the cache manually or trigger a flush after applying changes.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you handle large asset uploads failing in AEM Author?</summary>
+                    <p>
+                        Large asset uploads can fail due to various reasons like dispatcher size limits, AEM request size limits, or browser timeouts. First, verify the AEM configuration in <code>/system/console/configMgr</code> for <strong>Day CQ DAM Asset Upload Restriction</strong> and increase the maximum file size if needed. Also, check the <code>sling.servlet.maxRequestSize</code> OSGi config. If you're using Dispatcher, ensure that <code>mod_request</code> and <code>mod_security</code> are not blocking large POST requests. Consider using the AEM Desktop App or Assets HTTP API for more stable large uploads.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Vanity URLs are not working in the published environment — what could be the issue?</summary>
+                    <p>
+                        Vanity URLs must be explicitly allowed in Dispatcher. Check if the <code>/allowVanityUrl</code> property is set to <code>1</code> in the <code>dispatcher.any</code> configuration. Also, verify that <code>resource.resolver.mapping</code> and <code>resource.resolver.vanitypath.whitelist</code> are correctly configured in AEM. Ensure the page with the vanity URL is published, and the vanity path is not conflicting with another path. Additionally, clear the Dispatcher cache or test with cache disabled to rule out stale entries.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Why is a custom component working on Author but not rendering on Publish?</summary>
+                    <p>
+                        This often happens when related client libraries, templates, or configurations are not published. Check if the component's HTL file, model class (if Sling Model), and any clientlibs are correctly deployed and published. Inspect browser console and network logs on the Publish instance for missing JS/CSS files or 404 errors. Also verify if the component is behind any conditional rendering based on permissions or user roles. Lastly, ensure there's no filtering rule in Dispatcher that's blocking the component's content.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You deployed a new template, but it's not visible to authors — what's missing?</summary>
+                    <p>
+                        After deploying a new editable template, you must enable it for use. Navigate to <code>Tools &gt; Templates</code>, open the template, and ensure it is set to "Enabled." Also, verify that the template is associated with the correct template-type (allowed in the policy) and allowed in the relevant <code>cq:allowedTemplates</code> node under the page's parent or the site root. If you are using a content policy, make sure the policy allows this template for the page type.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How to avoid cache issues when multiple authors publish simultaneously?</summary>
+                    <p>
+                        When many authors publish at once, cache invalidation can lag or result in inconsistent states at the Dispatcher. To mitigate this, enable <strong>statfileslevel</strong> appropriately in Dispatcher config to minimize over-invalidation. Use <code>/invalidateHandler</code> with correct regex to control what gets purged. Also, ensure that <strong>flush agents</strong> are configured properly and working. For critical content, you can trigger manual cache flushes via cURL or a post-processing workflow step.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Why does a content deployment break when a node is removed from CRX?</summary>
+                    <p>
+                        Removing a node from CRX, especially system or referenced nodes (e.g., components, templates, or content policies), can cause deployment failures or rendering issues. AEM pages and components rely on specific JCR paths. If a referenced node (like a component used in a page) is deleted, it can cause runtime errors or blank pages. Always use package manager or Sling DELETE APIs instead of manual CRXDE deletions, and validate dependencies using the "References" tab or ACS Commons Reports before removal.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What causes a 404 for a valid URL in Publish even after activation?</summary>
+                    <p>
+                        A 404 error on Publish even after activation could be due to several reasons: 
+                        (1) The content wasn't actually replicated — check replication logs and status in Sites console. 
+                        (2) The Dispatcher cache hasn't updated or is serving stale content — try invalidating or flushing the cache. 
+                        (3) The URL might not be allowed through the Dispatcher <code>filters</code> or <code>rewrite rules</code> in the web server config. 
+                        (4) The page/component uses a template or clientlib that wasn't published or is missing on Publish.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What to do if a workflow is not triggering after form submission?</summary>
+                    <p>
+                        If a workflow isn't triggering after form submission, check that the form action type is correctly configured (e.g., "Start Workflow"). 
+                        Ensure the workflow model is published and not in a "Disabled" state. 
+                        Also, confirm that the path conditions in the workflow launcher (if used) are correctly defined and the user submitting the form has permission to initiate workflows. 
+                        Look at error logs for any permission or script-related errors during form submission.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>A custom Sling Model is not being injected — how do you troubleshoot it?</summary>
+                    <p>
+                        If a Sling Model is not injecting, check that: 
+                        (1) The model class is annotated with <code>@Model</code> and has the correct <code>adaptables</code> (e.g., Resource, SlingHttpServletRequest). 
+                        (2) The required dependencies are correctly imported and deployed. 
+                        (3) The model is registered and active in the OSGi console. 
+                        (4) The @Inject fields match the property names in the JCR or the request attributes. 
+                        Use <code>Sling Model Exporter</code> or debugger logs to confirm if the model is even being resolved.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You changed a clientlib but it's not updating in browser — what could be wrong?</summary>
+                    <p>
+                        This usually happens due to browser or Dispatcher caching. Try appending a version number or cache-busting query parameter to the clientlib URL. 
+                        Also, verify that the clientlib changes are properly deployed and activated to the publish instance. 
+                        If you're using <code>htmlLibraryManager</code>, ensure it's not minifying or aggregating old content. 
+                        Clear Dispatcher cache and browser cache to make sure the latest assets are being loaded.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Why is a servlet under /bin path getting blocked in Dispatcher?</summary>
+                    <p>
+                        Dispatcher blocks requests to sensitive paths like <code>/bin</code> by default for security reasons. 
+                        Check the <code>/filter</code> section in your <code>dispatcher.any</code> file and ensure that the path is explicitly allowed. 
+                        Also, review your web server's <code>rewrite rules</code> and make sure the servlet's selector and extension are not getting stripped or rewritten incorrectly.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What precautions should be taken while writing code under /apps or /libs?</summary>
+                    <p>
+                        Never modify anything directly under <code>/libs</code>, as it's owned by Adobe and will be overwritten during upgrades. 
+                        Always overlay or extend via <code>/apps</code> instead. 
+                        When writing under <code>/apps</code>, maintain proper structure, avoid hard-coded paths, and ensure permissions are set correctly. 
+                        Use <code>sling:resourceSuperType</code> instead of code duplication and always version your components/templates for better maintainability.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You created a new OSGi config but it's not visible in Felix Console — what could be wrong?</summary>
+                    <p>
+                        Ensure that the configuration file is placed in the correct path: 
+                        <code>/apps/&lt;your-project&gt;/osgiconfig/&lt;runmode&gt;/</code> or 
+                        <code>/apps/&lt;your-project&gt;/config/&lt;runmode&gt;/</code>. 
+                        The file should be named correctly using the full PID of the service, optionally with a suffix for factory configs (e.g., 
+                        <code>com.example.MyService~instance1.config</code>). 
+                        Also verify that the syntax is correct (especially for boolean and array types), and that the bundle for the config PID is active.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Tags are applied in Author but not showing on Publish — how do you debug this?</summary>
+                    <p>
+                        First, ensure that the tags and their namespaces are published from Author to Publish. 
+                        Tags exist under <code>/content/cq:tags</code>, and if not published, they won't resolve on the Publish instance. 
+                        Also, validate that the content referencing the tags is activated. 
+                        Check component logic as well — make sure it correctly reads and displays tag titles via TagManager or Sling Models.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Assets are not being processed by workflows — what could be the root cause?</summary>
+                    <p>
+                        The root cause is often a misconfigured or disabled Launcher. Go to <code>Tools &gt; Workflow &gt; Launchers</code> and verify that 
+                        a proper launcher exists for the DAM Update Asset workflow. 
+                        Also, check the MIME type conditions and paths — they should match the uploaded asset types. 
+                        Confirm that the workflow model itself is not in a suspended or broken state. 
+                        Lastly, verify error logs for any workflow-related exceptions.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you ensure secure API integration without hardcoding tokens?</summary>
+                    <p>
+                        Use OSGi configuration to store sensitive values like API tokens. Define these in 
+                        <code>/apps/&lt;your-project&gt;/config.secure</code> or use Adobe's Secure Store Service if available. 
+                        Never commit secrets to Git. For additional security, retrieve secrets from environment variables or cloud secrets 
+                        manager (e.g., AWS Secrets Manager) at runtime and inject them via Sling Models or services. 
+                        Also, use HTTPS and proper OAuth/token rotation practices.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You get a blank page on Publish for a newly created language copy — why?</summary>
+                    <p>
+                        This typically happens when the language copy content is not activated. Creating a language copy doesn't automatically publish it. 
+                        Ensure both the content and its referenced templates, clientlibs, and i18n dictionaries are published. 
+                        Also check if the root page of the copy has a template assigned and valid sling:resourceType. 
+                        Use the Dispatcher logs to ensure the page isn't being blocked or cached prematurely.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you debug AEM Forms submission failure with no frontend error?</summary>
+                    <p>
+                        Start by checking the error logs in <code>/logs/error.log</code> or <code>/logs/aemformstransactions.log</code>. 
+                        If using Adaptive Forms, ensure the Submit Action (e.g., REST endpoint, email, workflow) is properly configured. 
+                        Inspect network requests in browser DevTools — sometimes the response will contain backend validation or permission errors. 
+                        Also verify user permissions, form bindings, and the availability of the configured Submit URL or workflow model.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Why is a page not editable even though you have modify permissions?</summary>
+                    <p>
+                        Several reasons could cause this issue:
+                    <ul>
+                        <li>The page may be locked by another user. Check the page properties or CRXDE for <code>cq:lastModifiedBy</code>.</li>
+                        <li>The template used by the page may not allow editing — ensure the structure component doesn't lock regions with <code>cq:layout</code> restrictions.</li>
+                        <li>A Launch or Live Copy may be active and is preventing edits due to rollout/blueprint restrictions.</li>
+                        <li>The page may be in a workflow state that restricts editing (e.g., "review" or "pending activation").</li>
+                        <li>Use the Permissions tab in UserAdmin to double-check inherited ACLs.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You have a banner component with 10 fields. On Template A, only 5 of those fields should be visible, while on Template B, all 10 fields should appear. How would you implement this logic in AEM?</summary>
+                    <p>
+                        Use the AEM TemplateType or Policy configuration to control field visibility:
+                    <ul>
+                        <li>In the dialog XML, use <code>granite:rendercondition</code> with a custom condition or <code>granite:hide</code> based on resourceType/template path.</li>
+                        <li>Inject the current template path using Sling Models or WCMMode and use it to dynamically hide/show fields in HTL or JS.</li>
+                        <li>Alternatively, use <code>cq:dialog</code> overlays combined with <code>sling:resourceSuperType</code> to define a base dialog and override it conditionally in specific templates.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You are using the Core Title component. The requirement is: if no title is authored in the dialog, it should fallback and display the current page title automatically. How can you achieve this behavior using Sling Models?</summary>
+                    <p>
+                        Extend the Core Title Sling Model using <code>@Model(adaptables = Resource.class, adapters = Title.class)</code> and override <code>getText()</code> method:
+                    <pre>
+@Model(adaptables = Resource.class, adapters = Title.class,
+       resourceType = "your-project/components/title", 
+       defaultInjectionStrategy = DefaultInjectionStrategy.OPTIONAL)
+public class CustomTitleModel extends TitleImpl {
+
+    @ScriptVariable
+    private Page currentPage;
+
+    @Inject
+    @Via("resource")
+    private String text;
+
+    @Override
+    public String getText() {
+        return StringUtils.isNotBlank(text) ? text : currentPage.getTitle();
+    }
+}</pre>
+                    Make sure your component extends <code>core/wcm/components/title/v3/title</code> using <code>sling:resourceSuperType</code>.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You have an interface with two different service implementations in AEM. How do you control which implementation is invoked in different scenarios?</summary>
+                    <p>
+                        You can control service selection using:
+                    <ul>
+                        <li><strong>OSGi Service Ranking:</strong> The implementation with the highest <code>service.ranking</code> is selected when multiple services implement the same interface.</li>
+                        <li><strong>Target Filtering:</strong> Inject a specific implementation using <code>@Reference(target = "(type=implA)")</code> and define a property in each service with <code>@Component(property = {"type=implA"})</code>.</li>
+                        <li><strong>OSGi Configuration:</strong> Use factory configurations with different PIDs for each implementation, and use context-specific settings to bind the desired one.</li>
+                        <li><strong>Sling Models or Custom Logic:</strong> Inject all implementations as a list and use conditional logic to choose one at runtime.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>You are using MSM and have both Live Copies and Language Copies set up. After rollout, one page's URL is not updating as expected. How do you identify and fix this issue?</summary>
+                    <p>
+                        Possible causes and troubleshooting steps:
+                    <ul>
+                        <li>Check if <code>cq:LiveSyncConfig</code> is properly set on the page or parent — it controls rollout configuration.</li>
+                        <li>Verify that the rollout config includes <code>Push on Modify</code> or custom rollout triggers.</li>
+                        <li>Inspect <code>cq:LiveRelationship</code> properties to ensure linkage is valid (source/target path).</li>
+                        <li>If using Language Copies, confirm the <code>jcr:language</code> or <code>languageMasters</code> setup is correct and doesn't conflict.</li>
+                        <li>Manually trigger rollout via Sites console or use the <code>msm:rollout</code> servlet.</li>
+                        <li>Check Blueprint control properties for path sync suppression (like <code>cq:distribute</code> or <code>cq:isDeep</code>).</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>On the Author environment, the styles are applied correctly to the page. However, on the Publish environment, CSS is missing or not rendering as expected. What could be the possible reasons and how would you troubleshoot this issue?</summary>
+                    <p>
+                        Common reasons and how to debug:
+                    <ul>
+                        <li><strong>Clientlibs Not Replicated:</strong> Ensure client libraries are activated (replicated) to the Publish instance.</li>
+                        <li><strong>Dispatcher Configuration:</strong> Check <code>/filter</code> and <code>/cache</code> rules — dispatcher may block CSS or JS files.</li>
+                        <li><strong>Incorrect Categories:</strong> Clientlib categories might not match template policies or pages.</li>
+                        <li><strong>Path Mapping Issue:</strong> Use <code>View Source</code> to verify clientlib paths resolve correctly (e.g., <code>/etc.clientlibs/</code>).</li>
+                        <li><strong>Minification/Compression Errors:</strong> Disable minification in <code>HtmlLibraryManager</code> temporarily to debug broken links.</li>
+                        <li><strong>CORS Issues:</strong> If using CDN or external domain, check <code>Access-Control-Allow-Origin</code> headers and CORS policies.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>A page is visible and functioning on the Author instance, but it is not accessible on the Publish instance. What could be the root causes, and how would you resolve this issue?</summary>
+                    <p>
+                        <strong>Possible Causes:</strong><br>
+                        - Page not replicated to Publish.<br>
+                        - Missing or failed replication agent.<br>
+                        - Access restrictions (permissions, ACLs, closed user groups).<br>
+                        - Dispatcher blocking or caching issue.<br>
+                        - Servlet filter (e.g., <code>ResourceResolverFilter</code>) denying access.<br>
+                        - Page hidden via <code>cq:noindex</code>, <code>robots.txt</code>, or missing <code>sling:resourceType</code>.<br><br>
+                        <strong>Resolution Steps:</strong><br>
+                        1. Verify replication status in Author's “Manage Publication.”<br>
+                        2. Check if page exists in CRXDE on Publish.<br>
+                        3. Review dispatcher logs for 404 or denied access.<br>
+                        4. Check ACLs in Publish.<br>
+                        5. Confirm that referenced templates/components are available on Publish.<br>
+                        6. Clear dispatcher cache and retry.<br>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>In an AEM 6.5 project structure using Maven Archetype, we have folders like core, ui.apps, and ui.frontend. Can you explain how the CSS and JS from ui.frontend are linked or deployed to the components inside ui.apps?</summary>
+                    <p>
+                        <strong>Explanation:</strong><br>
+                        - <code>ui.frontend</code> is a Node.js-based module that uses Webpack or similar tools to bundle CSS/JS.<br>
+                        - On build, assets are placed into <code>ui.apps/src/main/content/jcr_root/apps/your-project/clientlibs</code>.<br>
+                        - These clientlibs are referenced in components or templates using the <code>data-sly-use.clientlib</code> block or the <code>cq:ClientLibraryFolder</code>.<br><br>
+                        <strong>Linking:</strong><br>
+                        - Ensure Webpack outputs to the correct path defined in <code>webpack.config.js</code>.<br>
+                        - Set proper <code>categories</code> in the <code>clientlibs</code> so they can be included using <code>cq:includeClientLib</code> or <code>data-sly-call</code>.<br>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Your author instance is crashing intermittently during peak business hours. How would you approach identifying and fixing the issue?</summary>
+                    <p>
+                        <strong>Possible Root Causes:</strong><br>
+                        - Memory leaks (heap overflow, unclosed streams).<br>
+                        - Long-running queries or large workflow backlogs.<br>
+                        - Inefficient components (e.g., recursive rendering, synchronous JS calls).<br>
+                        - Dispatcher not throttling traffic or bots causing stress.<br><br>
+                        <strong>Troubleshooting Steps:</strong><br>
+                        1. Analyze logs (<code>error.log</code>, <code>gc.log</code>, etc.).<br>
+                        2. Monitor with AEM Operations Dashboard / tools like <code>jconsole</code>, <code>VisualVM</code>.<br>
+                        3. Capture heap/thread dumps.<br>
+                        4. Look for CPU or memory spikes in Cloud Manager / system metrics.<br><br>
+                        <strong>Fix Recommendations:</strong><br>
+                        - Tune heap size and GC settings.<br>
+                        - Optimize slow queries and workflows.<br>
+                        - Avoid unnecessary synchronous operations or recursive includes.<br>
+                        - Ensure Dispatcher filters and caching are correctly configured.<br>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Your dispatcher is not caching certain pages. Authors are seeing live content changes instantly. What could be the cause?</summary>
+                    <p>
+                        <strong>Possible Causes:</strong><br>
+                        - Pages are cache-disabled in dispatcher rules (e.g., via <code>/rules</code> or <code>/cache</code> settings).<br>
+                        - Dispatcher flush not configured or failing to invalidate cache.<br>
+                        - Pages have <code>Cache-Control: no-cache</code> headers set by components or servlet filters.<br>
+                        - The pages use selectors or query parameters not covered under <code>/ignoreUrlParams</code>, creating cache misses.<br>
+                        - <code>statfileslevel</code> set incorrectly, preventing proper cache invalidation.<br><br>
+                        <strong>Resolution Steps:</strong><br>
+                        1. Check <code>dispatcher.any</code> <code>/cache</code> rules - make sure the content paths are allowed to be cached.<br>
+                        2. Ensure the <code>statfileslevel</code> value matches the depth of your content structure.<br>
+                        3. Add query parameters (like <code>?t=123</code>) to <code>/ignoreUrlParams</code> if they're not content-impacting.<br>
+                        4. Confirm flush agents on Publish are properly configured and successful.<br>
+                        5. Review response headers with browser dev tools (e.g., ensure no <code>no-cache</code> directives are present).<br>
+                        6. Enable and monitor dispatcher logs to verify if pages are being cached or bypassed.<br>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>A new component deployment caused page rendering issues on a few live pages. What's your step-by-step action plan?</summary>
+                    <p>
+                        <strong>Step-by-Step Action Plan:</strong><br>
+                        1. <strong>Immediate Rollback</strong>: If serious, roll back the faulty bundle or content package using Cloud Manager or old package from CRX.<br>
+                        2. <strong>Access Error Logs</strong>: Look into <code>error.log</code> and <code>request.log</code> on Publish to identify the failing component or script.<br>
+                        3. <strong>Check Template Usage</strong>: Identify which pages/templates use the new component and limit damage.<br>
+                        4. <strong>Validate Component Code</strong>: Ensure no null pointers, missing bindings, or HTL expression errors.<br>
+                        5. <strong>CRXDE Inspection</strong>: Confirm that all required dialogs, clientlibs, sling:resourceTypes, etc., are present and deployed.<br>
+                        6. <strong>Test in Lower Environment</strong>: Reproduce in Dev/Stage before fixing in Prod.<br>
+                        7. <strong>Fix & Redeploy</strong>: Patch the component with necessary fixes and deploy via pipeline or manually.<br>
+                        8. <strong>Clear Dispatcher Cache</strong>: If component includes any dynamic rendering, flush affected pages from dispatcher.<br>
+                        9. <strong>Add Automated Tests</strong>: Include unit and UI tests to prevent similar issues in future deployments.<br>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Your frontend team complains that GraphQL queries from Content Fragments are slow. What could be the reasons and how do you solve it?</summary>
+                    <p>
+                        <strong>Possible Reasons:</strong><br>
+                        - Large or unfiltered queries fetching unnecessary fields.<br>
+                        - Missing persisted queries (using raw POST requests instead).<br>
+                        - No caching layer in place (e.g., CDN, dispatcher rules, or response headers).<br>
+                        - Backend bottlenecks - CFs not published or large nested references.<br>
+                        - Unindexed queries or heavy joins due to CF structure.<br><br>
+                        <strong>Solutions:</strong><br>
+                        1. Use <strong>persisted queries</strong> for performance and security. Avoid ad-hoc dynamic queries.<br>
+                        2. Optimize queries to fetch only required fields. Avoid deep nesting.<br>
+                        3. Enable GraphQL caching at dispatcher/CDN level (set correct headers like <code>Cache-Control</code>).<br>
+                        4. Ensure all referenced content fragments and assets are published and available.<br>
+                        5. Use <strong>content fragment models with fewer references</strong> where possible.<br>
+                        6. Monitor GraphQL requests using AEM's built-in tools or Cloud Manager metrics.<br>
+                        7. Consider adding indexes or refactoring CFs if query resolution remains heavy.<br>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Your React frontend team wants structured product data from AEM. What's the best way to expose this?</summary>
+                    <p>The best approach is to expose the product data using AEM Content Fragments combined with GraphQL endpoints. Create a custom content fragment model that reflects the structure needed by the frontend. Then, enable GraphQL for the content fragment model, and publish the endpoint. This allows your React app to fetch structured JSON data on demand. Alternatively, use Sling Models exposed via custom JSON exporters if GraphQL is not an option.</p>
+                </details>
+                <details class="item">
+                    <summary>Your Cloud Manager pipeline failed with the message "Critical security vulnerabilities found". What's your next step?</summary>
+                    <p>First, review the Cloud Manager build logs and security report to identify the exact CVEs flagged. Usually, these are dependencies with known vulnerabilities. Upgrade the affected libraries or remove unnecessary ones. If a patch isn’t available, assess the severity and consider mitigation strategies (e.g., blocking endpoints, disabling features). If needed, file a waiver request via Adobe support explaining the business impact and mitigation steps taken. Re-run the pipeline only after addressing or justifying the vulnerability.</p>
+                </details>
+                <details class="item">
+                    <summary>How will you implement dynamic XML sitemap in AEM that updates automatically on page publish?</summary>
+                    <p>Create a servlet or Sling Model-based component that generates the sitemap.xml dynamically by querying published pages using the JCR API or PageManager. Register a workflow or Sling event listener on page activation that triggers a cache purge or sitemap regeneration. Store the generated sitemap in `/content` or expose it via a custom servlet (`/bin/sitemap.xml`). Make sure to include only public URLs, handle multi-language structure, and update lastmod/priority fields as per SEO best practices.</p>
+                </details>
+                <details class="item">
+                    <summary>How would you use MSM to quickly create and manage content across multiple regions?</summary>
+                    <p>To use MSM (Multi Site Manager) for regional content, create a blueprint site as the master. Then create live copies for each region, mapping them to the blueprint. Configure rollout configurations to control what gets updated (structure, content, properties). Use language copies inside live copies if localization is also needed. Define region-specific design and components via policies and structure. Lock content that shouldn't be edited regionally and unlock what can be customized. This way, central content updates are propagated efficiently while allowing local flexibility.</p>
+                </details>
+                <details class="item">
+                    <summary>How would you architect integration between AEM and a 3rd-party form service like Typeform or Google Forms?</summary>
+                    <p>Integrate 3rd-party forms by embedding them via iFrame or using their JavaScript embed code in AEM components. For advanced integration, create a custom component that captures user inputs and sends them to the 3rd-party API using AJAX. Use Sling Models and servlets to handle data preprocessing or analytics if needed. Ensure CORS and data privacy policies are handled. Use tags or metadata in DAM or pages to track form usage and analytics integration (e.g., Adobe Analytics, GTM).</p>
+                </details>
+                <details class="item">
+                    <summary>Some authors can't edit content even though they're in the right group. How do you debug this?</summary>
+                    <p>Start by verifying that the group has correct permissions on the content path using the Permissions tab in the user admin console. Check if the page is locked or part of a live copy with restricted editability. Look into ACLs on the JCR node via CRXDE. Ensure there are no deny rules or inherited restrictions. Also, confirm if the author has permission to use the template or component being edited. Check logs for permission denials and test with a sample user in the same group to replicate the issue.</p>
+                </details>
+                <details class="item">
+                    <summary>What's your approach to integrating product data from a PIM system with AEM?</summary>
+                    <p>The ideal approach is to use APIs provided by the PIM system to pull product data into AEM. This can be done via scheduled jobs, Sling services, or using Adobe I/O. Store the product data in AEM as content fragments or structured JCR nodes. For real-time data, build a proxy service or use GraphQL endpoints if supported. Leverage AEM CIF (Commerce Integration Framework) if available, as it provides OOTB connectors for PIM/commerce systems. Ensure data synchronization, fallback handling, and cache management are in place for performance and reliability.</p>
+                </details>
+                <details class="item">
+                    <summary>You notice a large number of stuck workflow instances. How do you handle this?</summary>
+                    <p>First, go to the Workflow console and identify the stalled instances. Check if a particular step (e.g., participant step or process step) is causing the issue. Look for errors in logs (`error.log` and `workflow.log`). Common causes include missing payloads, deleted users, or custom code exceptions. Terminate unnecessary instances from the console. Fix underlying issues (e.g., invalid user, broken script). Use JMX or workflow purge scripts to clean up old or corrupted workflows. Implement monitoring to alert on stuck workflows proactively in the future.</p>
+                </details>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

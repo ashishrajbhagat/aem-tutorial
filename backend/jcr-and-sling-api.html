@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - JCR and Sling API</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>JCR and Sling API</h1>
+            <section class="card">
+                <h2>Session and ResourceResolver</h2>
+                <p>ResourceResolver and Session are used to interact with the JCR (Java Content Repository) and fetch or modify content, but they work at different levels. Let's break them down in detail.</p>
+                <h3>Session</h3>
+                <p>A Session in AEM represents a connection to the JCR repository and allows interaction with nodes and properties using JCR API <code>javax.jcr.Session</code>.</p>
+                <h4>Key Points:</h4>
+                <ul>
+                    <li>A session is created using the JCR Repository API.</li>
+                    <li>It provides access to Node and Property objects in the repository.</li>
+                    <li>A session must be closed (<code>session.logout()</code>) to release resources.</li>
+                    <li>It follows Java Content Repository (JCR) API standards.</li>
+                    <li>Sessions are lightweight, but having too many open sessions can cause performance issues.</li>
+                </ul>
+                <h4>Advantages of Session:</h4>
+                <ul>
+                    <li>Works directly with <strong>JCR nodes</strong> and properties.</li>
+                    <li>Required for <strong>low-level JCR operations</strong> (like versioning, access control, etc.).</li>
+                    <li>Allows batch changes using <code>session.save()</code>.</li>
+                </ul>
+                <h4>Disadvantages of Session:</h4>
+                <ul>
+                    <li>More complex compared to <code>ResourceResolver</code>.</li>
+                    <li>Requires <strong>manual session management</strong> (<code>session.logout()</code>).</li>
+                    <li>Not ideal for working with AEM's Sling-based resource hierarchy.</li>
+                </ul>
+                <h3>ResourceResolver</h3>
+                <p>A ResourceResolver in AEM is a higher-level API that allows access to resources (like pages, components, DAM assets, etc.) in AEM using Sling API <code>org.apache.sling.api.resource.ResourceResolver</code>.</p>
+                <h4>Key Points:</h4>
+                <ul>
+                    <li>Works with Sling Resources instead of JCR nodes.</li>
+                    <li>Abstracts the complexities of JCR API.</li>
+                    <li>Uses <code>Resource</code> objects instead of <code>Node</code> objects.</li>
+                    <li>Obtained via ResourceResolverFactory.</li>
+                    <li>Must be closed (<code>resourceResolver.close()</code>) to free resources.</li>
+                </ul>
+                <h4>Advantages of ResourceResolver:</h4>
+                <ul>
+                    <li><strong>Lightweight</strong> compared to a JCR session.</li>
+                    <li>Uses <strong>Sling API</strong>, making it easier to work with AEM's resource-oriented structure.</li>
+                    <li>Supports <strong>adaptTo()</strong>, allowing conversion to <code>Session</code>, <code>PageManager</code>, <code>UserManager</code>, etc.</li>
+                </ul>
+                <h4>Disadvantages of ResourceResolver:</h4>
+                <ul>
+                    <li>Doesn't support <strong>low-level JCR operations</strong> like versioning.</li>
+                    <li>Requires a service user for secure access in <strong>AEM as a Cloud Service</strong>.</li>
+                </ul>
+                <p>In AEM servlets, you can retrieve a <strong>Session</strong> and <strong>Resource Resolver</strong> in two common ways: through <code>SlingHttpServletRequest</code> or by using the <code>ResourceResolverFactory</code> to get a service-based session. Both methods are essential for interacting with AEM's repository and managing user-specific data.</p>
+                <ol>
+                    <li>
+                        Get Session from <code>SlingHttpServletRequest</code>
+                        <p>In this method, you can access the session directly from the <code>SlingHttpServletRequest</code> object using the <code>getResourceResolver().adaptTo(Session.class)</code> approach.</p>
+                        <pre>ResourceResolver resourceResolver = slingHttpServletRequest.getResourceResolver();<br>Session session = resourceResolver.adaptTo(Session.class);</pre>
+                    </li>
+                    <li>
+                        Get Session Using <code>ResourceResolverFactory</code>
+                        <p>Alternatively, you can get a session using <code>ResourceResolverFactory</code> in combination with a <code>ServiceResourceResolver</code>. This approach is more secure as it allows for session creation based on specific privileges.</p>
+                        <pre>
+@Reference
+private ResourceResolverFactory resourceResolverFactory;
+                    </pre>
+                        <pre>
+Map&lt;String, Object&gt; param = new HashMap&lt;&gt;();
+param.put(ResourceResolverFactory.SUBSERVICE, "mysystemuser");
+ResourceResolver resourceResolver = null;
+try {
+    // Create a session by invoking getServiceResourceResolver
+    resourceResolver = resourceResolverFactory.getServiceResourceResolver(param);
+    Session session = resourceResolver.adaptTo(Session.class);
+    
+    // Perform operations with the session (e.g., reading/writing data)
+    response.getWriter().write("Session retrieved successfully");
+} catch (PersistenceException | RepositoryException e) {
+    response.getWriter().write("Error while getting session: " + e.getMessage());
+} finally {
+    if (resourceResolver != null) {
+        resourceResolver.close();
+    }
+}</pre>
+                    </li>
+                </ol>
+                <p>In this example, the <code>getServiceResourceResolver</code> method is used to retrieve a session with a specific <code>readservice</code> subservice, allowing for better security and access control.</p>
+                <h4>Key Points:</h4>
+                <ul>
+                    <li><strong>SlingHttpServletRequest: </strong>You can directly access the ResourceResolver from a request, which is helpful for simple content manipulation.</li>
+                    <li><strong>ResourceResolverFactory: </strong>For more secure or specialized access, such as using specific privileges or services, you can use this factory to get a service-based resolver with defined permissions.</li>
+                </ul>
+                <h4>When to Use What?</h4>
+                <p>Use <strong>Session</strong> if you need:</p>
+                <ul>
+                    <li>Direct JCR operations like versioning, ACL modifications, or workspace management.</li>
+                    <li>Batch saving operations using <code>session.save()</code>.</li>
+                </ul>
+                <p>Use <strong>ResourceResolver</strong> if you need:</p>
+                <ul>
+                    <li>High-level AEM resource management.</li>
+                    <li>Fetching content from <code>/content</code>, <code>/etc</code>, <code>/apps</code>, etc.</li>
+                    <li>Converting to <code>PageManager</code>, <code>UserManager</code>, etc.</li>
+                </ul>
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Session (JCR API)</th>
+                            <th>ResourceResolver (Sling API)</th>
+                        </tr>
+                        <tr>
+                            <td><strong>API Type</strong></td>
+                            <td>JCR (<code>javax.jcr.Session</code>)</td>
+                            <td>Sling (<code>org.apache.sling.api.resource.ResourceResolver</code>)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Primary Usage</strong></td>
+                            <td>Works with <strong>Nodes and Properties</strong></td>
+                            <td>Works with <strong>Resources</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Abstraction</strong></td>
+                            <td>Low-level JCR operations</td>
+                            <td>High-level Sling API</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Access Method</strong></td>
+                            <td><code>session.getNode("/content/my-site")</code></td>
+                            <td><code>resourceResolver.getResource("/content/my-site")</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Adaptability</strong></td>
+                            <td>Cannot adapt to <code>ResourceResolver</code></td>
+                            <td>Can be adapted to <code>Session</code></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>More resource-intensive</td>
+                            <td>More lightweight</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Low-level operations (ACLs, versioning, workflows)</td>
+                            <td>General content access and modification</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+            <section class="card">
+                <h2>Node API and Resource API</h2>
+                <p>In AEM, both Node API and Resource API are used to interact with the JCR repository, but they have fundamental differences in how they access and manipulate content.</p>
+                <h3>Node API (JCR API)</h3>
+                <p>The Node API is part of the JCR (Java Content Repository) API and allows you to work with nodes and properties inside the repository.</p>
+                <h4>Key Points:</h4>
+                <ul>
+                    <li>Works at a <strong>low level</strong> directly with JCR.</li>
+                    <li>Uses <code>javax.jcr.Node</code> and <code>javax.jcr.Property</code> to access content.</li>
+                    <li>Requires a <strong>Session</strong> (<code>javax.jcr.Session</code>) to retrieve nodes.</li>
+                    <li>Uses <strong>node structure</strong> (<code>/content/my-site/jcr:content</code>).</li>
+                    <li>Changes require <code>session.save()</code> to persist.</li>
+                    <li>Supports <strong>versioning</strong>, <strong>workspace management</strong>, and <strong>access control lists (ACLs)</strong>.</li>
+                </ul>
+                <pre>
+import javax.jcr.*;
+
+@Reference
+private ResourceResolverFactory resolverFactory;
+
+public void useNodeAPI() {
+    Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
+    params.put(ResourceResolverFactory.SUBSERVICE, "mysystemuser");
+
+    try (ResourceResolver resourceResolver = resolverFactory.getServiceResourceResolver(params)) {
+        Session session = resourceResolver.adaptTo(Session.class);
+        if (session != null) {
+            Node rootNode = session.getRootNode();
+            if (rootNode.hasNode("content/my-site")) {
+                Node myNode = rootNode.getNode("content/my-site");
+                System.out.println("Node name: " + myNode.getName());
+                
+                // Add a new property
+                myNode.setProperty("newProperty", "Hello AEM");
+                session.save();  // Save changes
+            }
+            session.logout();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}</pre>
+                <h4>Advantages of Node API:</h4>
+                <ul>
+                    <li>Direct <strong>low-level access</strong> to JCR nodes and properties.</li>
+                    <li>Supports <strong>ACLs</strong>,<strong> versioning</strong>, and <strong>workspace management</strong>.</li>
+                    <li>Required for <strong>complex JCR operations</strong> (like custom workflows).</li>
+                </ul>
+                <h4>Disadvantages of Node API:</h4>
+                <ul>
+                    <li><strong>Complex</strong> compared to Resource API.</li>
+                    <li>Requires <strong>session management</strong> (<code>session.logout()</code>).</li>
+                    <li>Changes require <strong>manual save</strong> (<code>session.save()</code>).</li>
+                </ul>
+                <h3>Resource API (Sling API)</h3>
+                <p>The Resource API is part of Sling API, which is more high-level and aligned with AEM's content structure.</p>
+                <h4>Key Points:</h4>
+                <ul>
+                    <li>Works with <strong>Sling Resources</strong> (<code>org.apache.sling.api.resource.Resource</code>).</li>
+                    <li>Uses <strong>ResourceResolver</strong> instead of <code>Session</code>.</li>
+                    <li>Uses a <strong>path-based</strong> approach (<code>/content/my-site</code>).</li>
+                    <li>Automatically handles <strong>session management</strong>.</li>
+                    <li>Works well with <strong>Sling Models</strong> and <strong>Components</strong>.</li>
+                    <li>No need to call <code>session.save()</code>.</li>
+                </ul>
+                <pre>
+import org.apache.sling.api.resource.*;
+
+@Reference
+private ResourceResolverFactory resolverFactory;
+
+public void useResourceAPI() {
+    Map&lt;String, Object&gt; params = new HashMap&lt;&gt;();
+    params.put(ResourceResolverFactory.SUBSERVICE, "mysystemuser");
+
+    try (ResourceResolver resourceResolver = resolverFactory.getServiceResourceResolver(params)) {
+        Resource resource = resourceResolver.getResource("/content/my-site");
+        if (resource != null) {
+            System.out.println("Resource name: " + resource.getName());
+
+            // Get properties
+            ValueMap properties = resource.getValueMap();
+            System.out.println("Property: " + properties.get("newProperty", String.class));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}</pre>
+                <h4>Advantages of Resource API:</h4>
+                <ul>
+                    <li><code>Simpler</code> and more <code>lightweight</code>.</li>
+                    <li>No need for <code>session management</code>.</li>
+                    <li>Works <code>seamlessly with Sling models and components</code>.</li>
+                    <li>Better for <code>page-based</code> and <code>content-driven applications</code>.</li>
+                </ul>
+                <h4>Disadvantages of Resource API:</h4>
+                <ul>
+                    <li>Cannot access <code>low-level JCR features</code> like ACLs and versioning.</li>
+                    <li>Does not support <code>direct batch operations</code>.</li>
+                </ul>
+                <h4>When to Use What?</h4>
+                <p>Use <strong>Node API</strong> if:</p>
+                <ul>
+                    <li>You need <strong>low-level JCR features</strong> like versioning, access control, and workspace management.</li>
+                    <li>You want to work with <strong>custom nodes</strong> and <strong>properties</strong>.</li>
+                    <li>You need to perform <strong>batch updates</strong> using <code>session.save()</code>.</li>
+                </ul>
+                <p>Use <strong>Resource API</strong> if:</p>
+                <ul>
+                    <li>You are building <strong>Sling-based AEM applications</strong> (e.g., components, templates).</li>
+                    <li>You want a <strong>simpler way</strong> to access content without worrying about sessions.</li>
+                    <li>You are working with <strong>Sling models</strong> and <strong>content fragments</strong>.</li>
+                </ul>
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Node API (JCR API)</th>
+                            <th>Resource API (Sling API)</th>
+                        </tr>
+                        <tr>
+                            <td><strong>API Type</strong></td>
+                            <td>JCR (<code>javax.jcr.Node</code>)</td>
+                            <td>Sling (<code>org.apache.sling.api.resource.Resource</code>)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Primary Usage</strong></td>
+                            <td>Works with <strong>Nodes and Properties</strong></td>
+                            <td>Works with <strong>Resources</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Access Method</strong></td>
+                            <td>Uses <code>Session</code> to fetch nodes</td>
+                            <td>Uses <code>ResourceResolver</code> to fetch resources</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Persistence</strong></td>
+                            <td>Requires <code>session.save()</code></td>
+                            <td>Automatically saves changes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Complexity</strong></td>
+                            <td>More complex</td>
+                            <td>Simpler</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Heavier</td>
+                            <td>More lightweight</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Low-level JCR operations (ACLs, workflows, versioning)</td>
+                            <td>General content access and Sling models</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+            <section class="card">
+                <h2>Custom JCR Node Handling using Java</h2>
+                <p>In AEM, the Java Content Repository (JCR) is at the heart of how content is stored and accessed. You can interact with JCR programmatically using the <code>javax.jcr</code> API. This is useful for automating tasks, writing migration scripts, or building admin tools.</p>
+                <h3>Basic Operations</h3>
+                <p>Common node operations you can perform via Java:</p>
+                <ul>
+                    <li>Creating new nodes and setting properties</li>
+                    <li>Reading content from existing nodes</li>
+                    <li>Updating node properties</li>
+                    <li>Deleting nodes safely</li>
+                </ul>
+                <h3>Getting JCR Session</h3>
+                <p>To interact with the JCR, use a <code>ResourceResolver</code> to adapt to a <code>Session</code>:</p>
+                <pre>
+@Reference
+private ResourceResolverFactory resolverFactory;
+
+public void writeToJcr() {
+    Map&lt;String, Object&gt; authInfo = new HashMap&lt;&gt;();
+    authInfo.put(ResourceResolverFactory.SUBSERVICE, "writeService");
+
+    try (ResourceResolver resolver = resolverFactory.getServiceResourceResolver(authInfo)) {
+        Session session = resolver.adaptTo(Session.class);
+
+        if (!session.nodeExists("/content/mysite/data")) {
+            Node rootNode = session.getNode("/content/mysite");
+            Node dataNode = rootNode.addNode("data", "nt:unstructured");
+            dataNode.setProperty("title", "New Node Title");
+            session.save(); // persist changes
+        }
+
+    } catch (LoginException | RepositoryException e) {
+        // handle exception
+    }
+}</pre>
+                <h3>Service User Mapping</h3>
+                <p>Always use a system service user (via <code>subservice</code>) to avoid security issues. Example:</p>
+                <pre>
+/apps/myproject/system/rep:policy
+/system/console/configMgr -> Apache Sling Service User Mapper Service
+Service Mapping: myproject.core:writeService=user-writer</pre>
+                <h3>Important Notes</h3>
+                <ul>
+                    <li>Use <strong>nt:unstructured</strong> nodes for flexibility, or specific node types like <code>cq:Page</code> where applicable.</li>
+                    <li>Always check if a node exists before creating or deleting to avoid exceptions.</li>
+                    <li>Call <code>session.save()</code> only when all operations are complete to reduce overhead.</li>
+                    <li>Never use <code>admin</code> session in production environments.</li>
+                </ul>
+                <h3>Use Cases</h3>
+                <ul>
+                    <li>Content migration scripts during deployment</li>
+                    <li>Bulk node creation or cleanup tasks</li>
+                    <li>Automated tag or asset structure generation</li>
+                    <li>Integration with external systems to push/pull content</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

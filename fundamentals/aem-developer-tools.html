@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM Developer Tools</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM Developer Tools</h1>
+            <section class="card">
+                <h2>CRXDE Lite & Developer Console Usage</h2>
+                <p>CRXDE Lite is AEM's in-browser development environment. It allows developers to navigate the repository, inspect nodes, properties, and make small changes directly in the JCR.</p>
+                <h3>Navigating CRXDE Lite</h3>
+                <ul>
+                    <li><strong>Access:</strong> <code>/crx/de/index.jsp</code></li>
+                    <li>Used to browse, create, modify or delete nodes and properties.</li>
+                    <li>Allows viewing permissions, node types, mixins, and custom components.</li>
+                </ul>
+                <h3>Developer Consoles</h3>
+                <ul>
+                    <li><strong>System Console:</strong> <code>/system/console</code> - View bundles, configurations, components.</li>
+                    <li><strong>Web Console:</strong> Tools for thread dumps, OSGi services, memory stats, etc.</li>
+                    <li><strong>CRX Explorer:</strong> <code>/crx/explorer</code> - Alternative lightweight repository browser.</li>
+                </ul>
+                <p><strong>Note:</strong> While CRXDE Lite is powerful, it is not meant for heavy development. Use it for inspection or quick fixes.</p>
+            </section>
+            <section class="card">
+                <h2>Understanding the AEM Directory Structure</h2>
+                <p>AEM stores content and code in a hierarchical structure in the JCR. Understanding this is key for developing clean and upgrade-safe code.</p>
+                <h3>Key Folders</h3>
+                <ul>
+                    <li><strong>/apps</strong>: Custom code and components. Editable and project-specific.</li>
+                    <li><strong>/libs</strong>: Core AEM and product code. Read-only. Never modify.</li>
+                    <li><strong>/content</strong>: Site content (pages, assets, etc.).</li>
+                    <li><strong>/conf</strong>: Editable templates and policies.</li>
+                    <li><strong>/etc</strong>: Deprecated but still used for tools like workflows and tags (in older versions).</li>
+                </ul>
+                <h3>Visual Overview</h3>
+                <p>The diagram below illustrates the typical folder structure in the AEM JCR:</p>
+                <div class="image-container">
+                    <img src="/images/aem-directory-structure.png" alt="AEM Repository Tree Structure" />
+                    <p>Illustration of AEM JCR folder hierarchy</p>
+                </div>
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Never override anything in <code>/libs</code>. Instead, overlay into <code>/apps</code>.</li>
+                    <li>Keep components modular inside <code>/apps/your-project/components</code>.</li>
+                    <li>Organize templates under <code>/apps/your-project/templates</code>.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>CRX Package Manager</h2>
+                <p>The CRX Package Manager allows developers to upload, download, build, and install AEM packages (.zip files containing JCR content).</p>
+                <h3>Accessing the Package Manager</h3>
+                <ul>
+                    <li>URL: <code>/crx/packmgr</code></li>
+                    <li>Supports building code, content, or config packages for deployment.</li>
+                </ul>
+                <h3>Creating a Package</h3>
+                <ul>
+                    <li>Click <strong>Create Package</strong>, provide name and version.</li>
+                    <li>Define filters (e.g., <code>/apps/your-project</code>, <code>/content/your-site</code>).</li>
+                    <li>Build and Download the package (.zip file).</li>
+                </ul>
+                <h3>Package Filters</h3>
+                <ul>
+                    <li>Filters define which JCR paths to include/exclude in a package.</li>
+                    <li>Use carefully to avoid including unwanted system paths.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>User Permissions and Access Control</h2>
+                <p>AEM supports a robust permission model using users, groups, and access control lists (ACLs).</p>
+                <h3>Managing Users & Groups</h3>
+                <ul>
+                    <li>Access via <code>/useradmin</code> or <code>/security/users.html</code></li>
+                    <li>Users can be assigned to groups (e.g., <code>content-authors</code>, <code>administrators</code>).</li>
+                </ul>
+                <h3>Setting Permissions</h3>
+                <ul>
+                    <li>Permissions include Read, Write, Modify, Delete, etc.</li>
+                    <li>Can be set in CRXDE Lite or Touch UI (<code>/security/permissions.html</code>).</li>
+                    <li>Follow the principle of least privilege (grant only what's necessary).</li>
+                </ul>
+                <p><strong>Tip:</strong> Always test access from non-admin accounts to validate permission settings.</p>
+            </section>
+            <section class="card">
+                <h2>Touch UI vs Classic UI</h2>
+                <p>AEM offers two UI frameworks — Touch UI (modern, Coral3-based) and Classic UI (legacy ExtJS-based).</p>
+                <h3>Touch UI</h3>
+                <ul>
+                    <li>Default and recommended for authoring and development.</li>
+                    <li>Based on Coral UI and Granite UI libraries.</li>
+                    <li>Responsive and mobile-friendly.</li>
+                </ul>
+                <h3>Classic UI</h3>
+                <ul>
+                    <li>Deprecated, but still used in older AEM projects.</li>
+                    <li>Non-responsive, outdated layout.</li>
+                </ul>
+                <h3>Which One to Use?</h3>
+                <ul>
+                    <li>Use Touch UI for all modern projects.</li>
+                    <li>Classic UI only if supporting legacy environments.</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

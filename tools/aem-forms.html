@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM Forms</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM Forms</h1>
+            <section class="card">
+                <h2>What is AEM Forms?</h2>
+                <p><strong>AEM Forms</strong> is a powerful solution within Adobe Experience Manager designed for creating, managing, and processing complex, data-driven forms at scale. It is commonly used by enterprises for customer onboarding, e-governance, healthcare forms, banking workflows, and more.</p>
+                <h3>Overview and Use-Cases</h3>
+                <ul>
+                    <li>Build forms that integrate with backend data sources (databases, REST APIs, etc.)</li>
+                    <li>Support personalized and localized forms for global users</li>
+                    <li>Enable workflows like approvals, e-signature, and document generation</li>
+                    <li>Use pre-fill, validation, and conditional logic in real time</li>
+                </ul>
+                <h3>Difference between AEM Sites and AEM Forms</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>AEM Sites</th>
+                            <th>AEM Forms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Primary Use</td>
+                            <td>Content pages, web experiences</td>
+                            <td>Interactive forms, data capture</td>
+                        </tr>
+                        <tr>
+                            <td>Components</td>
+                            <td>Page layout, content, assets</td>
+                            <td>Form fields, validation, submit handlers</td>
+                        </tr>
+                        <tr>
+                            <td>Personalization</td>
+                            <td>Targeted content via ContextHub</td>
+                            <td>Prefilled data and user-driven logic</td>
+                        </tr>
+                        <tr>
+                            <td>Back-end Binding</td>
+                            <td>Less common</td>
+                            <td>Tight integration with Form Data Models (FDMs)</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>When to Use AEM Forms?</h3>
+                <ul>
+                    <li>When form data must integrate with external systems (e.g., REST, SOAP, JDBC)</li>
+                    <li>When secure workflows and digital signatures are required</li>
+                    <li>For large-scale transactional forms like loan applications, insurance, student onboarding</li>
+                    <li>When compliance, accessibility, and responsive design are important</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Adaptive Forms</h2>
+                <p><strong>Adaptive Forms</strong> are dynamic, responsive, and data-driven forms created using AEM Forms. They adapt in real time based on user input, profile, or external data, offering a personalized and accessible form experience.</p>
+                <h3>Key Features</h3>
+                <ul>
+                    <li><strong>Drag-and-Drop Authoring:</strong> Easily build forms using Touch UI interface with layout containers and ready-made components.</li>
+                    <li><strong>Responsive Design:</strong> Automatically adapts to desktop, tablet, and mobile views.</li>
+                    <li><strong>Dynamic Behavior:</strong> Show/hide fields, pre-fill data, and change field properties using built-in rule editor or scripts.</li>
+                    <li><strong>Form Fragments:</strong> Reusable parts of a form (like address block) to maintain consistency across forms.</li>
+                    <li><strong>Prefill Support:</strong> Autofill form fields using user profile, session data, or external APIs.</li>
+                    <li><strong>Localization Support:</strong> Translate form text using i18n dictionaries and configure locale-specific content.</li>
+                </ul>
+                <h3>Supported Components</h3>
+                <ul>
+                    <li>Text input, date pickers, numeric fields</li>
+                    <li>Radio buttons, checkboxes, dropdowns</li>
+                    <li>Repeatable panels and form fragments</li>
+                    <li>Digital signature and file upload fields</li>
+                    <li>Custom widgets and third-party integrations</li>
+                </ul>
+                <h3>Use Cases</h3>
+                <p>Adaptive forms are widely used for applications such as:</p>
+                <ul>
+                    <li>Customer registration and onboarding</li>
+                    <li>Health insurance claim submission</li>
+                    <li>Government e-service forms</li>
+                    <li>University admission processes</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Form Models and Data Binding</h2>
+                <p>AEM Forms supports binding form fields to structured data using <strong>Form Data Models (FDMs)</strong>, <strong>XML Schema Definitions (XSDs)</strong>, or <strong>JSON Schemas</strong>. This allows developers to define how form inputs map to backend systems, enabling seamless data exchange.</p>
+                <h3>XML/JSON Schema-Driven Forms</h3>
+                <ul>
+                    <li>Define reusable form structure via <code>.xsd</code> or <code>.json</code> schema files</li>
+                    <li>Automatically generate fields based on the schema</li>
+                    <li>Use schema-driven validation and constraints</li>
+                </ul>
+                <h3>Binding Fields to Schema Elements</h3>
+                <p>Each form field can be mapped to a corresponding element in the schema using the <strong>Bind Reference</strong> property in the form editor.</p>
+                <ul>
+                    <li>Ensures clean data mapping on submission</li>
+                    <li>Supports complex nested objects and repeatable elements</li>
+                </ul>
+                <h3>Form Data Models (FDM)</h3>
+                <p>FDMs are AEM's way of abstracting backend data sources (REST, SOAP, Database, etc.) into a unified model for data binding.</p>
+                <ul>
+                    <li>Create data models using the AEM FDM UI</li>
+                    <li>Map form fields to services for <strong>read, write, submit, or fetch</strong></li>
+                    <li>Supports rule-driven population and dynamic behavior</li>
+                </ul>
+                <h3>Custom Data Models</h3>
+                <ul>
+                    <li>Custom Java services or REST endpoints can be registered and exposed to FDM</li>
+                    <li>Enables highly dynamic data flows like fetching live prices, account info, etc.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Submit Actions and Workflows</h2>
+                <p>Once a form is filled out, AEM provides multiple options for handling submission. The system is extensible and allows for both built-in and custom actions.</p>
+                <h3>Out-of-the-box Submit Actions</h3>
+                <ul>
+                    <li><strong>Email:</strong> Sends submitted data to specified email(s)</li>
+                    <li><strong>REST Endpoint:</strong> Posts data to external REST APIs</li>
+                    <li><strong>Form Data Model:</strong> Submits data to FDM-connected backend systems</li>
+                    <li><strong>AEM Workflow:</strong> Triggers an AEM workflow with the form data</li>
+                    <li><strong>Store Content:</strong> Persists submitted content into JCR</li>
+                </ul>
+                <h3>Invoking AEM Workflows</h3>
+                <p>Adaptive Forms can be configured to trigger workflows on submission. This is useful for:</p>
+                <ul>
+                    <li>Approval chains (e.g., loan or job application)</li>
+                    <li>Multi-level review processes</li>
+                    <li>Document generation and archival</li>
+                </ul>
+                <p>Workflow models can access submitted data using <code>MetaDataMap</code> and process it with custom steps.</p>
+                <h3>Writing Custom Submit Actions</h3>
+                <p>If built-in handlers aren't enough, you can write your own Java-based submit actions:</p>
+                <ul>
+                    <li>Implement the <code>com.adobe.forms.common.service.FormsSubmitAction</code> interface</li>
+                    <li>Register with proper OSGi configuration</li>
+                    <li>Handle business logic such as validation, data transformation, or conditional routing</li>
+                </ul>
+                <p>Custom submit handlers give you complete control over how the data is treated post-submission.</p>
+            </section>
+            <section class="card">
+                <h2>Form Data Model (FDM)</h2>
+                <p>The <strong>Form Data Model (FDM)</strong> in AEM Forms enables seamless integration between Adaptive Forms and external data sources like REST APIs, SOAP web services, OData services, and databases (JDBC). It acts as a bridge for both reading and writing data in real time, making your forms dynamic and connected.</p>
+                <h3>Overview of FDM</h3>
+                <ul>
+                    <li>Visual interface for integrating form fields with backend services</li>
+                    <li>Supports CRUD operations</li>
+                    <li>Enables form field prefill, dynamic population, and post-submission data storage</li>
+                </ul>
+                <h3>Supported Integrations</h3>
+                <ul>
+                    <li><strong>REST:</strong> Connect to RESTful APIs with GET/POST operations</li>
+                    <li><strong>SOAP:</strong> WSDL-based integration with enterprise systems</li>
+                    <li><strong>OData:</strong> Useful for Microsoft systems like Dynamics 365</li>
+                    <li><strong>JDBC:</strong> Directly connect to databases using SQL queries</li>
+                </ul>
+                <h3>Creating FDMs in Touch UI</h3>
+                <p>You can create a new Form Data Model by navigating to:</p>
+                <pre>Tools → Forms → Data Integration → Create → Form Data Model</pre>
+                <ul>
+                    <li>Choose a data source type (REST, SOAP, etc.)</li>
+                    <li>Define and test service operations</li>
+                    <li>Group data models and endpoints under one model</li>
+                </ul>
+                <h3>Mapping FDM to Form Fields</h3>
+                <p>Once FDM is defined, form authors can bind fields to FDM operations:</p>
+                <ul>
+                    <li><strong>Read Services:</strong> Used to prefill form fields</li>
+                    <li><strong>Write Services:</strong> Used during form submission to post data</li>
+                    <li><strong>Rules:</strong> Trigger FDM calls based on user interaction or input changes</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Document Services (Optional but Powerful)</h2>
+                <p>AEM Forms includes powerful <strong>Document Services</strong> that let you generate, manipulate, and render PDFs on the server side. These features are crucial for regulated industries like banking, insurance, and government that need high-fidelity documents for compliance and archival.</p>
+                <h3>Generate PDF (Static or Interactive)</h3>
+                <ul>
+                    <li>Use <strong>Form Templates</strong> or <strong>Document Templates</strong> to generate PDFs from submitted data</li>
+                    <li>PDFs can be either interactive (fillable) or flat (non-editable)</li>
+                    <li>Integration with Document of Record (DoR) templates to create branded, ready-to-archive PDFs</li>
+                </ul>
+                <h3>Pre-populating PDFs with Form Data</h3>
+                <p>Use XML or JSON data to pre-fill PDF templates before rendering:</p>
+                <ul>
+                    <li>Useful for auto-generating contracts, statements, or policy documents</li>
+                    <li>Pre-filled values can come from FDM or external APIs</li>
+                    <li>Can be rendered on the server and sent via email or download</li>
+                </ul>
+                <h3>Flatten PDFs after Submission</h3>
+                <ul>
+                    <li>Flattening removes all interactivity, making the PDF read-only</li>
+                    <li>Prevents tampering and ensures regulatory compliance</li>
+                    <li>Can be done automatically as part of the submit workflow</li>
+                </ul>
+                <h3>Server-side Document Assembly</h3>
+                <p>Advanced workflows can assemble multiple fragments (e.g., form sections, dynamic content) into a single PDF called the <strong>Document of Record</strong>.</p>
+                <ul>
+                    <li>Use XDP or Designer templates</li>
+                    <li>Merge attachments, dynamic text, and images into final document</li>
+                    <li>Store or send documents using workflow actions</li>
+                </ul>
+                <p><strong>Note:</strong> Document services typically require the AEM Forms add-on packages and may need integration with Adobe LiveCycle components or AEM Forms on JEE.</p>
+            </section>
+            <section class="card">
+                <h2>Prefill and Personalization</h2>
+                <p>One of the key strengths of AEM Forms is its ability to deliver personalized and pre-filled forms based on the user context, session information, or external data sources. This leads to better user experience and reduced data entry effort.</p>
+                <h3>Using ContextHub with Adaptive Forms</h3>
+                <p><strong>ContextHub</strong> is Adobe's client-side context engine that stores and delivers contextual data about the user session. You can use it to:</p>
+                <ul>
+                    <li>Prefill Adaptive Form fields based on logged-in user attributes</li>
+                    <li>Modify form visibility rules based on user segments (e.g., "existing customer" vs "new customer")</li>
+                    <li>Support personalization in multi-step forms</li>
+                </ul>
+                <p>To enable ContextHub integration:</p>
+                <ul>
+                    <li>Make sure ContextHub is enabled in your site template/page</li>
+                    <li>Create user segments and use them in rules within Adaptive Forms</li>
+                    <li>Access ContextHub data using expression syntax like <code>guideBridge.resolveNode("path").value</code></li>
+                </ul>
+                <h3>Autofill from User Profile Data</h3>
+                <p>Logged-in user profile data can be fetched and prefilled into the form automatically using:</p>
+                <ul>
+                    <li>Profile information from <code>/home/users</code> or external IDP (SSO)</li>
+                    <li>Custom Java classes (OSGi Services) that read user info and inject into fields via custom rules</li>
+                    <li>GuideBridge API (e.g., <code>guideBridge.setFieldValue("email", user.email)</code>)</li>
+                </ul>
+                <h3>Prefill via FDM or URL Parameters</h3>
+                <ul>
+                    <li><strong>FDM Binding:</strong> Use Form Data Model's Read Services to prefill data before form loads</li>
+                    <li><strong>URL Parameters:</strong> Fields can also be prefilled by appending query params like <code>?firstName=John</code></li>
+                    <li>Use custom rules to parse the parameters and populate fields</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Validations and Rules Editor</h2>
+                <p>AEM Forms comes with a flexible validation framework powered by its intuitive <strong>Rules Editor</strong>. Validation ensures that submitted data is complete, correct, and matches expected patterns.</p>
+                <h3>Out-of-the-Box Rules Editor</h3>
+                <p>The visual Rules Editor allows authors to define logic like:</p>
+                <ul>
+                    <li>Required field enforcement (e.g., Email must not be blank)</li>
+                    <li>Pattern matching (e.g., mobile number should match <code>[0-9]{10}</code>)</li>
+                    <li>Conditional visibility (e.g., show "Company Name" only if "Business" is selected)</li>
+                </ul>
+                <p>Rules can be created using a point-and-click interface—no coding required for simple logic.</p>
+                <h3>Client-side vs. Server-side Validation</h3>
+                <ul>
+                    <li><strong>Client-side validation:</strong> Instant feedback, reduces server load, customizable via JavaScript</li>
+                    <li><strong>Server-side validation:</strong> Critical for security and final validation; executed post submission</li>
+                    <li>Both should be used together to ensure strong validation and a good UX</li>
+                </ul>
+                <h3>Writing Custom Validation Scripts</h3>
+                <ul>
+                    <li>You can write JavaScript in the Rules Editor using <code>guideBridge</code> API</li>
+                    <li>Example: <code>if (!value.includes("@")) { return "Invalid email"; }</code></li>
+                    <li>Advanced validations can be written as OSGi services and invoked from the backend during submission</li>
+                    <li>Use <code>FormValidator</code> interface (Java) for reusable server-side validation logic</li>
+                </ul>
+                <p><strong>Best Practice:</strong> Always validate mandatory business fields server-side to avoid client-side tampering.</p>
+            </section>
+            <section class="card">
+                <h2>AEM Forms with Workflows</h2>
+                <p>AEM Forms tightly integrates with AEM Workflows to allow automation of form-driven business processes such as approvals, reviews, and escalations.</p>
+                <h3>Auto-Start Workflows from Form Submissions</h3>
+                <ul>
+                    <li>In the Submit Action settings of an Adaptive Form, select <strong>“AEM Workflow”</strong> as the submission type.</li>
+                    <li>Specify the Workflow Model to be triggered (e.g., <code>approval-workflow</code>).</li>
+                    <li>You can pass form field values into the workflow using payload metadata or transient variables.</li>
+                    <li>Form data (e.g., XML, JSON, or attachments) is stored under <code>/content/usergenerated</code> and can be used in workflow steps.</li>
+                </ul>
+                <h3>Adding Approver and Review Steps</h3>
+                <ul>
+                    <li>Use the <strong>Participant Step</strong> in your workflow to assign tasks to approvers (e.g., manager, HR, legal team).</li>
+                    <li>Customize the workflow inbox view to show necessary form data.</li>
+                    <li>You can configure dynamic approvers using workflow process steps and logic based on submitted form values.</li>
+                    <li>Example: Route to <code>finance-group</code> if <code>amount &gt; 10,000</code>.</li>
+                </ul>
+                <h3>Integration with AEM Inbox and Notifications</h3>
+                <ul>
+                    <li>Approvers receive tasks in the <strong>AEM Inbox</strong> (accessible via <code>/aem/inbox</code>).</li>
+                    <li>Custom email notifications can be triggered via workflow steps using <code>Email Notification Process</code>.</li>
+                    <li>Admins can view task status, reassign, or terminate workflows via the Workflow Console.</li>
+                </ul>
+                <p><strong>Use Case:</strong> Vacation request forms, onboarding workflows, change approval processes, etc.</p>
+            </section>
+            <section class="card">
+                <h2>AEM Forms Portal</h2>
+                <p>The AEM Forms Portal provides a structured and user-friendly interface for displaying and managing published forms in a centralized manner. It is especially helpful in government, healthcare, and financial institutions with dozens of digital forms.</p>
+                <h3>Forms Listing Component</h3>
+                <ul>
+                    <li>Out-of-the-box component that displays a list of available Adaptive Forms.</li>
+                    <li>Supports pagination, form descriptions, last modified dates, etc.</li>
+                    <li>Configured to pull data from a specific folder or tag-based categories.</li>
+                </ul>
+                <h3>Search and Filter Published Forms</h3>
+                <ul>
+                    <li>Users can search forms by title, tags, or description.</li>
+                    <li>Filter forms by type, category, or department (e.g., HR, Finance, Legal).</li>
+                    <li>Results are displayed dynamically using AJAX without reloading the page.</li>
+                </ul>
+                <h3>Integration with Sites Pages</h3>
+                <ul>
+                    <li>You can embed Forms Portal components inside AEM Sites pages.</li>
+                    <li>This allows authors to mix forms with web content seamlessly.</li>
+                    <li>Useful for landing pages, department-specific portals, and intranet solutions.</li>
+                </ul>
+                <p><strong>Tip:</strong> You can customize the look and feel using clientlibs and overlaying the component.</p>
+            </section>
+            <section class="card">
+                <h2>Security Considerations</h2>
+                <p>Ensuring that AEM Forms are secure is critical, especially when capturing sensitive data such as personal details, IDs, or financial information.</p>
+                <h3>CAPTCHA Integration</h3>
+                <ul>
+                    <li>AEM Forms supports integration with <strong>Google reCAPTCHA</strong> (v2 and v3).</li>
+                    <li>Add the CAPTCHA component from the AEM Forms component browser.</li>
+                    <li>Configure site key and secret key via the <code>cloudconfig</code> dialog or OSGi console.</li>
+                    <li>Helps prevent bot submissions and protects public forms.</li>
+                </ul>
+                <h3>CSRF Token Handling</h3>
+                <ul>
+                    <li>AEM includes automatic CSRF protection for Adaptive Forms.</li>
+                    <li>The token is injected into the form at runtime and verified on submission.</li>
+                    <li>No extra configuration is needed unless you've overridden servlet filters.</li>
+                    <li>If custom submit actions are used, ensure CSRF filters are respected in the POST logic.</li>
+                </ul>
+                <h3>Enabling SSL for Form Submission</h3>
+                <ul>
+                    <li>Ensure all Adaptive Form URLs are served over <strong>HTTPS</strong>.</li>
+                    <li>Configure your Dispatcher and Web Server (Apache/IIS) with SSL certificates.</li>
+                    <li>Redirect all <code>http://</code> traffic to <code>https://</code> using the Dispatcher rewrite rules.</li>
+                    <li>Form submissions containing sensitive data (like Aadhaar, PAN, etc.) must never go over HTTP.</li>
+                </ul>
+                <h3>Role-Based Form Access</h3>
+                <ul>
+                    <li>Restrict form access by configuring ACLs on the form path (<code>/content/forms/...</code>).</li>
+                    <li>Use user groups and permissions to allow only specific users/roles to view/submit the form.</li>
+                    <li>You can also implement visibility conditions using ContextHub or Profile attributes.</li>
+                    <li>Examples: Show Employee Feedback Form only to "employee-group" or disable fields for guest users.</li>
+                </ul>
+                <p><strong>Tip:</strong> Always validate form data on the server side before processing, even if client-side validation is in place.</p>
+            </section>
+            <section class="card">
+                <h2>Headless Forms</h2>
+                <p><strong>Headless Forms</strong> allow you to consume and submit AEM Forms from external applications (e.g., React, Angular, mobile apps) using APIs, without relying on the traditional HTML-based rendering.</p>
+                <h3>Submitting via APIs</h3>
+                <ul>
+                    <li>Use AEM Forms' <code>/submit</code> endpoint to POST JSON data directly.</li>
+                    <li>Endpoints follow the structure: <code>/content/forms/af/my-form/jcr:content/guideContainer.af.submit.json</code></li>
+                    <li>Headers must include <code>CSRF token</code> and <code>Content-Type: application/json</code>.</li>
+                    <li>Responses include success/failure messages and error field mapping.</li>
+                </ul>
+                <h3>JSON Schema Forms</h3>
+                <ul>
+                    <li>You can design forms based on a <strong>JSON Schema</strong> that defines the structure and data types.</li>
+                    <li>The schema is uploaded via the <strong>Data Model</strong> editor or bound directly to the form fields.</li>
+                    <li>This enables API-driven forms that can dynamically change based on schema variations.</li>
+                </ul>
+                <h3>Headless Rendering of Adaptive Forms</h3>
+                <ul>
+                    <li>AEM provides a Headless Adaptive Form rendering framework (AEM Forms App SDK).</li>
+                    <li>You can render and submit forms in external apps using JSON output, rendered via your preferred frontend stack.</li>
+                    <li>It supports dynamic behavior (rules), validation, and FDM-backed prefill – all without using the AEM UI.</li>
+                    <li>Includes support for offline rendering (Progressive Web App scenarios).</li>
+                </ul>
+                <p><strong>Use Case:</strong> Embedding a self-service onboarding form inside a React-based web portal using Headless AEM Forms.</p>
+            </section>
+            <section class="card">
+                <h2>Integration with Sign Services (Adobe Sign)</h2>
+                <p>AEM Forms integrates seamlessly with <strong>Adobe Sign</strong> (previously EchoSign), allowing you to add secure eSignature workflows to your Adaptive Forms or Document workflows.</p>
+                <h3>Adobe Sign Integration Basics</h3>
+                <ul>
+                    <li>Configure Adobe Sign integration under <code>Tools &gt; Cloud Services</code>.</li>
+                    <li>You'll need an active Adobe Sign enterprise account with API access.</li>
+                    <li>Authenticate with Adobe Sign using OAuth credentials and link the AEM Forms instance.</li>
+                </ul>
+                <h3>Adding eSignature to Forms</h3>
+                <ul>
+                    <li>Use the “Adobe Sign Block” component in the Adaptive Forms editor to place e-signature fields.</li>
+                    <li>Configure signer roles (e.g., applicant, manager) and assign fields accordingly.</li>
+                    <li>The form can be routed to Adobe Sign after submission using submit actions or workflows.</li>
+                    <li>Adobe Sign will handle the digital signature, document routing, and notifications.</li>
+                </ul>
+                <h3>Tracking Signed Responses</h3>
+                <ul>
+                    <li>After signing, documents are returned to AEM and stored (optionally) in the repository or sent over email.</li>
+                    <li>Status can be tracked in the Adobe Sign dashboard or AEM inbox (if integrated via workflow).</li>
+                    <li>Audit trails and timestamps of all signatures are captured automatically.</li>
+                </ul>
+                <p><strong>Note:</strong> You can use Adobe Sign for contracts, HR forms, onboarding agreements, etc., right from within your AEM workflows.</p>
+            </section>
+            <section class="card">
+                <h2>Deployment & Versioning</h2>
+                <p>Managing large, enterprise-grade forms requires proper versioning and deployment strategies, especially across environments (dev/stage/prod).</p>
+                <h3>Managing Large Forms</h3>
+                <ul>
+                    <li>Break complex forms into fragments (reusable blocks).</li>
+                    <li>Use Form Templates and Library Components for consistency.</li>
+                    <li>Organize forms under logical folders in <code>/content/forms/</code>.</li>
+                </ul>
+                <h3>Staging and Publishing Forms</h3>
+                <ul>
+                    <li>Create, test, and preview forms on Author instances.</li>
+                    <li>Use AEM's standard publishing workflow to push to Publish environment.</li>
+                    <li>You can use replication agents or automated pipelines (in AEMaaCS).</li>
+                    <li>Forms Portal auto-syncs published forms for rendering.</li>
+                </ul>
+                <h3>Rollback & Version History</h3>
+                <ul>
+                    <li>Forms support versioning similar to pages.</li>
+                    <li>You can use the Timeline to restore previous versions.</li>
+                    <li>Track changes made by authors and rollback if needed.</li>
+                    <li>Form assets can also be managed via package manager for better deployment control.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Debugging & Troubleshooting</h2>
+                <p>Like any development feature, Adaptive Forms and their services may run into issues. Proper debugging techniques can save hours of frustration.</p>
+                <h3>Enabling Form Logs</h3>
+                <ul>
+                    <li>Enable debug logs in Felix Console for packages like:</li>
+                    <ul>
+                        <li><code>com.adobe.forms</code></li>
+                        <li><code>com.adobe.aemds</code></li>
+                    </ul>
+                    <li>Monitor <code>error.log</code> and <code>request.log</code> while submitting forms.</li>
+                </ul>
+                <h3>Common Issues</h3>
+                <ul>
+                    <li>Submit button doesn't work? → Check if required fields are filled or submit action is properly configured.</li>
+                    <li>Prefill not working? → Confirm FDM binding and data availability.</li>
+                    <li>Adobe Sign not triggering? → Verify credentials and cloud service setup.</li>
+                    <li>Form doesn't render? → Ensure all dependencies (clientlibs, templates) are correctly deployed.</li>
+                </ul>
+                <h3>Inspecting Bindings & Model Issues</h3>
+                <ul>
+                    <li>Use browser DevTools to inspect form field bindings.</li>
+                    <li>Enable debugging in the Rule Editor to trace rule evaluation.</li>
+                    <li>Check if schema fields are correctly mapped to input fields in the Adaptive Form structure.</li>
+                </ul>
+                <p><strong>Tip:</strong> Use <strong>Preview</strong> mode and <strong>Console logs</strong> extensively during development to validate field behavior and submission logic.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

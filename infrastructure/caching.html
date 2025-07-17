@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Caching</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Caching</h1>
+            <section class="card">
+                <h2>Caching in Adobe Experience Manager (AEM)</h2>
+                <p>Adobe Experience Manager (AEM) uses multiple layers of caching to optimize content delivery and improve performance. These caching mechanisms help reduce server load and enhance page load times. Below is an in-depth look at how caching is implemented in AEM:</p>
+            </section>
+            <section class="card">
+                <h3>1. Client-Side Caching</h3>
+                <p>Client-side caching is implemented by storing content in the user's browser to reduce the number of requests made to the server and improve the overall page load speed. This is controlled using HTTP headers.</p>
+                <p>Key HTTP headers used for client-side caching include:</p>
+                <ul>
+                    <li>
+                        <strong>Cache-Control Header:</strong> This header defines how and for how long the resource can be cached by the browser. For example:
+                        <pre>Cache-Control: max-age=3600</pre>
+                        This sets the cache to be valid for 1 hour (3600 seconds).
+                    </li>
+                    <li>
+                        <strong>ETag Header:</strong> The ETag is a unique identifier that changes when the content changes. The browser sends this identifier with the request, which helps determine if the content is still valid:
+                        <pre>ETag: "xyz123"</pre>
+                    </li>
+                    <li>
+                        <strong>Last-Modified Header:</strong> This header indicates the last time the resource was modified. The browser compares this with its cached version and fetches a fresh copy only if the content has changed:
+                        <pre>Last-Modified: Wed, 21 Oct 2021 07:28:00 GMT</pre>
+                    </li>
+                </ul>
+                <p>Here is an example of using HTTP headers to control caching behavior:</p>
+                <pre>
+Cache-Control: max-age=86400, public
+ETag: "abc123"
+Last-Modified: Wed, 21 Oct 2021 07:28:00 GMT</pre>
+            </section>
+            <section class="card">
+                <h3>2. Dispatcher Caching</h3>
+                <p>The Dispatcher is a caching and load-balancing tool that helps reduce the load on the AEM server. It caches content at the web server level (Apache HTTP Server or IIS) and stores content as static files, which can be served to the client directly, bypassing AEM.</p>
+                <p>Here's how Dispatcher Caching works:</p>
+                <ul>
+                    <li><strong>Content Caching:</strong> The Dispatcher caches static content like HTML, images, JavaScript, and CSS files. These files are served directly from the cache, reducing the load on AEM servers. For example, the following rules in the <code>dispatcher.any</code> file cache static content based on URL patterns:</li>
+                    <pre>
+/filters {
+    /0001 { /type "allow" /url "/content/dam" }
+    /0002 { /type "deny" /url "/content/dam/private" }
+}</pre>
+                    <li><strong>Cache Invalidation:</strong> When content is updated or published, the Dispatcher can invalidate the cached version, ensuring that the next request fetches the latest content. Cache invalidation is configured in the <code>/invalidate</code> section of the <code>dispatcher.any</code> configuration file:</li>
+                    <pre>
+/invalidate {
+    /path "/content"
+    /method "POST"
+}</pre>
+                    <li><strong>Flush Agent:</strong> AEM uses the Flush Agent to clear or invalidate the cache automatically when content is published. This ensures the Dispatcher serves the latest content.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h3>3. In-Memory Caching</h3>
+                <p>AEM uses in-memory caching mechanisms to minimize the load on the content repository (JCR). These caches store frequently accessed data in memory to reduce database calls and speed up content delivery.</p>
+                <ul>
+                    <li><strong>Sling Resource Resolver Cache:</strong> AEM caches the resolved resources in memory, avoiding the need to query the JCR every time the resource is requested. For example:</li>
+                    <pre>
+sling:resourceResolverCache {
+    /enabled true
+    /maxEntries 10000
+}</pre>
+                    <li><strong>JCR Caching:</strong> The Java Content Repository (JCR) in AEM has built-in caching mechanisms that reduce the number of database reads by storing nodes and properties in memory:</li>
+                    <pre>
+jackrabbit:repository {
+    /cacheSize 10000
+}</pre>
+                    <li><strong>Query Cache:</strong> AEM caches query results in memory to avoid executing the same queries multiple times. This speeds up performance for frequently executed queries. Example configuration:</li>
+                    <pre>
+queryCache {
+    /enabled true
+    /maxSize 1000
+}</pre>
+                </ul>
+            </section>
+            <section class="card">
+                <h3>4. CDN Caching</h3>
+                <p>For better global content delivery, AEM works with Content Delivery Networks (CDNs) like Akamai, CloudFront, or Fastly. CDNs cache content at edge locations that are closer to end-users, which helps deliver assets faster.</p>
+                <ul>
+                    <li><strong>Edge Caching:</strong> Static assets like images, videos, and CSS files are cached at edge locations around the world. This significantly reduces the time it takes to serve these assets to users.</li>
+                    <li><strong>Cache Invalidation:</strong> When content is updated in AEM, cache invalidation can be triggered in the CDN to ensure users get the latest version. AEM can send cache purging requests to the CDN through custom scripts or using integration APIs:</li>
+                    <pre>
+cdn:purge {
+    /url "/content/dam/assets/*.jpg"
+}</pre>
+                </ul>
+            </section>
+            <section class="card">
+                <h3>5. AEM Sites Performance Tuning</h3>
+                <p>AEM allows various configurations to tune caching strategies for optimal performance:</p>
+                <ul>
+                    <li><strong>Dispatcher Tuning:</strong> Configuring the dispatcher to balance cache hit ratios and fresh content delivery. Tuning the cache size and invalidation strategies are important steps.</li>
+                    <li><strong>Replication and Flush Agents:</strong> Properly configuring replication and flush agents ensures that cache invalidation is timely and content is always up-to-date.</li>
+                    <li><strong>Cache Control:</strong> Fine-tuning HTTP headers such as <code>Cache-Control</code> and <code>Expires</code> ensures proper client-side caching and reduces unnecessary requests to AEM servers.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h3>Summary</h3>
+                <p>AEM uses multiple caching layers to ensure efficient content delivery. These include:</p>
+                <ul>
+                    <li><strong>Client-Side Caching</strong> with HTTP headers like <code>Cache-Control</code> and <code>ETag</code>.</li>
+                    <li><strong>Dispatcher Caching</strong> at the web server level, including cache invalidation and flush agents.</li>
+                    <li><strong>In-Memory Caching</strong> to reduce load on the content repository and improve query performance.</li>
+                    <li><strong>CDN Caching</strong> for faster content delivery globally with edge caching and cache invalidation.</li>
+                </ul>
+                <p>Each caching layer plays a vital role in enhancing the performance of AEM. Proper configuration and tuning are essential for maximizing the speed and efficiency of your AEM-based website.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

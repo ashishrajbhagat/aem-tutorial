@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Components</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Components</h1>
+            <section class="card">
+                <h2>What are AEM Components?</h2>
+                <p>AEM Components are reusable building blocks that define page structure, layout, and content behavior. They help developers and authors create dynamic, scalable, and consistent experiences. They are built using HTL (HTML Template Language) or JSP (legacy approach).</p>
+                <p>Key Features of Components:</p>
+                <ul>
+                    <li><strong>Reusability:</strong> Components can be used across multiple pages and sites, ensuring consistency and reducing redundancy.</li>
+                    <li><strong>Flexibility:</strong> Components can be configured to display different types of content based on parameters or user input.</li>
+                    <li><strong>Customizability:</strong> Components can be customized with various properties and settings to fit specific requirements.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Types of Components</h2>
+                <ol>
+                    <li>
+                        <strong>Core Components</strong>
+                        <ul>
+                            <li>Pre-built, reusable components provided by Adobe.</li>
+                            <li>Located at: <code>/apps/core/wcm/components</code> or <code>/libs/core/wcm/components</code></li>
+                            <li>Optimized for performance, accessibility, and upgradability.</li>
+                            <li>
+                                Examples:
+                                <ul>
+                                    <li><strong>Text Component -</strong> For rich text content.</li>
+                                    <li><strong>Image Component -</strong> For responsive images.</li>
+                                    <li><strong>Carousel, Tabs, and Accordion -</strong> For interactive content.</li>
+                                    <li><strong>Breadcrumb, Navigation, and Search -</strong> For site structure and navigation.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p><strong>Use Case:</strong> When you need standard functionality without custom development.</p>
+                    </li>
+                    <li>
+                        <strong>Custom Components</strong>
+                        <ul>
+                            <li>Developed specifically for a project's needs.</li>
+                            <li>Located at: <code>/apps/{project}/components</code></li>
+                            <li>Can extend Core Components using <code>sling:resourceSuperType</code>.</li>
+                            <li>
+                                Examples:
+                                <ul>
+                                    <li>Custom product listing component</li>
+                                    <li>Custom form submission component</li>
+                                    <li>Custom user-generated content (UGC) component</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p><strong>Use Case:</strong> When Core Components don't meet project requirements.</p>
+                    </li>
+                    <li>
+                        <strong>Foundation Components</strong>
+                        <ul>
+                            <li>Pre-built components provided by Adobe in older versions of AEM (before Core Components).</li>
+                            <li>Located at: <code>/libs/foundation/components</code></li>
+                            <li>Built using JSP (deprecated in favor of HTL-based Core Components).</li>
+                            <li>Can still be extended but are not recommended for new projects.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>Component Structure</h2>
+                <p>The basic structure of any component:</p>
+                <pre>
+            │── apps 
+            │   ├── &lt;your-project&gt; 
+            │   │   ├── components
+            │   │   │   ├── my-component
+            │   │   │   │   ├── .content.xml
+            │   │   │   │   ├── component.html
+            │   │   │   │   ├── _cq_dialog
+            │   │   │   │   │   ├── .content.xml
+            │   │   │   │   ├── _cq_design_dialog
+            │   │   │   │   │   ├── .content.xml
+            │   │   │   │   ├── _cq_editconfig.xml
+            │   │   │   │   ├── _cq_htmlTag.xml
+            │   │   │   │   ├── _cq_template
+            │   │   │   │   │   ├── .content.xml
+            │   │   │   │   ├── clientlibs (Optional)
+            │   │   │   │   │   ├── js
+            │   │   │   │   │   ├── css
+            │   │   │   │   │   ├── .content.xml
+            │   │   │   │   ├── README.md
+            </pre>
+                <p>A typical component in AEM consists of the following files:</p>
+                <ul>
+                    <li><code>.content.xml</code> - Defines metadata.</li>
+                    <li><code>_cq_dialog/.content.xml</code> - Defines the authoring UI.</li>
+                    <li><code>_cq_design_dialog/.content.xml</code> - Defines design-time configuration options.</li>
+                    <li><code>_cq_editconfig.xml</code> - Controls drag-and-drop, in-place editing behavior.</li>
+                    <li><code>_cq_htmlTag.xml</code> - Defines the HTML wrapper of component.</li>
+                    <li><code>_cq_template/.content.xml</code> - Stores default content configurations.</li>
+                    <li><code>component.html</code> - Contains the rendering logic.</li>
+                    <li><code>slingModel.java</code> - Backend logic for dynamic data. Should be placed under <code>core/src/main/java/com/myproject/models/</code>.</li>
+                    <li><code>clientlibs/</code> (Optional) - Stores CSS & JS for the component. Can be placed inside the component folder or in the global <code>/apps/my-site/clientlibs/</code> directory.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Creating a Component in AEM</h2>
+                <ol>
+                    <li>
+                        <strong>Set up the Component Structure</strong>
+                        <p>In AEM, components are typically located under the <code>/apps/[your-project]/components</code> directory. The first step is to create a folder for your component.</p>
+                        <p>For example, if you're creating a 'Text' component, you would create the following structure:</p>
+                        <pre>/apps/[your-project]/components/text</pre>
+                        <p>Within the 'text' folder, you will store all files related to the component such as its HTML, CSS, dialog, and logic.</p>
+                    </li>
+                    <li>
+                        <strong>Define the Component's Metadata</strong>
+                        <p>Create an XML file (e.g., <code>.content.xml</code>) in the component folder which will contains the metadata of 'Text' component.</p>
+                        <p>Here's an example of a simple xml for the 'Text' component:</p>
+                        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" <br>  jcr:primaryType="cq:Component" <br>  jcr:title="Text" <br>  componentGroup="Training - Content"/&gt;</pre>
+                        <ul>
+                            <li><strong>jcr:primaryType</strong> is to create a node of type cq:component as it is going to a component.</li>
+                            <li><strong>jcr:title</strong> is to declare component title.</li>
+                            <li><strong>componentGroup</strong> is use to group component under one category.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Create the Component's HTML File</strong>
+                        <p>Inside your component folder (e.g., <code>/text</code>), create an HTML file. This file will define the markup structure for the component.</p>
+                        <p>For example, create a <code>text.html</code> file with the following content:</p>
+                        <pre>&lt;div class="text-component"&gt;  <br>  &lt;p&gt;This is a simple text component&lt;/p&gt;<br>&lt;/div&gt;</pre>
+                        <p>This file will display the static structure of the component.</p>
+                    </li>
+                    <li>
+                        <strong>Define the Component's Properties Using a Dialog</strong>
+                        <p>A dialog allows content authors to modify the component's properties. To create a dialog, you need to define an XML file (e.g., <code>_cq_dialog/.content.xml</code>) in the component folder.</p>
+                        <p>Here's an example of a simple dialog for the 'Text' component:</p>
+                        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" <br>  jcr:primaryType="nt:unstructured" <br>  jcr:title="Text" <br>  sling:resourceType="cq/gui/components/authoring/dialog"&gt; <br>    &lt;content <br>      jcr:primaryType="nt:unstructured" <br>      sling:resourceType="granite/ui/components/foundation/container"> <br>      &lt;items jcr:primaryType="nt:unstructured"&gt; <br>        &lt;textfield <br>          jcr:primaryType="nt:unstructured" <br>          sling:resourceType="granite/ui/components/coral/foundation/form/textfield" <br>          fieldDescription="Author text field to be displayed dynamically" <br>          fieldLabel="Text Field" <br>          name="./text" <br>          required="{Boolean}true"/&gt; <br>      &lt;/items&gt; <br>    &lt;/content&gt; <br> &lt;/jcr:root&gt;</pre>
+                        <p>This dialog will allow the content author to enter a text value, which will be dynamically inserted into the HTML file via <code>${properties.text}</code>.</p>
+                    </li>
+                    <li>
+                        <strong>Add the Component to a Page</strong>
+                        <p>Now that your component is created, it's time to use it in a page. You can add the component using AEM's Touch UI by dragging it onto the page.</p>
+                    </li>
+                    <li>
+                        <strong>Use HTL (Sightly) or JSP for Dynamic Content</strong>
+                        <p>HTL (formerly known as Sightly) is the preferred templating engine for AEM. It allows you to create dynamic content for the component. In this step, you will replace static content with dynamic content using HTL syntax.</p>
+                        <p>For instance, if you want to add a text field that content authors can edit, your <code>text.html</code> file would look like this:</p>
+                        <pre>&lt;div class="text-component"&gt;<br>  &lt;p&gt;${properties.text}&lt;/p&gt;<br>&lt;/div&gt;</pre>
+                        <p>Here, <code>${properties.text}</code> dynamically pulls in the value of the 'text' property from the component's dialog (which we'll define next).</p>
+                    </li>
+                    <li>
+                        <strong>Add a Sling Model for Server-Side Logic (Optional)</strong>
+                        <p>If your component needs to handle server-side logic (e.g., retrieving data from a database), you can use a Sling Model. This is a Java class that can be associated with your component and will fetch the necessary data.</p>
+                        <p>To create a Sling Model, navigate to <code>core/src/main/java/com/myproject/models/TextComponent.java</code> and paste below code:</p>
+                        <pre>package com.training.project.core.models;<br><br>import javax.inject.Inject;<br>import org.apache.sling.api.resource.Resource;<br>import org.apache.sling.models.annotations.Model;<br><br>@Model(adaptables = Resource.class)<br>public class TextComponent {<br><br>    @Inject<br>    private String text;<br><br>    public String getText() {<br>        return text;<br>    }<br>}</pre>
+                        <p>This model fetches the 'text' property from the component's resource and makes it available for use in the HTML file.</p>
+                        <p>Now update the HTML file to fetch value through Sling Model</p>
+                        <pre>&lt;sly data-sly-use.model="com.training.project.core.models.TextComponent"/&gt;<br>&lt;div class="text-component"&gt;<br>  &lt;p&gt;${model.text}&lt;/p&gt;<br>&lt;/div&gt;</pre>
+                    </li>
+                    <li>
+                        <strong>Set default values to the component (Optional)</strong>
+                        <p>Once the component is added to a page, you can test it by previewing the page in AEM's author mode. Check to see if the dialog works properly, and ensure that the dynamic content (e.g., the text entered by the content author) is displayed correctly on the page.</p>
+                        <p>Create <code>_cq_template</code> folder inside 'text' folder. Then create <code>.content.xml</code> file inside <code>_cq_template</code> folder and paste below content:</p>
+                        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"<br>   jcr:primaryType="nt:unstructured"<br>   text="This is my default Text"&gt;<br>&lt;/jcr:root&gt;</pre>
+                    </li>
+                    <li>
+                        <strong>Add cq_editConfig for Component Editing (Optional)</strong>
+                        <p>To enable specific configurations for your component when editing it in the AEM Touch UI (author mode), you need to define an <code>cq_editConfig</code> file. This configuration controls the component's behavior in the editing environment, including things like allowed components, styles, and rendering configurations.</p>
+                        <p>Create <code>_cq_editConfig.xml</code> file inside 'text' folder and paste below content:</p>
+                        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;jcr:root xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"<br>  cq:actions="[DELETE,INSERT,COPYMOVE,EDITANNOTATE]"<br>  jcr:primaryType="cq:EditConfig"<br>  cq:disableTargeting="{Boolean}true"&gt;<br>    &lt;cq:listeners<br>        jcr:primaryType="nt:unstructured"<br>        afterchildinsert="REFRESH_SELF"<br>        afterdelete="REFRESH_SELF"<br>        afteredit="REFRESH_SELF"<br>        afterinsert="REFRESH_SELF"/&gt;<br>&lt;/jcr:root&gt;</pre>
+                        <ul>
+                            <li><strong>cq:disableTargeting</strong> is to disable targeting for profile component.</li>
+                            <li><strong>cq:dialogMode</strong> as <code>floating</code> to show dialog on top of the component and can be move around.</li>
+                            <li>
+                                <strong>cq:listeners</strong> tag allows us to refresh component, page or parent component after authoring as soon as we click on ok.
+                                <p>Below are out of the box listeners:
+                                <ul>
+                                    <li><strong>REFRESH_SELF</strong> listener will refresh current component after edit, delete, inserted, etc.</li>
+                                    <li><strong>REFRESH_PARENT</strong> listener will refresh parent component after edit, delete, inserted, etc.</li>
+                                    <li><strong>REFRESH_PAGE</strong> listener will refresh current page after edit, delete, inserted, etc.</li>
+                                    <li><strong>REFRESH_INSERTED</strong> listener will refresh current component as soon as insert in page.</li>
+                                </ul>
+                                </p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <strong>Add cq_design_dialog for Design Dialog (Optional)</strong>
+                        <p>The design dialog allows content authors to configure design-related properties for components at the page level (not just the component level). You need to create the <code>cq_design_dialog/.content.xml</code> file to define these settings.</p>
+                        <p>Create a folder named <code>_cq_design_dialog</code> within your component's folder and create the <code>.content.xml</code> file inside it. Here's an example:</p>
+                        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0"<br>  jcr:primaryType="nt:unstructured"<br>  jcr:title="Text"<br>  sling:resourceType="cq/gui/components/authoring/dialog"><br>  &lt;content<br>    jcr:primaryType="nt:unstructured"<br>    sling:resourceType="granite/ui/components/coral/foundation/container"&gt;<br>    &lt;items jcr:primaryType="nt:unstructured"&gt;<br>      &lt;tabs<br>        jcr:primaryType="nt:unstructured"<br>        sling:resourceType="granite/ui/components/coral/foundation/tabs"<br>        maximized="{Boolean}true"&gt;<br>        &lt;items jcr:primaryType="nt:unstructured"&gt;<br>          &lt;styletab<br>            jcr:primaryType="nt:unstructured"<br>            sling:resourceType="granite/ui/components/coral/foundation/include"<br>            path="/mnt/overlay/cq/gui/components/authoring/dialog/style/tab_design/styletab"/><br>          &lt;/items&gt;<br>      &lt;/tabs&gt;<br>    &lt;/items&gt;<br>  &lt;/content&gt;<br>&lt;/jcr:root&gt;</pre>
+                        <p>This allows template-level style customizations (e.g., fonts, colors, margins) for an AEM component. It includes a Style Tab using AEM’s predefined style system, ensuring consistency across instances.</p>
+                    </li>
+                    <li>
+                        <strong>Adding cq:htmlTag to a Component (Optional)</strong>
+                        <p>AEM wrap by default each component html placed in a page with a DIV tag with an associated class named matching the component name:</p>
+                        <pre>&lt;div class="mycomponentname"&gt;<br>...<br>...<br>&lt;/div&gt;</pre>
+                        <p>The <code>cq:htmlTag</code> node allows you to define the HTML wrapper for your component. It helps in customizing the outer HTML tag (e.g., &lt;div&gt;, &lt;section&gt;) when rendering the component.</p>
+                        <p>Create a folder named <code>_cq_htmlTag</code> within your component's folder and Create <code>.content.xml</code> file inside _cq_htmlTag folder and paste below content:</p>
+                        <pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"<br>  cq:tagName="section"<br>  jcr:primaryType="nt:unstructured"<br>  class="class-name"<br>  id="id-name"/&gt;</pre>
+                    </li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>Component Overloading vs Overlaying</h2>
+                <p><strong>Component Overloading</strong> refers to the practice of creating custom components that inherit or extend the functionality of existing components. Instead of directly modifying the original component, you create a new component that leverages the original one and adds or changes functionality.</p>
+                <p><strong>Component Overlaying</strong> refers to the practice of overriding or replacing an existing component or configuration by creating a new resource with the same name or path under a higher-priority folder in the JCR repository. This is typically done by creating a copy of a component from /libs and placing it under /apps.</p>
+            </section>
+            <section class="card">
+                <h2>Advanced Dialog Widgets: Multifield, Nested Multifield, and Coral/Granite Components</h2>
+                <p>AEM dialogs can include complex input structures using advanced widgets like <strong>multifield</strong> and <strong>nested multifield</strong>, often built using Coral UI or Granite UI components. These allow authors to enter lists or repeatable structured data.</p>
+                <h3>Multifield</h3>
+                <p>A multifield allows authors to enter a dynamic number of repeating values (e.g., list of FAQs, tabs, features). It can be used for simple strings or complex groups of fields.</p>
+                <pre>
+&lt;items jcr:primaryType="nt:unstructured"&gt;
+  &lt;myMultifield
+    jcr:primaryType="nt:unstructured"
+    sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+    fieldLabel="FAQs"&gt;
+    
+    &lt;field jcr:primaryType="nt:unstructured"
+           sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+           name="./faqs"/&gt;
+    
+  &lt;/myMultifield&gt;
+&lt;/items&gt;
+</pre>
+                <h3>Nested Multifield</h3>
+                <p>Nested multifields are used when each entry has multiple fields (e.g., a tab with both title and description). The <code>composite=true</code> property groups fields into one data object per entry.</p>
+                <p>Common use cases:</p>
+                <ul>
+                    <li>Tabs (title + content)</li>
+                    <li>Cards (image + title + description)</li>
+                    <li>Testimonials (avatar + name + quote)</li>
+                </ul>
+                <pre>
+&lt;myNestedMultifield
+    jcr:primaryType="nt:unstructured"
+    sling:resourceType="granite/ui/components/coral/foundation/form/multifield"
+    fieldLabel="Features"
+    composite="{Boolean}true"&gt;
+
+    &lt;field jcr:primaryType="nt:unstructured"
+           sling:resourceType="granite/ui/components/coral/foundation/container"&gt;
+      
+      &lt;items jcr:primaryType="nt:unstructured"&gt;
+        &lt;title
+          jcr:primaryType="nt:unstructured"
+          sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+          fieldLabel="Title"
+          name="./title"/&gt;
+
+        &lt;desc
+          jcr:primaryType="nt:unstructured"
+          sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
+          fieldLabel="Description"
+          name="./desc"/&gt;
+      &lt;/items&gt;
+
+    &lt;/field&gt;
+&lt;/myNestedMultifield&gt;
+</pre>
+                <h3>Binding Dropdowns and Datasources Inside Multifields</h3>
+                <p>You can bind dynamic dropdowns using a datasource servlet inside nested multifields. Example:</p>
+                <pre>
+&lt;country
+  jcr:primaryType="nt:unstructured"
+  sling:resourceType="granite/ui/components/coral/foundation/form/select"
+  name="./country"
+  fieldLabel="Country"
+  datasource="countryListDatasource"/&gt;
+</pre>
+                <p>📌 Make sure your servlet returns JSON in the correct format and is mapped via <code>sling:resourceType</code> or <code>dataSource</code>.</p>
+                <h3>Coral UI vs Granite UI</h3>
+                <ul>
+                    <li><strong>Granite UI:</strong> AEM's server-side framework for building author dialogs using XML.</li>
+                    <li><strong>Coral UI:</strong> The client-side component library built by Adobe, used inside Granite (e.g., textfield, dropdown, checkbox).</li>
+                    <li>Most dialog widgets use Coral v3 via Granite's <code>sling:resourceType</code> bindings.</li>
+                </ul>
+                <h3>Common Coral Components</h3>
+                <ul>
+                    <li><code>granite/ui/components/coral/foundation/form/textfield</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/textarea</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/checkbox</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/select</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/multifield</code></li>
+                    <li><code>granite/ui/components/coral/foundation/form/autocomplete</code></li>
+                </ul>
+                <p>Coral/Granite-based dialogs are powerful and flexible, allowing structured authoring experiences inside Touch UI.</p>
+                <p>Advanced dialogs like these significantly improve authoring experience and encourage reuse of structured data patterns across multiple pages/components.</p>
+            </section>
+            <section class="card">
+                <h2>Using Sling Resource Merger in AEM</h2>
+                <p>Sling Resource Merger in AEM allows developers to extend, modify, and customize existing resources without altering the core structure. This approach ensures smooth upgrades and better maintainability.</p>
+                <h3>Capabilities of Sling Resource Merger</h3>
+                <p>With Sling Resource Merger, you can:</p>
+                <ul>
+                    <li><strong>Remove existing resources or properties:</strong> Hide specific properties or entire resources from the underlying structure.</li>
+                    <li><strong>Modify existing properties or child resources:</strong> Update or override attributes and nested nodes within the merged resource.</li>
+                    <li><strong>Add new properties or child resources:</strong> Introduce custom configurations or elements while keeping the base structure intact.</li>
+                </ul>
+                <h3>Key Properties for Resource Merging</h3>
+                <h4>1. <code>sling:hideProperties</code> (String or String[])</h4>
+                <p>Hides specified properties from the resource. If set to <code>*</code>, all properties are hidden.</p>
+                <h4>2. <code>sling:hideResource</code> (Boolean)</h4>
+                <p>If set to <code>true</code>, the entire resource, including its child nodes, is hidden from the merged structure.</p>
+                <h4>3. <code>sling:hideChildren</code> (String or String[])</h4>
+                <p>Hides specific child nodes while keeping their properties intact. Using <code>*</code> hides all child nodes.</p>
+                <h4>4. <code>sling:orderBefore</code> (String)</h4>
+                <p>Determines the position of the current node by placing it before the specified sibling node in the merged hierarchy.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

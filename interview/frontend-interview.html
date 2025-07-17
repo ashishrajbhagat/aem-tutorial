@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - JavaScript / React / Angular</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>JavaScript / React / Angular</h1>
+            <section class="questions">
+                <details class="item">
+                    <summary>What is the difference between `var`, `let`, and `const` in JavaScript?</summary>
+                    <p>
+                        <strong><code>var</code></strong> - Function-scoped and hoisted. Can be re-declared and updated.<br>
+                        <strong><code>let</code></strong> - Block-scoped. Cannot be re-declared in the same scope. Hoisted but not initialized.<br>
+                        <strong><code>const</code></strong> - Block-scoped. Must be initialized and cannot be reassigned (but object properties can still be mutated).<br>
+                        <strong>Example:</strong>
+                    <pre>
+var x = 10;
+let y = 20;
+const z = 30;</pre>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Explain the concept of hoisting in JavaScript with examples.</summary>
+                    <p>
+                        Hoisting is JavaScript's default behavior of moving variable and function declarations to the top of their scope during compile phase.<br><br>
+                        <strong>Example with <code>var</code>:</strong>
+                    <pre>
+console.log(a); // undefined
+var a = 5;</pre>
+                    <strong>Example with <code>let</code> or <code>const</code>:</strong>
+                    <pre>
+console.log(b); // ReferenceError
+let b = 10;</pre>
+                    Function declarations are fully hoisted; expressions are not.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are closures in JavaScript? Provide a real-world use case.</summary>
+                    <p>
+                        A closure is a function that retains access to variables from its outer scope even after that scope has closed.<br><br>
+                        <strong>Example:</strong>
+                    <pre>
+function counter() {
+    let count = 0;
+    return function() { count++; return count; };
+}
+const increment = counter();
+increment(); // 1
+increment(); // 2</pre>
+                    <strong>Real-world use case:</strong> Used in event handlers, private state in modules, or once-only initialization functions.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between `==` and `==`> in JavaScript?</summary>
+                    <p>
+                        <strong><code>==</code> (Loose Equality):</strong> Compares values after type coercion.<br>
+                        <strong><code>===</code> (Strict Equality):</strong> Compares both value and type.<br><br>
+                        <strong>Examples:</strong>
+                    <pre>
+'5' == 5   // true  (type coercion happens)
+'5' === 5  // false (different types)
+null == undefined // true
+null === undefined // false</pre>
+                    Prefer <code>===</code> for safer, more predictable comparisons.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does the event loop work in JavaScript?</summary>
+                    <p>
+                        JavaScript is single-threaded but asynchronous operations are handled using the event loop.<br><br>
+                        The call stack processes synchronous code, while asynchronous callbacks are placed in the task queue or microtask queue.<br>
+                        The event loop checks if the call stack is empty and then pushes tasks from the queue.<br><br>
+                        <strong>Illustration:</strong>
+                    <pre>
+console.log('Start');
+
+setTimeout(() => {
+    console.log('Timeout');
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log('Promise');
+});
+
+console.log('End');
+
+// Output:
+// Start
+// End
+// Promise
+// Timeout</pre>
+                    Microtasks (like <code>Promise.then</code>) are prioritized over macrotasks (like <code>setTimeout</code>).
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is a promise in JavaScript? How is it different from a callback?</summary>
+                    <p>
+                        A <strong>Promise</strong> is an object representing the eventual completion or failure of an asynchronous operation.<br>
+                        It helps write cleaner async code than deeply nested callbacks (callback hell).<br><br>
+                        <strong>Promise syntax:</strong>
+                    <pre>
+const promise = new Promise((resolve, reject) => {
+    setTimeout(() => resolve('Done'), 1000);
+});
+
+promise.then(result => console.log(result));</pre>
+                    <strong>Difference from Callback:</strong><br>
+                    - Promises provide chaining using <code>.then()</code> and <code>.catch()</code>.<br>
+                    - They handle errors more gracefully and avoid pyramid of doom.<br>
+                    - Callbacks can lead to messy, hard-to-maintain code when nested.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are arrow functions and how are they different from regular functions?</summary>
+                    <p>
+                        <strong>Arrow functions</strong> are a shorter syntax for writing function expressions in JavaScript.<br><br>
+                        <strong>Syntax:</strong><br>
+                    <pre>const add = (a, b) => a + b;</pre>
+                    <strong>Key Differences from Regular Functions:</strong><br>
+                    - <code>this</code> is lexically bound (i.e., it retains the value of <code>this</code> from the enclosing context).<br>
+                    - Cannot be used as constructors.<br>
+                    - Do not have their own <code>arguments</code> object.<br>
+                    - More concise syntax.<br><br>
+                    <strong>Example:</strong>
+                    <pre>
+// Regular function
+function sayHello() {
+    console.log(this);
+}
+
+// Arrow function
+const sayHelloArrow = () => {
+    console.log(this);
+};</pre>
+                    In the above, <code>sayHello</code>'s <code>this</code> depends on how it's called, whereas <code>sayHelloArrow</code> inherits <code>this</code> from its outer scope.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the `this` keyword in JavaScript? How does it behave in different contexts?</summary>
+                    <p>
+                        <code>this</code> refers to the context in which a function is called.<br><br>
+                        <strong>In global context:</strong><br>
+                        <code>this</code> refers to the global object (<code>window</code> in browsers).<br><br>
+                        <strong>Inside an object method:</strong><br>
+                        <code>this</code> refers to the object itself.
+                    <pre>
+const user = {
+    name: "Ashish",
+    greet() {
+        console.log(this.name); // "Ashish"
+    }
+};</pre>
+                    <strong>In a regular function:</strong><br>
+                    <code>this</code> is <code>undefined</code> in strict mode or the global object in non-strict mode.<br><br>
+                    <strong>In arrow functions:</strong><br>
+                    <code>this</code> is inherited from the surrounding (lexical) scope.<br><br>
+                    <strong>In event handlers, constructors, or class methods:</strong><br>
+                    <code>this</code> varies based on how the function is invoked.<br><br>
+                    Always analyze the invocation context to determine the value of <code>this</code>.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between synchronous and asynchronous code?</summary>
+                    <p>
+                        <strong>Synchronous code:</strong><br>
+                        - Executes line by line, one operation at a time.<br>
+                        - Blocks further execution until the current operation completes.<br><br>
+                        <strong>Asynchronous code:</strong><br>
+                        - Executes independently of the main thread.<br>
+                        - Allows the program to continue without waiting for an operation to finish.<br><br>
+                        <strong>Example:</strong>
+                    <pre>
+// Synchronous
+console.log("1");
+console.log("2");
+console.log("3");
+
+// Asynchronous
+console.log("1");
+setTimeout(() => console.log("2"), 1000);
+console.log("3");
+
+// Output:
+// 1
+// 3
+// 2</pre>
+                    Asynchronous programming (via <code>setTimeout</code>, <code>Promise</code>, <code>async/await</code>) enables non-blocking behavior, improving performance and responsiveness.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are higher-order functions? Give an example using map, filter, or reduce.</summary>
+                    <p>
+                        <strong>Higher-order functions</strong> are functions that either:<br>
+                        - Take other functions as arguments, or<br>
+                        - Return a function as their result.<br><br>
+                        JavaScript treats functions as first-class citizens, allowing this functional programming pattern.<br><br>
+                        <strong>Example using <em>map</em>:</strong>
+                    <pre>
+const numbers = [1, 2, 3, 4];
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6, 8]</pre>
+                    <strong>Example using <em>filter</em>:</strong>
+                    <pre>
+const numbers = [1, 2, 3, 4];
+const even = numbers.filter(num => num % 2 === 0);
+console.log(even); // [2, 4]</pre>
+                    <strong>Example using <em>reduce</em>:</strong>
+                    <pre>
+const numbers = [1, 2, 3, 4];
+const sum = numbers.reduce((acc, num) => acc + num, 0);
+console.log(sum); // 10</pre>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does setTimeout work internally? Is it part of JavaScript or the browser?</summary>
+                    <p>
+                        <strong>setTimeout</strong> is not part of the JavaScript language itself. It is provided by the browser (or Node.js environment).<br><br>
+                        Internally, this is how it works:
+                    <ol>
+                        <li>JavaScript calls <em>setTimeout</em> and registers a callback along with a delay.</li>
+                        <li>The browser starts a timer in its environment (Web APIs).</li>
+                        <li>Once the timer expires, the callback is pushed to the <strong>event queue</strong>.</li>
+                        <li>JavaScript's event loop picks the callback from the queue and executes it when the call stack is empty.</li>
+                    </ol>
+                    <strong>Important:</strong> Even if you set a 0ms timeout, the callback still waits for the current call stack to clear before running.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between null and undefined?</summary>
+                    <p>
+                        <strong>undefined</strong> means a variable has been declared but has not yet been assigned a value.<br>
+                        <strong>null</strong> is an assignment value that represents "no value" or "nothing". It must be explicitly set.<br><br>
+                        <strong>Examples:</strong>
+                    <pre>
+let a;
+console.log(a); // undefined
+
+let b = null;
+console.log(b); // null</pre>
+                    <strong>Key Differences:</strong>
+                    <ul>
+                        <li><em>undefined</em> is the default value for uninitialized variables.</li>
+                        <li><em>null</em> is usually used to indicate intentional absence of value.</li>
+                        <li>typeof undefined → "undefined", typeof null → "object" (this is a historical bug).</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is object destructuring and how can it be used efficiently?</summary>
+                    <p>
+                        <strong>Object destructuring</strong> is a syntax in JavaScript that allows you to extract properties from an object and assign them to variables in a clean, concise way.<br><br>
+                        <strong>Example:</strong>
+                    <pre>
+const user = {
+    name: "Ashish",
+    age: 28,
+    location: "India"
+};
+
+const { name, age } = user;
+console.log(name); // "Ashish"
+console.log(age);  // 28</pre>
+                    <strong>Efficient Usage:</strong>
+                    <ul>
+                        <li>Extract nested objects or rename variables for clarity.</li>
+                        <li>Use default values for properties that might be undefined.</li>
+                    </ul>
+                    <strong>Example with default and rename:</strong>
+                    <pre>
+const { name: userName, country = "Unknown" } = user;
+console.log(userName); // "Ashish"
+console.log(country);  // "Unknown"</pre>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How can you prevent object mutation in JavaScript?</summary>
+                    <p>
+                        To prevent object mutation (changing the original object), you can use techniques to create copies or freeze objects.<br><br>
+                        <strong>Methods to prevent mutation:</strong>
+                    <ul>
+                        <li><strong>Object.freeze(obj)</strong> — makes the object immutable (shallow freeze).</li>
+                        <li><strong>Object.assign({}, obj)</strong> or <strong>spread operator {...obj}</strong> — creates a shallow copy.</li>
+                        <li>For deep immutability, use libraries like <strong>Lodash</strong> or <strong>Immer</strong>.</li>
+                    </ul>
+                    <strong>Example:</strong>
+                    <pre>
+const original = { name: "Ashish" };
+const copy = { ...original };
+copy.name = "Raj";
+console.log(original.name); // "Ashish"</pre>
+                    <strong>Freezing Example:</strong>
+                    <pre>
+const settings = { darkMode: true };
+Object.freeze(settings);
+settings.darkMode = false; // Won't change
+console.log(settings.darkMode); // true</pre>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the use of bind(), call(), and apply() methods?</summary>
+                    <p>
+                        These three methods allow you to control the <strong>value of `this`</strong> inside a function and invoke it with a specific context.<br><br>
+                        <strong>bind()</strong> returns a new function with `this` bound to the given object.<br>
+                        <strong>call()</strong> immediately calls the function with a given `this` and arguments.<br>
+                        <strong>apply()</strong> is like call, but takes arguments as an array.<br><br>
+                        <strong>Example:</strong>
+                    <pre>
+const person = {
+    name: "Ashish",
+    greet: function(city) {
+        console.log(`Hi, I'm ${this.name} from ${city}`);
+    }
+};
+
+const anotherPerson = { name: "Raj" };
+
+person.greet.call(anotherPerson, "Delhi"); // Hi, I'm Raj from Delhi
+person.greet.apply(anotherPerson, ["Mumbai"]); // Hi, I'm Raj from Mumbai
+
+const boundGreet = person.greet.bind(anotherPerson);
+boundGreet("Patna"); // Hi, I'm Raj from Patna</pre>
+                    These methods are especially useful in event handlers, callbacks, or when borrowing methods across objects.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between deep copy and shallow copy in JavaScript?</summary>
+                    <p>
+                        A <strong>shallow copy</strong> copies only the top-level properties of an object, whereas a <strong>deep copy</strong> recursively copies all nested objects.<br><br>
+                        <strong>Shallow Copy:</strong>
+                    <ul>
+                        <li>Changes in nested objects affect both original and copy.</li>
+                        <li>Can be created using <code>Object.assign()</code> or spread operator <code>{...obj}</code>.</li>
+                    </ul>
+                    <pre>
+const original = { name: "Ashish", details: { age: 28 } };
+const shallowCopy = { ...original };
+shallowCopy.details.age = 30;
+console.log(original.details.age); // 30 😬</pre>
+                    <strong>Deep Copy:</strong>
+                    <ul>
+                        <li>Completely duplicates an object and its nested objects.</li>
+                        <li>Prevents accidental mutations of the original object.</li>
+                        <li>Can be done using structuredClone() (modern), JSON methods, or libraries like Lodash.</li>
+                    </ul>
+                    <pre>
+const deepCopy = structuredClone(original);
+deepCopy.details.age = 35;
+console.log(original.details.age); // 30 ✅</pre>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Explain prototypal inheritance in JavaScript.</summary>
+                    <p>
+                        <strong>Prototypal inheritance</strong> is a feature in JavaScript where objects can inherit properties and methods from other objects via their prototype chain.<br><br>
+                        Each object has an internal reference (accessed via <code>__proto__</code> or <code>Object.getPrototypeOf()</code>) to another object, forming a chain.<br><br>
+                        <strong>Example:</strong>
+                    <pre>
+const parent = {
+    greet() {
+        console.log("Hello from parent");
+    }
+};
+
+const child = Object.create(parent);
+child.name = "Ashish";
+
+child.greet(); // "Hello from parent"</pre>
+                    <strong>Key Points:</strong>
+                    <ul>
+                        <li>Enables method reuse without duplication.</li>
+                        <li>Used behind the scenes when creating classes using <code>function</code> or <code>class</code> syntax.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are IIFEs (Immediately Invoked Function Expressions) and why are they used?</summary>
+                    <p>
+                        An <strong>IIFE</strong> (Immediately Invoked Function Expression) is a function that is executed immediately after it's defined.<br><br>
+                        <strong>Syntax:</strong>
+                    <pre>
+(function () {
+    console.log("IIFE executed!");
+})();</pre>
+                    <strong>Why Use IIFE?</strong>
+                    <ul>
+                        <li>To create a private scope and avoid polluting the global namespace.</li>
+                        <li>Useful in older JavaScript before <code>let</code>/<code>const</code> for variable encapsulation.</li>
+                    </ul>
+                    <strong>Example with private variables:</strong>
+                    <pre>
+const counter = (function () {
+    let count = 0;
+    return {
+        increment: () => ++count,
+        getCount: () => count
+    };
+})();
+
+console.log(counter.increment()); // 1
+console.log(counter.getCount());  // 1</pre>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you handle async/await error handling in JavaScript?</summary>
+                    <p>
+                        In JavaScript, you handle errors in <code>async/await</code> using <strong>try...catch</strong> blocks. This is similar to synchronous error handling but works with promises.<br><br>
+                        <strong>Example:</strong>
+                    <pre>
+async function fetchData() {
+    try {
+        const response = await fetch("https://api.example.com/data");
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error("Error fetching data:", error.message);
+    }
+}
+
+fetchData();</pre>
+                    <strong>Best Practices:</strong>
+                    <ul>
+                        <li>Always wrap <code>await</code> calls in <code>try...catch</code> when dealing with network or async operations.</li>
+                        <li>Use <code>finally</code> if you need to clean up (like closing loaders or cleaning up resources).</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between `for...in` and `for...of` loops?</summary>
+                    <p>
+                        Both <code>for...in</code> and <code>for...of</code> are used to iterate, but they are used in different contexts and for different types of data:<br><br>
+                        <strong>🔹 for...in:</strong>
+                    <ul>
+                        <li>Iterates over the <strong>enumerable property keys</strong> of an object (or array indices).</li>
+                        <li>Mainly used for <strong>objects</strong>.</li>
+                        <li>Includes inherited properties (use <code>hasOwnProperty</code> to filter).</li>
+                    </ul>
+                    <pre>
+const obj = { a: 1, b: 2 };
+for (const key in obj) {
+    console.log(key); // a, b
+}</pre>
+                    <strong>🔹 for...of:</strong>
+                    <ul>
+                        <li>Iterates over the <strong>values</strong> of an iterable (like arrays, strings, Maps, Sets).</li>
+                        <li>Does <strong>not work on plain objects</strong> unless they implement an iterable protocol.</li>
+                    </ul>
+                    <pre>
+const arr = [10, 20, 30];
+for (const value of arr) {
+    console.log(value); // 10, 20, 30
+}</pre>
+                    <strong>Summary:</strong>
+                    <ul>
+                        <li><code>for...in</code> → use for <strong>object keys</strong></li>
+                        <li><code>for...of</code> → use for <strong>array values</strong> or other iterable collections</li>
+                    </ul>
+                    </p>
+                </details>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

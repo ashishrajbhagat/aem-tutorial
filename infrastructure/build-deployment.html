@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM Scenarios & Gotchas</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM Scenarios & Gotchas</h1>
+            <section class="card">
+                <h2>Overview of Build & Deployment in AEM</h2>
+                <p>In Adobe Experience Manager (AEM), build and deployment processes are crucial for consistently packaging, testing, and promoting code and content across environments. A structured pipeline ensures scalability, repeatability, and lower risk in production environments.</p>
+                <p>Typical enterprise AEM build pipelines include the following stages:</p>
+                <ul>
+                    <li><strong>Code Commit:</strong> Developers push code to a version control system (GitHub, Bitbucket, etc.)</li>
+                    <li><strong>Build:</strong> A tool like Maven compiles and packages AEM modules into deployable artifacts</li>
+                    <li><strong>Test:</strong> Unit tests, static code analysis, and integration tests are executed</li>
+                    <li><strong>Deploy:</strong> Artifacts are deployed to Dev, Stage, or Production environments (via Jenkins, Cloud Manager, etc.)</li>
+                    <li><strong>Verify:</strong> Smoke tests and regression validations are run after deployment</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Using Maven for AEM Projects</h2>
+                <p>Maven is the de facto build tool for AEM development. Adobe provides official Maven archetypes to scaffold new projects with proper structure and best practices.</p>
+                <h3>AEM Maven Project Structure</h3>
+                <ul>
+                    <li><code>core</code>: Java code (components, models, services)</li>
+                    <li><code>ui.apps</code>: Editable templates, dialogs, components</li>
+                    <li><code>ui.content</code>: Site structure, pages, policies, demo content</li>
+                    <li><code>dispatcher</code>: Optional, contains Dispatcher configuration</li>
+                    <li><code>all</code>: Aggregator module to build all submodules into a single content package</li>
+                </ul>
+                <h3>Building and Deploying</h3>
+                <p>Use the following Maven command to build and install the project on a local AEM instance:</p>
+                <pre>mvn clean install -PautoInstallPackage</pre>
+                <h3>Handling Dependencies</h3>
+                <p>Common dependencies include:</p>
+                <ul>
+                    <li><code>core.wcm.components</code> (AEM's Core Components)</li>
+                    <li><code>aem-sdk-api</code> (AEM APIs for compilation)</li>
+                    <li>Third-party libraries via Maven Central</li>
+                </ul>
+                <p>These are declared in <code>pom.xml</code> using proper versions and scopes to avoid conflicts.</p>
+            </section>
+            <section class="card">
+                <h2>Using Ant (Legacy)</h2>
+                <p>Before Maven became the standard, AEM (especially older CQ5 versions) used Ant scripts for packaging and deployment.</p>
+                <h3>When Was Ant Used?</h3>
+                <ul>
+                    <li>Legacy projects using <code>build.xml</code> and <code>build.properties</code></li>
+                    <li>Custom scripts to package content into zip/jar files</li>
+                    <li>Manual deployment or script-driven deployment into CRX</li>
+                </ul>
+                <h3>Why Maven is Preferred Now</h3>
+                <ul>
+                    <li>Official support via AEM Archetypes</li>
+                    <li>Standardized packaging and dependency management</li>
+                    <li>Better integration with CI/CD tools like Jenkins and Cloud Manager</li>
+                    <li>Automated handling of OSGi bundles, filters, and content packages</li>
+                </ul>
+                <p>New AEM projects should always use Maven. Ant support is deprecated and not recommended.</p>
+            </section>
+            <section class="card">
+                <h2>Jenkins Integration</h2>
+                <p>Jenkins is a widely used automation server for setting up CI/CD pipelines in AEM projects. It allows you to automate building, testing, and deploying code to various AEM environments.</p>
+                <h3>Typical Jenkins Pipeline</h3>
+                <p>A Jenkinsfile defines the stages for an AEM build pipeline:</p>
+                <pre>pipeline {
+    agent any
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/org/repo.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy to Dev') {
+            steps {
+                sh 'mvn -PautoInstallPackage clean install'
+            }
+        }
+    }
+}</pre>
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Integrates with GitHub, GitLab, Bitbucket for SCM</li>
+                    <li>Runs unit tests, code coverage (e.g., Jacoco), and static analysis (e.g., SonarQube)</li>
+                    <li>Deploys to AEM instances using HTTP API, curl, or Cloud Manager CLI</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>CI/CD Pipelines (On-Prem & Cloud)</h2>
+                <p>AEM supports both cloud-native and on-premise CI/CD pipelines:</p>
+                <h3>AEM as a Cloud Service (AEMaaCS)</h3>
+                <ul>
+                    <li>Uses Adobe Cloud Manager to define build & deployment pipelines</li>
+                    <li>Pipeline includes build, code quality, security scan, and deployment</li>
+                    <li>Supports gated approvals and promotion from Dev → Stage → Prod</li>
+                </ul>
+                <h3>On-Prem Pipelines (Jenkins, Bamboo, etc.)</h3>
+                <ul>
+                    <li>Build and deploy using Maven and HTTP APIs or Package Manager</li>
+                    <li>Promote builds by deploying the same content package across environments</li>
+                    <li>Run smoke tests post-deployment using curl, Selenium, or Cypress</li>
+                </ul>
+                <p>CI/CD pipelines ensure consistent, repeatable deployments with built-in validations and rollback capabilities.</p>
+            </section>
+            <section class="card">
+                <h2>Dispatcher Configuration Deployment</h2>
+                <p>Dispatcher configs (e.g., <code>dispatcher.any</code>, <code>rewrite.rules</code>) should be treated as code and versioned in Git.</p>
+                <h3>Deployment Strategies</h3>
+                <ul>
+                    <li><strong>Cloud:</strong> AEMaaCS manages Dispatcher config through the Cloud Manager Git repo</li>
+                    <li><strong>On-Prem:</strong> Jenkins/Bamboo can deploy config to Apache via SCP, rsync, or SSH</li>
+                </ul>
+                <h3>Separate or Integrated Pipeline?</h3>
+                <ul>
+                    <li>Small projects can integrate dispatcher deployment with the main pipeline</li>
+                    <li>Larger teams often use a dedicated pipeline for dispatcher changes to reduce risk</li>
+                </ul>
+                <p>Always validate syntax using Dispatcher tools before deploying to Prod.</p>
+            </section>
+            <section class="card">
+                <h2>Production Deployment Strategies</h2>
+                <p>Deploying to production requires careful planning to minimize risks and ensure uptime. AEM supports multiple deployment patterns:</p>
+                <h3>Blue-Green Deployment</h3>
+                <p>Maintain two identical production environments (Blue and Green). You deploy to one (e.g., Green) while the other (Blue) is live. After testing, traffic is switched to the new version.</p>
+                <ul>
+                    <li>Zero downtime during deployment</li>
+                    <li>Quick rollback by switching traffic back to the previous environment</li>
+                </ul>
+                <h3>Rolling Updates</h3>
+                <p>Update one publish or author instance at a time in a load-balanced cluster. Traffic is routed away from the node being updated.</p>
+                <ul>
+                    <li>Minimizes impact</li>
+                    <li>Used in clustered setups</li>
+                </ul>
+                <h3>Downtime vs. Zero-Downtime Deployment</h3>
+                <ul>
+                    <li><strong>Zero-downtime:</strong> Blue-green or rolling updates with load balancers and health checks</li>
+                    <li><strong>Planned downtime:</strong> Simpler but requires scheduling and user communication</li>
+                </ul>
+                <h3>Backup & Rollback</h3>
+                <ul>
+                    <li>Backup CRX repository and dispatcher configs before every major deployment</li>
+                    <li>Keep previous content packages and dispatcher files for quick rollback</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Environment-specific Configurations</h2>
+                <p>Each AEM environment (Dev, QA, Stage, Prod) may have unique configurations. AEM handles this using runmodes and filtered packages:</p>
+                <h3>Using Runmodes</h3>
+                <ul>
+                    <li>Define environment-specific OSGi configs in folders like: <code>/apps/project/config.dev</code>, <code>.../config.prod</code></li>
+                    <li>AEM activates the config matching the current runmode</li>
+                </ul>
+                <h3>Filtering & Embedding Configs</h3>
+                <p>Use <code>content-package-maven-plugin</code> to include correct config paths:</p>
+                <pre>&lt;filter&gt;
+  &lt;root&gt;/apps/myproject/config.dev&lt;/root&gt;
+&lt;/filter&gt;</pre>
+                <p>You can also use profiles in Maven to control what gets packaged per environment.</p>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li><strong>Always validate builds</strong> in staging before promoting to production</li>
+                    <li><strong>Use tags and versioning</strong> to track releases and rollback easily</li>
+                    <li><strong>Externalize secrets</strong> — use environment variables, encrypted files, or secret managers</li>
+                    <li><strong>Automate everything</strong> — builds, tests, deployments, and rollback steps</li>
+                    <li><strong>Monitor deployments</strong> in real-time using logging and alerts</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

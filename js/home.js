@@ -1,42 +1,3 @@
-// Toggle sidebar for mobile view
-function toggleMenu() {
-    const sidebar = document.getElementById("sidebar");
-    const content = document.getElementById("content");
-    if (sidebar && content) {
-        sidebar.classList.toggle("active");
-        content.classList.toggle("hide");
-    }
-}
-
-// 🔍 Filter sidebar items on search input
-document.getElementById("sidebarSearch").addEventListener("input", function() {
-    const filter = this.value.toLowerCase();
-    const allLinks = document.querySelectorAll("#sidebar-nav .nav-link");
-
-    allLinks.forEach(link => {
-        const itemText = link.textContent.toLowerCase();
-        const listItem = link.closest("li");
-        listItem.style.display = itemText.includes(filter) ? "block" : "none";
-    });
-
-    // Hide section if all its items are hidden
-    document.querySelectorAll(".nav-section").forEach(section => {
-        const visibleLinks = section.querySelectorAll("li:not([style*='display: none'])");
-        section.style.display = visibleLinks.length > 0 ? "block" : "none";
-    });
-
-    // Auto-expand matching sections
-    document.querySelectorAll(".nav-list").forEach(list => {
-        const visible = Array.from(list.children).some(li => li.style.display !== "none");
-        list.classList.toggle("open", visible);
-    });
-});
-
-// Navigation items for sidebar
-const nav = document.getElementById("sidebar-nav");
-const currentUrl = window.location.pathname;
-const currentPage = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
-
 const sections = [{
         title: "AEM Fundamentals",
         items: [{
@@ -189,7 +150,7 @@ const sections = [{
             },
             {
                 href: "headless/multi-site-manager.html",
-                text: "headless/Multisite Manager (MSM)"
+                text: "Multisite Manager (MSM)"
             },
             {
                 href: "headless/aem-headless.html",
@@ -321,83 +282,39 @@ const sections = [{
     }
 ];
 
-// Render sidebar with collapsible sections
-sections.forEach((section, index) => {
-    const container = document.createElement("div");
-    container.className = "nav-section";
+const container = document.getElementById("topics-container");
 
-    const header = document.createElement("div");
-    header.className = "sidebar-section-title";
-    header.textContent = section.title;
+// Create categories dynamically
+sections.forEach((section) => {
+    const card = document.createElement("div");
+    card.className = "topic-category";
 
-    const list = document.createElement("ul");
-    list.className = "nav-list";
+    const title = document.createElement("h3");
+    title.textContent = section.title;
 
-    let containsActive = false;
-
-    section.items.forEach(item => {
+    const ul = document.createElement("ul");
+    section.items.forEach((item) => {
         const li = document.createElement("li");
         const a = document.createElement("a");
-        a.href = "/" + item.href;
-        a.className = "nav-link";
+        a.href = item.href;
         a.textContent = item.text;
-
-        if (currentUrl === "/" + item.href) {
-            a.classList.add("active");
-            containsActive = true;
-        }
-
         li.appendChild(a);
-        list.appendChild(li);
+        ul.appendChild(li);
     });
 
-    // Expand active section
-    if (containsActive) {
-        list.classList.add("open");
-    }
-
-    // Toggle section on click
-    header.addEventListener("click", () => {
-        document.querySelectorAll(".nav-list").forEach(ul => ul.classList.remove("open"));
-        list.classList.add("open");
-    });
-
-    container.appendChild(header);
-    container.appendChild(list);
-    nav.appendChild(container);
+    card.appendChild(title);
+    card.appendChild(ul);
+    container.appendChild(card);
 });
 
-// Add pagination
-document.addEventListener("DOMContentLoaded", () => {
-    const fullPath = window.location.pathname;
-    const pathSegments = fullPath.split("/").filter(Boolean);
-    const currentPage = pathSegments.slice(-2).join("/");
+// Toggle logic: Only one open at a time
+const categories = document.querySelectorAll('.topic-category');
 
-    const flatMenuItems = sections.flatMap(section => section.items);
-    const currentIndex = flatMenuItems.findIndex(item => item.href === currentPage);
-    if (currentIndex === -1) return;
-
-    const paginationContainer = document.createElement('div');
-    paginationContainer.className = 'simple-pagination';
-
-    if (currentIndex > 0) {
-        const prev = document.createElement('a');
-        prev.href = "/" + flatMenuItems[currentIndex - 1].href;
-        prev.className = 'prev-link';
-        prev.innerHTML = `← Previous: ${flatMenuItems[currentIndex - 1].text}`;
-        paginationContainer.appendChild(prev);
-    }
-
-    if (currentIndex < flatMenuItems.length - 1) {
-        const next = document.createElement('a');
-        next.href = "/" + flatMenuItems[currentIndex + 1].href;
-        next.className = 'next-link';
-        next.innerHTML = `Next: ${flatMenuItems[currentIndex + 1].text} →`;
-        paginationContainer.appendChild(next);
-    }
-
-    const content = document.getElementById("content");
-    if (content && paginationContainer.children.length > 0) {
-        content.appendChild(paginationContainer);
-    }
+categories.forEach((category) => {
+    category.addEventListener('click', () => {
+        categories.forEach((c) => {
+            if (c !== category) c.classList.remove('open');
+        });
+        category.classList.toggle('open');
+    });
 });

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Scheduler and Jobs</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Scheduler and Jobs</h1>
+            <section class="card">
+                <h2>Introduction to AEM Scheduler</h2>
+                <p>A Sling Scheduler in AEM is a mechanism that allows the execution of tasks at predefined intervals or specific times in the background. It is used to automate processes that need to run periodically, asynchronously, or at a scheduled time. Schedulers in AEM use OSGi-based job scheduling, leveraging frameworks like Apache Sling Scheduler and Quartz Scheduler to handle scheduled tasks efficiently.</p>
+                <h3>Understanding the Concept of Background Job Processing</h3>
+                <p>Background job processing in AEM allows tasks to be executed without affecting the main request-response cycle of the application. Instead of making users wait for tasks to complete, scheduled jobs can:</p>
+                <ul>
+                    <li>Run at predefined intervals or specific triggers (e.g., when content is modified).</li>
+                    <li>Execute long-running tasks asynchronously to avoid performance bottlenecks.</li>
+                    <li>Improve system performance by distributing workloads efficiently.</li>
+                </ul>
+                <p>For example, instead of manually deleting outdated content, AEM can schedule an automated cleanup job to remove expired pages or assets.</p>
+                <h3>Why We Need Scheduling Jobs in AEM?</h3>
+                <p>There are multiple reasons why job scheduling is essential in AEM:</p>
+                <ul>
+                    <li><strong>Automating repetitive tasks -</strong> Reduces manual effort and ensures consistency.</li>
+                    <li><strong>Managing resource-intensive operations -</strong> Large data processing, report generation, and indexing can be scheduled during off-peak hours.</li>
+                    <li><strong>Ensuring timely execution -</strong> Critical maintenance jobs (e.g., cache invalidation, content replication) need to run at specific times.</li>
+                    <li><strong>Optimizing system performance -</strong> By running tasks in the background, AEM prevents performance degradation in the main user interface.</li>
+                </ul>
+                <h3>The Role of OSGi-Based Job Scheduling in AEM</h3>
+                <p>AEM's job scheduling system is built on OSGi (Open Services Gateway Initiative), which provides a modular and service-oriented framework for managing tasks.</p>
+                <h4>Key components:</h4>
+                <ul>
+                    <li><strong>Apache Sling Scheduler -</strong> A lightweight scheduling framework integrated with AEM.</li>
+                    <li><strong>Quartz Scheduler -</strong> A powerful scheduler supporting cron-like expressions for precise job scheduling.</li>
+                    <li><strong>AEM JobManager API -</strong> Provides programmatic access to manage and execute jobs dynamically.</li>
+                </ul>
+                <h4>OSGi-based job scheduling ensures that jobs are:</h4>
+                <ul>
+                    <li>Configurable via OSGi configurations.</li>
+                    <li>Modular and easy to integrate with AEM services.</li>
+                    <li>Reliable, supporting retry mechanisms and error handling.</li>
+                </ul>
+                <h3>Use Cases for Scheduled Jobs in AEM</h3>
+                <p>AEM scheduled jobs can be used for a variety of content management and system maintenance tasks, including:</p>
+                <ol>
+                    <li>
+                        Content Cleanup
+                        <ul>
+                            <li>Automatically delete outdated pages, assets, or logs.</li>
+                            <li>Remove unused tags or metadata from content.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Data Synchronization
+                        <ul>
+                            <li>Sync content between AEM instances (e.g., author to publish).</li>
+                            <li>Update external databases or APIs periodically.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Regular Reporting
+                        <ul>
+                            <li>Generate scheduled reports on content updates, workflow statuses, or user activities.</li>
+                            <li>Send periodic analytics data to stakeholders.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Cache Invalidation
+                        <ul>
+                            <li>Clear dispatcher cache at regular intervals to ensure fresh content delivery.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Replication Monitoring
+                        <ul>
+                            <li>Schedule health checks for content replication across AEM environments.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Email Notifications
+                        <ul>
+                            <li>Trigger automated email alerts for content approvals, workflow status changes, or system events.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>Different ways to create a Scheduler</h2>
+                <p>AEM provides multiple ways to schedule tasks and background jobs. The scheduling approach depends on the use case, frequency, and execution requirements.</p>
+                <h3>1. Whiteboard Pattern</h3>
+                <p>This approach involves creating a basic <code>Runnable</code> thread that executes a designated task at fixed intervals. It functions similarly to the standard Java threading mechanism.</p>
+                <h4>Pros:</h4>
+                <ul>
+                    <li><strong>Simplicity:</strong> The Whiteboard Pattern is straightforward and easy to implement. You create a simple Runnable thread that performs your task.</li>
+                    <li><strong>Light-weight:</strong> It typically involves fewer dependencies and is suitable for simple scheduling tasks.</li>
+                </ul>
+                <h4>Cons:</h4>
+                <ul>
+                    <li><strong>Limited features:</strong> The Whiteboard Pattern might be more suitable for basic scheduling tasks, but it may lack some advanced scheduling features provided by Quartz.</li>
+                </ul>
+                <p><strong><em>Example:</em></strong> The following job is executed every minute by setting <code>scheduler.expression</code> to the cron expression <code>0 * * * * ?</code></p>
+                <pre>
+package com.training.core.schedulers;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
+import org.apache.felix.scr.annotations.Property;
+
+@Component
+@Service(value = Runnable.class)
+@Property( name = "scheduler.expression", value = "0 * * * * ?")
+public class ScheduledCronJob implements Runnable {
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    public void run() {
+    	log.info("Executing a cron job (job#1) through the whiteboard pattern");
+    }
+}</pre>
+                <p><strong><em>Example:</em></strong> The following job is executed every ten seconds by setting <code>scheduler.period</code> to <code>10</code>:</p>
+                <pre>
+package com.training.core.schedulers;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.apache.felix.scr.annotations.Component;
+import org.apache.felix.scr.annotations.Service;
+import org.apache.felix.scr.annotations.Property;
+
+@Component
+@Service(value = Runnable.class)
+@Property( name = "scheduler.period", longValue = 10)
+public class ScheduledPeriodicJob implements Runnable {
+
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    public void run() {
+    	log.info("Executing a perodic job (job#2) through the whiteboard pattern");
+    }
+}</pre>
+                <p><strong><em>Note:</em></strong> Please avoid using whiteboard pattern scheduler as felix scr(<code>org.apache.felix.scr.annotations.Property</code>) is <strong>deprecated</strong> from AEM 6.2 onwards and are replaced with OSGi annotations.</p>
+                <h3>2. Scheduler API</h3>
+                <p>In this method, the Apache Commons Scheduler API is utilized to handle scheduled tasks. It leverages the open-source Quartz library, which provides a robust and flexible scheduling framework. More details can be found at Quartz Scheduler <code>http://www.quartz-scheduler.org/</code>. This is an OSGi-based scheduling mechanism that allows developers to execute tasks at a specific time or interval. It uses <code>Scheduler</code> OSGI Service using <code>@Reference</code> annotation.</p>
+                <h4>Example:</h4>
+                <pre>
+package com.training.core.schedulers;
+
+import org.apache.sling.commons.scheduler.ScheduleOptions;
+import org.apache.sling.commons.scheduler.Scheduler;
+import org.osgi.service.component.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Component(service = Runnable.class, immediate = true)
+public class SimpleScheduler implements Runnable {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleScheduler.class);
+
+    @Reference
+    private Scheduler scheduler;
+
+    private static final String JOB_NAME = "exampleSchedulerJob";
+
+    @Activate
+    protected void activate() {
+        ScheduleOptions options = scheduler.EXPR("0 * * * * ?"); // Runs every minute
+        options.name(JOB_NAME);
+        options.canRunConcurrently(false);
+        scheduler.schedule(this, options);
+        LOG.info("Scheduler activated with job name: {}", JOB_NAME);
+    }
+
+    @Deactivate
+    protected void deactivate() {
+        scheduler.unschedule(JOB_NAME);
+        LOG.info("Scheduler deactivated");
+    }
+
+    @Override
+    public void run() {
+        LOG.info("Executing scheduled task...");
+    }
+}</pre>
+            </section>
+            <section class="card">
+                <h2>Creating a Scheduler Using Scheduler API in AEM</h2>
+                <p>The AEM Scheduler API allows developers to schedule jobs using OSGi services. We use OSGi R6 annotations to define a scheduled job dynamically.</p>
+                <h3>1.  Create an OSGi Configuration Interface</h3>
+                <p>Define an OSGi configuration interface using <code>@ObjectClassDefinition</code>. This interface will allow setting up scheduler parameters like execution time, enable/disable state, etc.</p>
+                <pre>
+@ObjectClassDefinition(name = "Simple Scheduler Configuration", description = "Scheduler for running periodic tasks")
+public @interface SimpleSchedulerConfiguration {
+
+    @AttributeDefinition(
+            name = "Scheduler name",
+            description = "Name of the scheduler",
+            type = AttributeType.STRING)
+    String scheduler_name() default "MyScheduler";
+
+    @AttributeDefinition(
+        name = "Cron job expression",
+        description = "Cron expression for job scheduling",
+        type = AttributeType.STRING)
+    String scheduler_expression() default "0 * * * * ?";
+
+    @AttributeDefinition(
+        name = "Enable Scheduler",
+        description = "Enable or disable the scheduler",
+        type = AttributeType.BOOLEAN)
+    boolean enable_scheduler() default true;
+}</pre>
+                <h3>2. Provide OSGi Configuration in XML</h3>
+                <p>We need to create an XML configuration file in <code>/apps/&lt;your-project&gt;/config</code> to define values for our scheduler.</p>
+                <pre>
+&lt;jcr:root xmlns:sling="http://sling.apache.org/jcr/sling/1.0"
+    xmlns:jcr="http://www.jcp.org/jcr/1.0"
+    jcr:primaryType="sling:OsgiConfig"
+    scheduler.name="MyScheduler"
+    scheduler.expression="0 * * * * ?"
+    enable.scheduler="true"/&gt;</pre>
+                <h3>3. Create a Scheduler Class</h3>
+                <p>In AEM, scheduled jobs must implement the <code>Runnable</code> interface, where the <code>run()</code> method contains the logic executed at scheduled intervals. To register the scheduler as an OSGi service, we use the <code>@Component</code> annotation from the <code>org.osgi.service.component.annotations</code> package. Additionally, <code>@Designate</code> binds the scheduler to an OSGi configuration class, enabling dynamic configuration via AEM's OSGi console. The scheduling logic is implemented in the <code>@Activate</code> method, where configuration properties are retrieved, and the <code>Scheduler</code> service is used to schedule the job. If the OSGi configuration changes, we handle updates dynamically using the <code>@Modified</code> annotation. To ensure proper cleanup, the <code>@Deactivate</code> method is used to unschedule jobs when the component is stopped. Finally, the <code>run()</code> method executes the scheduled job according to the defined configuration.</p>
+                <pre>
+@Component(service= PracticeScheduledTask.class, immediate = true)
+@Designate(ocd=SimpleSchedulerConfiguration.class)
+public class PracticeScheduledTask implements Runnable {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Reference
+    private Scheduler scheduler;
+
+    // On activate component it will schedule the job
+    @Activate
+    protected void activate(final SimpleSchedulerConfiguration config) {
+        logger.info("Scheduler Activated");
+        addScheduler(config);
+    }
+
+    // On component modification change status will remove and add scheduler
+    @Modified
+    protected void modified(SimpleSchedulerConfiguration config) {
+        removeScheduler(config);
+        addScheduler(config);
+    }
+
+    // On deactivate component it will unschedule scheduler
+    @Deactivate
+    protected void deactivate(SimpleSchedulerConfiguration config) {
+        removeScheduler(config);
+    }
+
+    // Add all configurations to Schedule a scheduler depending on name and expression.
+    private void addScheduler(SimpleSchedulerConfiguration config) {
+        if (config.enable_scheduler()) {
+            ScheduleOptions options = scheduler.EXPR(config.scheduler_expression());
+            options.name(config.scheduler_name());
+            options.canRunConcurrently(false);
+
+            scheduler.schedule(this, options);
+            logger.info("Scheduler added successfully: {}", config.scheduler_name());
+        }
+    }
+
+    // Custom method to deactivate or unschedule scheduler
+    public void removeScheduler(SimpleSchedulerConfiguration config) {
+        scheduler.unschedule(config.scheduler_name());
+    }
+
+    // run() method will get call depending on the cron expression
+    @Override
+    public void run() {
+        System.out.println("Scheduled Task is running...");
+    }
+}</pre>
+                <h3>4. Deploy and Verify the Scheduler</h3>
+                <p>Deploy the code to your AEM instance.</p>
+                <ul>
+                    <li>Go to <code>http://localhost:4502/system/console/components</code> and search for "PracticeScheduledTask". Ensure the service is active.</li>
+                    <li>Go to <code>http://localhost:4502/system/console/configMgr</code> and search for "Simple Scheduler Configuration". Ensure the configuration is defined as expected.</li>
+                </ul>
+                <p>Open <code>error.log</code> and look for log entries:
+                <pre>INFO Scheduled Task is running...</pre>
+                </p>
+            </section>
+            <section class="card">
+                <h2>Common Methods in Scheduler API</h2>
+                <p>There are multiple methods from Scheduler interface:</p>
+                <ul>
+                    <li><code>schedule(String name)</code> - Schedule a job by name.</li>
+                    <li><code>EXPR(String expression)</code> - Schedule a job using a cron expression.</li>
+                    <li><code>unschedule(String name)</code> - Remove a scheduled job by name.</li>
+                    <li><code>scheduler.AT(Date date)</code> - Schedule a job at a specific date only once.</li>
+                    <li><code>scheduler.AT(Date date, int times, long period)</code> - Schedule a job at a specific date more than once.</li>
+                    <li><code>scheduler.NOW()</code> - Run a job immediately only once</li>
+                    <li><code>scheduler.NOW(int times, long period)</code> - Run a job immediately more than once.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Job Scheduling with Cron Expressions</h2>
+                <p>Cron expressions define job execution schedules using a specific format:</p>
+                <pre>
+┌───────────── second (0-59)
+│ ┌───────────── minute (0-59)
+│ │ ┌───────────── hour (0-23)
+│ │ │ ┌───────────── day of the month (1-31)
+│ │ │ │ ┌───────────── month (1-12)
+│ │ │ │ │ ┌───────────── day of the week (0 - 7) (Sunday=0 or 7)
+* * * * * *</pre>
+                <h4>How to Configure Cron Expressions for Specific Job Execution Schedules</h4>
+                <ul>
+                    <li><code>0 0 0 * * ?</code> - Runs daily at midnight.</li>
+                    <li><code>0 0 12 * * ?</code> - Runs every day at noon.</li>
+                    <li><code>0 0 * * * ?</code> - Runs every hour.</li>
+                    <li><code>0 */10 * * * ?</code> - Runs every 10 minutes.</li>
+                </ul>
+                <p><strong>Note: </strong> This can be created using any online tool as well. For example: <code>https://www.freeformatter.com/cron-expression-generator-quartz.html</code></p>
+            </section>
+            <section class="card">
+                <h2>Sling Jobs</h2>
+                <p>Sling Jobs are based on Apache Sling Job Handling, which provides an efficient way to manage background tasks asynchronously. This is useful for processing tasks that do not require immediate user interaction. Sling Jobs are a type of Sling Event that is persisted and executed asynchronously. They ensure that a job is executed only once across an AEM cluster, providing reliability and failover mechanisms.</p>
+                <p>Sling Jobs are designed to ensure reliable execution, even in the event of failures. If a job fails due to an unexpected issue such as a system crash or an error in execution, it will automatically retry until it successfully completes. Unlike event handlers or schedulers, which execute code at predefined times but may fail to run if the system goes down at that moment, Sling Jobs persist their state. Once the system recovers, they resume execution, ensuring that the task is eventually completed. This built-in retry mechanism makes Sling Jobs highly robust for critical background processing tasks in AEM.</p>
+                <h4>Key Features:</h4>
+                <ul>
+                    <li><strong>Guaranteed Execution -</strong> The job runs exactly once.</li>
+                    <li><strong>Distributed Processing -</strong> Jobs can run on any AEM instance in a clustered environment.</li>
+                    <li><strong>Retry Mechanism -</strong> Failed jobs are retried automatically.</li>
+                    <li><strong>Persistence -</strong> Jobs are stored in the repository until execution.</li>
+                </ul>
+                <h3>How are Sling Jobs Different from Sling Events?</h3>
+                <div class="table-container">
+                    <table>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Sling Event</th>
+                            <th>Sling Job</th>
+                        </tr>
+                        <tr>
+                            <td>Execution</td>
+                            <td>Best effort</td>
+                            <td>Guaranteed execution</td>
+                        </tr>
+                        <tr>
+                            <td>Persistence</td>
+                            <td>No</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Retry Mechanism</td>
+                            <td>No</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Clustered Execution</td>
+                            <td>No</td>
+                            <td>Yes</td>
+                        </tr>
+                        <tr>
+                            <td>Target Node</td>
+                            <td>Any node can handle</td>
+                            <td>Only one node will execute</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+            <section class="card">
+                <h2>Creating a Sling Job in AEM</h2>
+                <h3>Step 1: Define a Job Consumer</h3>
+                <p>A JobConsumer <code>org.apache.sling.event.jobs.consumer.JobConsumer</code> listens for a specific job type and executes logic when a job is triggered. <code>JobConsumer</code> defines logic to process jobs when triggered.</p>
+                <pre>
+package com.training.core.jobs;
+
+import org.apache.sling.event.jobs.consumer.JobConsumer;
+import org.apache.sling.event.jobs.Job;
+import org.osgi.service.component.annotations.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+@Component(
+    service = JobConsumer.class,
+    property = JobConsumer.PROPERTY_TOPICS + "=com/example/myjob"
+)
+public class MyJobConsumer implements JobConsumer {
+    protected final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @Override
+    public JobResult process(Job job) {
+        try {
+            log.info("Job Started: " + job.getId());
+            
+            // Retrieve job properties
+            String jobType = (String) job.getProperty("jobType");
+            log.info("Executing job :: {}", jobType);
+            
+            // Job logic here
+            return JobResult.OK;
+        } catch (Exception e) {
+            logger.error("Exception ", e);
+            return JobResult.FAILED;
+        }
+    }
+}</pre>
+                <h3>Step 2: Trigger a Job</h3>
+                <p>You can programmatically trigger a Sling Job using JobManager <code>org.apache.sling.event.jobs.JobManager</code>. Add Sling job using <code>addJob()</code> method having topics <code>com/example/myjob</code> as first parameter and properties as part of second parameter. <code>JobManager</code> provides APIs for managing and scheduling jobs dynamically.</p>
+                <pre>
+package com.training.core.servlets;
+
+import org.apache.sling.api.SlingHttpServletRequest;
+import org.apache.sling.api.SlingHttpServletResponse;
+import org.apache.sling.api.servlets.HttpConstants;
+import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.apache.sling.event.jobs.JobManager;
+import org.osgi.framework.Constants;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.Servlet;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+@Component(service = Servlet.class, property = {Constants.SERVICE_DESCRIPTION + "=Custom Servlet",
+        "sling.servlet.methods=" + HttpConstants.METHOD_GET,
+        "sling.servlet.paths=" + "/bin/training/job"})
+public class SlingJobExampleServlet extends SlingAllMethodsServlet {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Reference
+    private JobManager jobManager;
+
+    @Override
+    protected void doGet(final SlingHttpServletRequest req, final SlingHttpServletResponse resp) throws IOException {
+
+        final Map&lt;String, Object&gt; jobProperties = new HashMap&lt;&gt;();
+        jobProperties.put("jobType", "contentCleanup");
+
+        jobManager.addJob("com/example/myjob", jobProperties);
+
+        logger.info("JOB Triggered");
+
+        resp.setStatus (HttpServletResponse.SC_OK);
+        resp.setContentType("application/json; charset=UTF-8");
+        resp.getWriter().print("{\"response message\": \" Servlet Called\"}");
+    }
+}</pre>
+                <h4>Job Manager:</h4>
+                <ul>
+                    <li>Creates and executes jobs dynamically.</li>
+                    <li>Tracks job execution state (Scheduled, Running, Completed, Failed).</li>
+                    <li>Provides retry mechanisms for failed jobs.</li>
+                    <li>Manages job queues to balance system load.</li>
+                </ul>
+                <h4>Retrieving Job Status Using the JobManager</h4>
+                <ul>
+                    <li>Use <code>jobManager.getJobById(jobId)</code> to get job details.</li>
+                    <li>Check job execution status (queued, running, completed, failed).</li>
+                </ul>
+                <pre>
+@Reference
+private JobManager jobManager;
+
+public void checkJobStatus(String jobId) {
+    Job job = jobManager.getJobById(jobId);
+    if (job != null) {
+        log.info("Job Status: " + job.getJobState());
+        if (job.getJobState().equals(Job.JobState.FAILED)) {
+            log.error("Job failed: " + job.getProperty(Job.PROPERTY_RESULT_MESSAGE));
+        }
+    }
+}</pre>
+                <h4>Viewing Job Execution History in AEM's Web Console</h4>
+                <ul>
+                    <li>Navigate to <strong>OSGi Web Console</strong> (<code>/system/console/jobs</code>).</li>
+                    <li>View job details, execution time, and status.</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

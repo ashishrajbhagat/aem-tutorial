@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Templates</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Templates</h1>
+            <section class="card">
+                <h2>Understanding AEM Templates</h2>
+                <p>Templates in Adobe Experience Manager (AEM) define the structure and layout of a page. They act as blueprints, allowing authors to create pages with predefined structures. Templates ensure consistency in page design while enabling the flexibility to add different content components. Templates are crucial for maintaining uniformity across pages and creating a streamlined authoring experience.</p>
+            </section>
+            <section class="card">
+                <h2>Types of AEM Templates</h2>
+                <p>AEM offers two main types of templates that are commonly used in page creation: Static Templates and Editable Templates. Both have distinct characteristics, benefits, and use cases.</p>
+                <ul>
+                    <li><strong>Static Templates:</strong> Static templates are the traditional type of templates in AEM. They are defined by a fixed structure and cannot be modified by authors directly. Static templates are used for simple sites where the layout is unlikely to change after the template is created.</li>
+                    <li>
+                        <strong>Editable Templates:</strong> Editable templates are more flexible and allow authors to modify the layout and structure of a page at the content level. They provide the ability to change the page layout directly within the AEM author interface, offering greater control and flexibility in content creation. <br> Editable Templates consist of three main parts:
+                        <ul>
+                            <li><code>initial:</code> Initial content is the default content that appears when a new page is created using the template. This content is optional and can be customized by authors after the page is created.</li>
+                            <li><code>structure:</code> The structure defines the layout and arrangement of components on the page. It is the skeleton of the page, setting up regions (containers) where content can be added.</li>
+                            <li><code>policies:</code> Policies define the behavior, design, and functionality of components within a template. Policies are associated with Component Groups and control what options are available to authors when using certain components.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Difference between Static template and Editable template</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th>Static Template</th>
+                                <th>Editable Templates</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Creation</td>
+                                <td>Developer (Code-based)</td>
+                                <td>Author (UI-based)</td>
+                            </tr>
+                            <tr>
+                                <td>Flexibility</td>
+                                <td>Fixed, Requires code changes</td>
+                                <td>Dynamic, Modifiable in AEM UI</td>
+                            </tr>
+                            <tr>
+                                <td>Template Editor</td>
+                                <td>Not Available</td>
+                                <td>Available</td>
+                            </tr>
+                            <tr>
+                                <td>Component Policies</td>
+                                <td>Defined in code</td>
+                                <td>Configurable in the UI</td>
+                            </tr>
+                            <tr>
+                                <td>Initial content</td>
+                                <td>Hard-coded</td>
+                                <td>Editable by authors</td>
+                            </tr>
+                            <tr>
+                                <td>Use Cases</td>
+                                <td>Simple, Uniform page structures</td>
+                                <td>Complex, Customizable page structures</td>
+                            </tr>
+                            <tr>
+                                <td>Governance</td>
+                                <td>Strict, Consistent structure</td>
+                                <td>Controlled flexibility</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="card">
+                <h2>How to Create a Static Template in AEM</h2>
+                <p>To create a <strong>Static Template</strong> in AEM, follow these steps:</p>
+                <ol>
+                    <li>
+                        Create the Page Component
+                        <ul>
+                            <li>Open AEM and go to CRXDE Lite (/crx/de).</li>
+                            <li>Navigate to the component folder <code>/apps/&lt;your-project&gt;/component/structure</code></li>
+                            <li>
+                                Create a page component with:
+                                <pre> Name -> contentpage <br> Type -> cq:Component </pre>
+                            </li>
+                            <li>
+                                Select the <code>contentpage</code> node and add the following properties:
+                                <pre> jcr:title -> "Content Page" <br> jcr:description -> "The Content Page Component" <br> sling:resourceSuperType -> "core/wcm/components/page/v3/page"</pre>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Create the Template Node
+                        <ul>
+                            <li>Navigate to the template folder: <code>/apps/&lt;your-project&gt;/templates/</code></li>
+                            <li>If the <code>templates</code> folder doesn't exist, create one under <code>/apps/&lt;your-project&gt;/</code>.</li>
+                            <li>
+                                Under <code>/apps/&lt;your-project&gt;/templates/</code>, create a new node with:
+                                <pre> Name -> my-static-template <br> Type -> cq:Template </pre>
+                            </li>
+                            <li>
+                                Add the following properties to <code>my-static-template</code> node:
+                                <pre> jcr:title -> "My Static Template" <br> jcr:description" -> "Description of the template" <br> jcr:primaryType -> "cq:Template" <br> ranking -> {Long}100 (higher values make the template appear first in the selection list) <br> allowedPaths -> ["/content/training(/.*)?"] (restricts where this template can be used) </pre>
+                            </li>
+                            <li>
+                                Under <code>my-static-template</code>, create a child node:
+                                <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                            </li>
+                            <li>
+                                Select the <code>jcr:content</code> node and add the following properties:
+                                <pre> sling:resourceType -> "training/components/structure/content-page" <br> cq:designPath → "/etc/designs/training" <br> cq:allowedParents -> ["/apps/my-site/templates/.*"]</pre>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Define the Structure (initial content of the page)
+                        <ul>
+                            <li>
+                                Inside <code>my-static-template/jcr:content</code>, create a child node:
+                                <pre> Name -> parsys <br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Set its properties:
+                                <pre> sling:resourceType -> "wcm/foundation/components/parsys"</pre>
+                            </li>
+                            <li>This defines a paragraph system for components to be added to the page.</li>
+                        </ul>
+                    </li>
+                    <li>Allow this template to be used in your project. Go to Sites Console <code>(/sites.html)</code> -> Select your Site <code>training</code> -> Click on <code>properties</code> -> Click on <code>Advanced</code> -> In Templates Settings section, click on <code>Add</code> and add <code>/apps/training/templates/.*</code> -> Save and close.</li>
+                    <li>
+                        Create a Page Using this Template
+                        <ul>
+                            <li>Go to Sites Console <code>(/sites.html)</code> -> Navigate to your project -> Create a new page -> Select <code>My Static Template</code>.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <pre>
+            │── apps 
+            │ ├── &lt;your-project&gt; 
+            │ │ ├── components 
+            │ │ │ ├── structure 
+            │ │ │ │ ├── contentpage 
+            │ │ │ │ │ ├── .content.xml
+            │ │ ├── templates 
+            │ │ │ ├── my-static-template 
+            │ │ │ │ ├── .content.xml 
+            │ │ │ │ ├── jcr:content 
+            │ │ │ │ │ ├── .content.xml 
+            │ │ │ │ │ ├── parsys 
+            │ │ │ │ │ │ ├── .content.xml 
+            </pre>
+            </section>
+            <!-- <div class="card">
+                <h2>Defining the Design for Your Static Template in AEM</h2>
+                </div> -->
+            <section class="card">
+                <h2>How to Create an Editable Template in AEM</h2>
+                <p>Creating an <strong>Editable Template</strong> in AEM involves the following steps:</p>
+                <ol>
+                    <li>
+                        Ensure a page component exists under: 
+                        <pre>/apps/my-site/components/structure/content-page</pre>
+                        . If not, create it by following similar steps as Static Template
+                    </li>
+                    <li>Ensure that your site has a folder under <code>/conf/</code> for storing template configurations as <code>/conf/training/</code></li>
+                    <li>
+                        Under <code>/conf/training/</code>, create the following folders (if not already present):
+                        <ul>
+                            <li><code>settings/wcm/templates/</code> -> Stores the actual templates.</li>
+                            <li><code>settings/wcm/template-types/</code> -> Stores template types.</li>
+                            <li><code>settings/wcm/policies/</code> -> Stores policies for allowed components.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Use existing Template Type or Create a new Template Type (Blueprint for Templates):
+                        <ul>
+                            <li>Navigate to <code>/conf/my-site/settings/wcm/template-types/</code></li>
+                            <li>
+                                Create a new node with:
+                                <pre> Name -> my-template-type <br> Type -> cq:Template</pre>
+                            </li>
+                            <li>
+                                Inside <code>my-template-type</code>, create these child node:
+                                <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                                <pre> Name -> initial <br> Type -> cq:Page</pre>
+                                <pre> Name -> structure <br> Type -> cq:Page</pre>
+                                <pre> Name -> policies <br> Type -> cq:Page</pre>
+                            </li>
+                            <li>
+                                Set <code>jcr:content</code> properties:
+                                <pre> jcr:title -> "My Template Type" <br> jcr:description -> "Blueprint for editable templates"</pre>
+                            </li>
+                            <li>
+                                Inside <code>initial</code>, create a child node:
+                                <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                            </li>
+                            <li>
+                                Set <code>initial/jcr:content</code> properties:
+                                <pre> sling:resourceType -> "training/components/structure/content-page"</pre>
+                            </li>
+                            <li>
+                                Inside <code>initial/jcr:content</code>, create these child node:
+                                <pre> Name -> root<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Set <code>initial/jcr:content/root</code> properties:
+                                <pre> sling:resourceType -> "training/components/container"</pre>
+                                If you don't have <code>training/components/container</code> component in your project, then provide <code>core/wcm/components/container/v1/container</code>.
+                            </li>
+                            <li>
+                                Inside <code>initial/jcr:content/root</code>, create a child node:
+                                <pre> Name -> responsivegrid<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Set <code>initial/jcr:content/root/responsivegrid</code> properties:
+                                <pre> sling:resourceType -> "wcm/foundation/components/responsivegrid" <br> editable -> {Boolean}true</pre>
+                            </li>
+                            <li>
+                                Inside <code>initial/jcr:content/root/responsivegrid</code>, create a child node:
+                                <pre> Name -> cq:responsive<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Inside <code>structure</code>, create a child node:
+                                <pre> Name -> jcr:content <br> Type -> cq:PageContent</pre>
+                            </li>
+                            <li>
+                                Set <code>structure/jcr:content</code> properties:
+                                <pre> sling:resourceType -> "training/components/structure/content-page"</pre>
+                                <pre> cq:deviceGroups -> ["mobile/groups/responsive"]</pre>
+                            </li>
+                            <li>
+                                Inside <code>structure/jcr:content</code>, create these child node:
+                                <pre> Name -> root<br> Type -> nt:unstructured</pre>
+                                <pre> Name -> cq:responsive<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Set <code>structure/jcr:content/root</code> properties:
+                                <pre> sling:resourceType -> "training/components/container"</pre>
+                                If you don't have <code>training/components/container</code> component in your project, then provide <code>core/wcm/components/container/v1/container</code>.
+                            </li>
+                            <li>
+                                Inside <code>structure/jcr:content/root</code>, create a child node:
+                                <pre> Name -> responsivegrid<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Set <code>structure/jcr:content/root/responsivegrid</code> properties:
+                                <pre> sling:resourceType -> "wcm/foundation/components/responsivegrid" <br> editable -> {Boolean}true</pre>
+                            </li>
+                            <li>
+                                Inside <code>structure/jcr:content/root/responsivegrid</code>, create a child node:
+                                <pre> Name -> cq:responsive<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Inside <code>structure/jcr:content/cq:responsive</code>, create a child node:
+                                <pre> Name -> breakpoints<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Inside <code>structure/jcr:content/cq:responsive/breakpoints</code>, create these child node:
+                                <pre> Name -> phone<br> Type -> nt:unstructured</pre>
+                                <pre> Name -> tablet<br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Set <code>structure/jcr:content/cq:responsive/breakpoints/phone</code> properties:
+                                <pre> title -> "Smaller Screen" <br> width -> {Long}700</pre>
+                            </li>
+                            <li>
+                                Set <code>structure/jcr:content/cq:responsive/breakpoints/tablet</code> properties:
+                                <pre> title -> "Tablet" <br> width -> {Long}1200</pre>
+                            </li>
+                            <li>
+                                Inside <code>policies</code>, create a child node:
+                                <pre> Name -> jcr:content <br> Type -> nt:unstructured</pre>
+                            </li>
+                            <li>
+                                Set <code>policies/jcr:content</code> properties:
+                                <pre> sling:resourceType -> "wcm/core/components/policies/mappings"</pre>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Create an Editable Template
+                        <ul>
+                            <li>Go to AEM Start Screen -> Tools -> General -> Templates.</li>
+                            <li>Navigate to your project folder <code>training</code>.</li>
+                            <li>Click Create</li>
+                            <li>Select the Template Type <code>my-template-type</code> and name the template <code>my-editable-template</code>.</li>
+                            <li>To define the template thumbnail, Edit the template properties and generate / upload / select an image and save it.</li>
+                            <li>Open the template editor and configure the structure.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Define the Template Structure
+                        <ul>
+                            <li>Go to the "Structure" mode (Locks core page elements).</li>
+                            <li>
+                                Add the following core components:
+                                <ul>
+                                    <li>Layout Container (wcm/foundation/components/responsivegrid)</li>
+                                    <li>Header/Footer Components (Optional)</li>
+                                </ul>
+                            </li>
+                            <li>
+                                Lock/unlock sections:
+                                <ul>
+                                    <li>Lock header & footer (to prevent changes).</li>
+                                    <li>Keep main content editable for authors.</li>
+                                </ul>
+                            </li>
+                            <li>Save and Enable the template.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Configure Component Policies (Allowed Components)
+                        <ul>
+                            <li>Inside Template Editor, open the Policy Editor.</li>
+                            <li>Set allowed components (e.g., text, image, carousel).</li>
+                            <li>Define styling rules, CSS classes, and component behaviors.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        Create a Page Using the Editable Template
+                        <ul>
+                            <li>Go to Sites Console <code>(/sites.html)</code>.</li>
+                            <li>Click Create Page -> Select <code>my-editable-template</code>.</li>
+                            <li>Customize the page using the AEM Page Editor.</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p>This is how template and template type structure will look like in CRXDE:</p>
+                <div class="two-col">
+                    <img src="/images/template-structure.png" alt="Template Structure">
+                    <img src="/images/template-type-structure.png" alt="Template Type Structure">
+                </div>
+                <p>This is how the structure will be in repository:</p>
+                <pre>
+            │── apps 
+            │ ├── &lt;your-project&gt; 
+            │ │ ├── components 
+            │ │ │ ├── structure 
+            │ │ │ │ ├── contentpage 
+            │ │ │ │ │ ├── .content.xml
+            │── conf 
+            │ ├── &lt;your-project&gt;
+            │ │ ├── settings 
+            │ │ │ ├── wcm
+            │ │ │ │ ├── policies
+            │ │ │ │ ├── template-types
+            │ │ │ │ │ ├── my-template-type
+            │ │ │ │ │ │ ├── initial
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── policies
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── structure
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── thumbnail.png
+            │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ ├── templates
+            │ │ │ │ │ ├── my-editable-template
+            │ │ │ │ │ │ ├── initial
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── policies
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── structure
+            │ │ │ │ │ │ │ ├── .content.xml
+            │ │ │ │ │ │ ├── thumbnail.png
+            │ │ │ │ │ │ ├── .content.xml
+            </pre>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

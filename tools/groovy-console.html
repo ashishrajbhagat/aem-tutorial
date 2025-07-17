@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - Groovy Console</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>Groovy Console</h1>
+            <section class="card">
+                <h2>What is the Groovy Console?</h2>
+                <p>The <strong>Groovy Console</strong> is an AEM developer tool that enables you to write and execute Groovy scripts directly within the AEM environment. It provides an easy and powerful way to interact with the JCR repository, automate tasks, and debug issues — all without rebuilding or deploying code.</p>
+                <p>It runs scripts within the context of the AEM JVM, allowing access to services like <code>ResourceResolver</code>, <code>Session</code>, <code>PageManager</code>, and more.</p>
+            </section>
+            <section class="card">
+                <h2>Why Use the Groovy Console?</h2>
+                <ul>
+                    <li>Quickly perform bulk content updates</li>
+                    <li>Read and write JCR properties</li>
+                    <li>Test and debug Sling/OSGi code in isolation</li>
+                    <li>Write automation scripts for content migration</li>
+                    <li>Execute one-time fixes without a deployment</li>
+                </ul>
+                <p>It's particularly helpful in lower environments (dev/stage) for testing and troubleshooting.</p>
+            </section>
+            <section class="card">
+                <h2>Installing the Groovy Console</h2>
+                <ol>
+                    <li>
+                        Download the latest <strong>ACS AEM Tools</strong> package (which includes the Groovy Console) from the
+                        <a href="https://adobe-consulting-services.github.io/acs-aem-commons/" target="_blank">ACS AEM Commons GitHub page</a>.
+                    </li>
+                    <li>
+                        Upload and install the package via <code>CRX Package Manager</code> at <code>/crx/packmgr</code>.
+                    </li>
+                    <li>
+                        Once installed, access it at: <code>/etc/groovyconsole.html</code> or <code>/apps/acs-commons/groovyconsole.html</code>
+                    </li>
+                </ol>
+            </section>
+            <section class="card">
+                <h2>Writing a Sample Script</h2>
+                <p>The console supports both Groovy syntax and integration with Sling APIs. Here's a basic example:</p>
+                <pre>
+def resource = getResource("/content/my-site")
+def title = resource.getValueMap().get("jcr:title")
+println "Page title is: ${title}"</pre>
+                <p>Or, updating a property across multiple pages:</p>
+                <pre>
+getPageManager().getPage("/content/my-site")
+    .listChildren()
+    .each { page ->
+        def res = page.contentResource
+        res.adaptTo(ModifiableValueMap).put("jcr:title", "Updated Title")
+        println "Updated: ${page.path}"
+    }
+resourceResolver.commit()</pre>
+            </section>
+            <section class="card">
+                <h2>Common APIs and Utilities Available</h2>
+                <p>The Groovy Console provides useful pre-bound variables:</p>
+                <ul>
+                    <li><code>resourceResolver</code></li>
+                    <li><code>session</code></li>
+                    <li><code>pageManager</code></li>
+                    <li><code>log</code></li>
+                    <li><code>out</code> (for console output)</li>
+                    <li><code>getResource(path)</code> - fetches resource by path</li>
+                    <li><code>getPage(path)</code> - fetches a page</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li>Use <code>dryRun</code> mode for testing logic without saving</li>
+                    <li>Wrap content updates in <code>resourceResolver.commit()</code></li>
+                    <li>Avoid using in Production unless absolutely necessary</li>
+                    <li>Backup affected content before running destructive scripts</li>
+                    <li>Use <code>log.info()</code> or <code>out.println()</code> for debugging outputs</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Security Considerations</h2>
+                <ul>
+                    <li>Access to Groovy Console should be restricted to trusted developers/admins</li>
+                    <li>Can be a risk in Production - use with caution</li>
+                    <li>Groovy scripts execute as the system user, with high privileges</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Useful Examples</h2>
+                <ul>
+                    <li>Change metadata of all assets under a folder</li>
+                    <li>Create pages in bulk from a CSV input</li>
+                    <li>Re-order nodes in the JCR</li>
+                    <li>Export JCR paths to a flat file</li>
+                    <li>Tag all untagged pages with a default tag</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Conclusion</h2>
+                <p>The Groovy Console is an incredibly powerful tool for AEM developers to script, automate, and troubleshoot content or configuration issues with minimal effort. With careful use and good practices, it can speed up development and resolve complex tasks in seconds.</p>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM Interview (Basic → Advanced)</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM Interview (Basic → Advanced)</h1>
+            <section class="questions">
+                <details class="item">
+                    <summary>What is AEM and what are its core modules?</summary>
+                    <p>
+                        Adobe Experience Manager (AEM) is a comprehensive content management solution for building websites, mobile apps, and forms. It helps businesses deliver a consistent digital experience across channels. AEM is built on top of Apache Sling and JCR (Java Content Repository). <br><br>
+                        The core modules of AEM include:
+                    <ul>
+                        <li><strong>Sites:</strong> For managing and delivering web content across multiple sites and languages.</li>
+                        <li><strong>Assets:</strong> A digital asset management (DAM) system for storing and managing images, videos, documents, etc.</li>
+                        <li><strong>Forms:</strong> For creating, managing, and processing forms and documents.</li>
+                        <li><strong>Commerce:</strong> Integrates with eCommerce platforms to deliver personalized shopping experiences.</li>
+                        <li><strong>Communities:</strong> Enables creation of user communities and forums (deprecated in newer versions).</li>
+                        <li><strong>Workflows:</strong> For automating business processes like content approvals and publishing.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between Author and Publish instances in AEM?</summary>
+                    <p>
+                        AEM uses a two-tier architecture for content management and delivery, consisting of Author and Publish instances.
+                    <ul>
+                        <li><strong>Author Instance:</strong> Used by content authors and admins to create, edit, and manage content. It provides tools like Touch UI, CRXDE, workflows, and user management. Changes are stored but not directly visible to end users.</li>
+                        <li><strong>Publish Instance:</strong> Serves the approved and activated content to the end users. It is optimized for performance and scalability, and it does not provide editing capabilities.</li>
+                    </ul>
+                    Content is pushed from Author to Publish via a replication process.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the JCR (Java Content Repository) and how is it used in AEM?</summary>
+                    <p>
+                        The Java Content Repository (JCR) is a hierarchical, node-based data storage system defined by the JSR-170/JSR-283 standards. AEM uses Apache Jackrabbit Oak as its JCR implementation.<br><br>
+                        In AEM, everything is stored in the JCR — including web content, assets, configurations, components, templates, and user data. The structure resembles a file system with nodes and properties, enabling flexibility and versioning.<br><br>
+                        Developers interact with the JCR through APIs (e.g., `Session`, `Node`, `ValueMap`, `ResourceResolver`) and query it using XPath or JCR-SQL2.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is Apache Sling and how does it relate to AEM?</summary>
+                    <p>
+                        Apache Sling is a web framework used by AEM that maps HTTP request URLs to content resources stored in the Java Content Repository (JCR). It follows a resource-oriented architecture and uses OSGi for modularity. Sling resolves requests based on the resource path and uses scripts (like HTML, HTL, JSP) to render the response.<br><br>
+                        In AEM, Sling acts as the backbone for request handling. When a user requests a page, Sling resolves the path to a JCR node (resource), locates the corresponding script (`.html`, `.jsp`, `.htl`), and executes it to generate the response. This allows AEM to serve dynamic content efficiently while maintaining a clean separation between content and presentation.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is Sightly (HTL) and why is it preferred over JSP in AEM?</summary>
+                    <p>
+                        Sightly, officially known as HTL (HTML Template Language), is AEM's preferred server-side templating language introduced to replace JSP. HTL is designed to be secure, readable, and maintainable.<br><br>
+                        <strong>Why it's preferred over JSP:</strong>
+                    <ul>
+                        <li><strong>Security:</strong> HTL automatically escapes output to prevent XSS attacks.</li>
+                        <li><strong>Separation of concerns:</strong> Business logic is kept in Java classes (Use-API), while HTL handles only presentation logic.</li>
+                        <li><strong>Simplicity:</strong> Syntax is easier to read and write for front-end developers without Java knowledge.</li>
+                        <li><strong>Performance:</strong> Compiled templates run efficiently within the AEM runtime.</li>
+                    </ul>
+                    Overall, HTL leads to cleaner, safer, and more maintainable code in AEM components.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does AEM handle component creation? What are the types of components?</summary>
+                    <p>
+                        AEM components are reusable building blocks used to create content on pages. Each component typically includes a dialog (for authoring), a script (for rendering), and a resource type (for Sling resolution).<br><br>
+                        <strong>Component Creation:</strong><br>
+                        Developers create components under `/apps/&lt;project&gt;/components`. Each component contains a `cq:dialog` (Touch UI), an `HTML` script (HTL/JSP), and optionally, a Java class for logic (via Use-API or Sling Models).<br><br>
+                        <strong>Types of Components in AEM:</strong>
+                    <ul>
+                        <li><strong>Core Components:</strong> Out-of-the-box components provided by Adobe, such as Title, Image, Text, Carousel. These are customizable and extensible.</li>
+                        <li><strong>Custom Components:</strong> Built by developers to meet specific project needs (e.g., Product Teaser, Custom Banner).</li>
+                        <li><strong>Proxy Components:</strong> Wrap core components with project-specific configurations and styling (via delegation or super-type).</li>
+                        <li><strong>Container Components:</strong> Components that allow authors to nest other components (e.g., Layout Container, Tabs).</li>
+                    </ul>
+                    AEM's component model promotes modularity and reusability in web development.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is a template in AEM? What is the difference between static and editable templates?</summary>
+                    <p>
+                        A template in AEM defines the structure and allowed components for a page. It acts as a blueprint that authors use to create new pages. Templates define the layout, allowed components, client libraries, and policies.<br><br>
+                        <strong>Types of Templates:</strong>
+                    <ul>
+                        <li><strong>Static Templates:</strong> Created and managed by developers under <code>/apps</code>. They are fixed and cannot be modified by content authors. Structure is defined using XML and JSP/HTL.</li>
+                        <li><strong>Editable Templates:</strong> Created using the Template Editor in Touch UI. They are stored under <code>/conf</code> and allow non-developers (template authors) to define layout, structure, and component policies via UI. They support dynamic page structures and content policies.</li>
+                    </ul>
+                    Editable templates are now the recommended approach in modern AEM projects for flexibility and reduced developer dependency.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are clientlibs and how are they used in AEM?</summary>
+                    <p>
+                        Client Libraries (clientlibs) in AEM are used to manage and deliver front-end assets like CSS, JavaScript, and images efficiently. They support dependency management, minification, and versioning.<br><br>
+                        <strong>Key Points:</strong>
+                    <ul>
+                        <li>Each clientlib is defined using a <code>cq:ClientLibraryFolder</code> node with categories like <code>myproject.site</code>.</li>
+                        <li>Developers include CSS/JS files using <code>js.txt</code> and <code>css.txt</code>.</li>
+                        <li>Clientlibs are included in pages using HTL: <br>
+                            <code>&lt;ui:includeClientLib categories="myproject.site" /&gt;</code>
+                        </li>
+                        <li>Support for dependencies via <code>dependencies</code> property to avoid duplicates.</li>
+                    </ul>
+                    Clientlibs ensure optimized delivery and loading of resources across pages.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Explain how permissions and user groups work in AEM.</summary>
+                    <p>
+                        AEM uses an access control system based on users, groups, and permissions (ACLs). Permissions determine what actions a user can perform on specific JCR nodes or paths.<br><br>
+                        <strong>Users & Groups:</strong>
+                    <ul>
+                        <li><strong>Users:</strong> Individual accounts that log in to AEM.</li>
+                        <li><strong>Groups:</strong> Collections of users with shared permissions (e.g., <code>content-authors</code>, <code>administrators</code>).</li>
+                    </ul>
+                    <strong>Permissions (ACLs):</strong>
+                    <ul>
+                        <li>Set at node/path level using the Security console or CRXDE.</li>
+                        <li>Include rights like Read, Write, Create, Delete, Replicate, and Modify ACL.</li>
+                        <li>Can be Allow or Deny, and are resolved hierarchically.</li>
+                    </ul>
+                    Permissions can also be configured programmatically using Granite Security APIs or custom workflows for dynamic control.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you configure run modes in AEM and why are they used?</summary>
+                    <p>
+                        Run modes in AEM allow you to customize the behavior of the application based on the environment (e.g., dev, stage, prod, author, publish). AEM uses run modes to load specific configurations, bundles, or content only when the instance is running in that particular mode.<br><br>
+                        <strong>Configuration:</strong><br>
+                        Run modes are configured via the <code>-r</code> flag in the <code>start</code> command or as a system property:<br>
+                        <code>java -jar aem-author-p4502.jar -r author,dev</code><br><br>
+                        You can also use run mode-specific folders in your code structure:
+                    <ul>
+                        <li><code>/apps/myproject/config.author</code> → only loaded on author</li>
+                        <li><code>/apps/myproject/config.publish</code> → only loaded on publish</li>
+                    </ul>
+                    Run modes help cleanly separate environment-specific logic, avoiding hardcoding or duplication.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is a Sling Model and how is it different from a WCMUsePojo?</summary>
+                    <p>
+                        Sling Models are Java classes annotated with <code>@Model</code> that map AEM resources or requests to backend logic using annotations. They are a modern and more flexible alternative to WCMUsePojo.<br><br>
+                        <strong>Sling Models:</strong>
+                    <ul>
+                        <li>Use annotations like <code>@Inject</code>, <code>@ValueMapValue</code>, <code>@Default</code>.</li>
+                        <li>Work with either resource-based or request-based objects.</li>
+                        <li>Support dependency injection and adapter pattern.</li>
+                        <li>Preferred for newer AEM development.</li>
+                    </ul>
+                    <strong>WCMUsePojo:</strong>
+                    <ul>
+                        <li>Extends <code>WCMUsePojo</code> class.</li>
+                        <li>Requires overriding <code>init()</code> method.</li>
+                        <li>Limited to resource objects and needs explicit getters/setters.</li>
+                    </ul>
+                    In summary, Sling Models offer cleaner, annotation-driven logic and better integration with the OSGi framework.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are OSGi configurations and how do they work in AEM?</summary>
+                    <p>
+                        OSGi (Open Services Gateway initiative) configurations in AEM are used to define and manage the behavior of services and components at runtime. These configurations are stored and managed separately from the code.<br><br>
+                        <strong>Key Concepts:</strong>
+                    <ul>
+                        <li>Each OSGi service can expose a configuration via annotations like <code>@ObjectClassDefinition</code> and <code>@Designate</code>.</li>
+                        <li>Configurations can be managed via the Felix Console (<code>/system/console/configMgr</code>) or deployed through code using <code>/apps/&lt;project&gt;/config</code> or run mode-specific folders.</li>
+                        <li>Factory configurations allow multiple configurations for a single service.</li>
+                    </ul>
+                    OSGi configs enable separation of concerns and allow changes in behavior without code changes or redeployment.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are dispatcher and its main functions? How does it cache content?</summary>
+                    <p>
+                        The AEM Dispatcher is Adobe's caching and load balancing tool used to increase performance and security of AEM websites. It is typically installed on a web server like Apache HTTP Server or IIS.<br><br>
+                        <strong>Main Functions:</strong>
+                    <ul>
+                        <li><strong>Caching:</strong> Stores static HTML renditions of pages to reduce load on the publish instance.</li>
+                        <li><strong>Load Balancing:</strong> Distributes requests across multiple AEM publish instances for high availability and performance.</li>
+                        <li><strong>Access Control:</strong> Filters and blocks unwanted requests using allow/deny rules.</li>
+                        <li><strong>URL Rewriting:</strong> Handles friendly URLs, redirects, and vanity paths.</li>
+                    </ul>
+                    <strong>How Caching Works:</strong><br>
+                    The dispatcher caches content in the file system as static files based on URL paths. When a user requests a page, the dispatcher first checks if a valid cached copy exists. If found, it serves the file directly. Otherwise, the request is forwarded to AEM Publish, and the response is cached for future use.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does AEM handle caching and invalidation with statfiles?</summary>
+                    <p>
+                        AEM uses a mechanism called <strong>statfiles</strong> with the dispatcher to manage cache invalidation efficiently.<br><br>
+                        <strong>Statfiles:</strong> These are lightweight timestamp files (e.g., `.stat`) placed in dispatcher cache directories. Each statfile corresponds to a specific content path or hierarchy level.<br><br>
+                        <strong>statfileslevel:</strong> This setting in <code>dispatcher.any</code> determines how deep the dispatcher looks into the URL to determine which statfile to check. For example:
+                    <ul>
+                        <li><code>/statfileslevel = 1</code> → invalidates everything under the first level path (e.g., <code>/content/site</code>)</li>
+                        <li>When a page is activated (published), the corresponding statfile is touched (timestamp updated).</li>
+                    </ul>
+                    The dispatcher uses this timestamp to determine if the cached file is stale. If the cached page is older than the statfile, it is re-fetched from AEM Publish and re-cached.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are workflows in AEM? Give an example of a custom workflow step.</summary>
+                    <p>
+                        AEM Workflows are automated sequences of steps that define business processes like content review, approval, asset processing, and publishing. Workflows can include both out-of-the-box and custom steps and can be triggered manually or automatically.<br><br>
+                        <strong>Workflow Model:</strong> A workflow model is a blueprint consisting of multiple steps (process, participant, and container steps) that define the flow.<br><br>
+                        <strong>Example of a Custom Workflow Step:</strong>
+                        Suppose you want to send a Slack message whenever a page is approved. You can create a custom Java class implementing <code>WorkflowProcess</code>:
+                    <pre>
+@Component(service = WorkflowProcess.class,
+           property = {"process.label=Send Slack Notification"})
+public class SlackNotifierStep implements WorkflowProcess {
+    public void execute(WorkItem item, WorkflowSession session, MetaDataMap args) {
+        // Extract payload path or metadata
+        String path = item.getWorkflowData().getPayload().toString();
+        // Call Slack API using an HTTP client
+        // Log status
+    }
+}</pre>
+                    This step can be added to a workflow model in the workflow editor, allowing it to run when the workflow executes.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are Content Fragments and Experience Fragments? When should you use each?</summary>
+                    <p>
+                        <strong>Content Fragments (CFs)</strong> are structured, reusable content entities stored in the AEM DAM. They are presentation-independent and ideal for delivering content across channels like websites, mobile apps, and headless APIs (GraphQL or JSON). CFs consist of text fields, date fields, references, and variations but do not include layout or styling.<br><br>
+                        <strong>Experience Fragments (XFs)</strong> are reusable content blocks that include both content and layout. They can contain multiple components (text, image, CTA) and are used for delivering consistent experiences across AEM sites, third-party platforms (e.g., email, social), or even in Adobe Target.<br><br>
+                        <strong>Use Cases:</strong>
+                    <ul>
+                        <li><strong>Content Fragments:</strong> Use when you need structured, reusable content for omnichannel delivery (e.g., blog data, product specs).</li>
+                        <li><strong>Experience Fragments:</strong> Use when layout and design are also required along with content (e.g., hero banners, promotional blocks).</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Explain the difference between live copy and language copy in MSM.</summary>
+                    <p>
+                        In AEM's Multi Site Manager (MSM), both <strong>Live Copy</strong> and <strong>Language Copy</strong> help manage content across multiple sites, but serve different purposes:<br><br>
+                        <strong>Live Copy:</strong>
+                    <ul>
+                        <li>Used for creating derivative sites from a master (blueprint) site.</li>
+                        <li>Maintains a live relationship — changes to the source can be rolled out to the copy.</li>
+                        <li>Allows selective detachment (inheritance cancellation) when customization is needed.</li>
+                        <li>Ideal for region-specific variations of a site (e.g., <code>/us/en</code>, <code>/uk/en</code>).</li>
+                    </ul>
+                    <strong>Language Copy:</strong>
+                    <ul>
+                        <li>Specifically used for translating content into different languages.</li>
+                        <li>No live relationship maintained after the copy — it's a one-time duplication for translation.</li>
+                        <li>Works with AEM Translation Projects and tools like Human Translation, Machine Translation, or Adobe Translation Integration.</li>
+                        <li>Best for internationalization/localization use cases.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you customize the metadata schema for DAM folders?</summary>
+                    <p>
+                        Customizing the metadata schema in AEM DAM allows you to define and collect additional metadata fields for assets stored in specific folders.<br><br>
+                        <strong>Steps to Customize Metadata Schema:</strong>
+                    <ol>
+                        <li>Go to <strong>Tools → Assets → Metadata Schemas</strong>.</li>
+                        <li>Create a new schema or edit an existing one (e.g., <code>default</code> or <code>image</code>).</li>
+                        <li>Add or remove fields such as dropdowns, text inputs, date pickers, or tags using the editor.</li>
+                        <li>Save the schema and apply it to a specific DAM folder via <strong>Properties → Metadata Schema</strong>.</li>
+                    </ol>
+                    This feature ensures that each asset type or folder can have relevant metadata fields, improving search, automation, and asset organization.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the difference between a servlet registered via path vs resourceType?</summary>
+                    <p>
+                        In AEM (using Sling), servlets can be registered in two primary ways: via <strong>path</strong> or <strong>resourceType</strong>.<br><br>
+                        <strong>Path-based Servlet:</strong>
+                    <ul>
+                        <li>Registered using <code>service.path</code> (e.g., <code>/bin/myservlet</code>).</li>
+                        <li>Accessible directly via a specific URL.</li>
+                        <li>Good for APIs or backend endpoints not tied to content nodes.</li>
+                        <li><strong>Example:</strong> A servlet registered on <code>/bin/generate-pdf</code> can be accessed at that exact path.</li>
+                    </ul>
+                    <strong>ResourceType-based Servlet:</strong>
+                    <ul>
+                        <li>Registered using <code>sling.servlet.resourceTypes</code>.</li>
+                        <li>Triggered based on resource type + selectors + extensions.</li>
+                        <li>Better for component-based rendering logic (e.g., for Sling Models, HTL components).</li>
+                        <li><strong>Example:</strong> A servlet tied to <code>myproject/components/product</code> resourceType would respond when that component is rendered with matching selector and extension.</li>
+                    </ul>
+                    <strong>Key Difference:</strong> Path-based is URL-driven, while resourceType-based is content/resource-driven.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you implement scheduler or cron jobs in AEM?</summary>
+                    <p>
+                        In AEM, scheduled tasks or cron jobs are implemented using the <strong>Apache Sling Scheduler</strong> or <strong>Quartz Scheduler (deprecated)</strong> through OSGi services.<br><br>
+                        <strong>Steps to Implement a Scheduler:</strong>
+                    <ol>
+                        <li>Create an OSGi service implementing <code>Runnable</code>.</li>
+                        <li>Use <code>@Designate</code> and <code>@ObjectClassDefinition</code> for configuration.</li>
+                        <li>Use <code>@Activate</code> method to register the job with the Scheduler.</li>
+                        <li>Define expression-based or interval-based schedules (e.g., <code>0 0 2 * * ?</code> for daily at 2AM).</li>
+                    </ol>
+                    <strong>Example:</strong>
+                    <pre>
+@Component(service = Runnable.class)
+@Designate(ocd = MyScheduler.Config.class)
+public class MyScheduler implements Runnable {
+
+    @ObjectClassDefinition(name = "My Scheduled Task")
+    public @interface Config {
+        String scheduler_expression() default "0 0 2 * * ?";
+        boolean scheduler_concurrent() default false;
+    }
+
+    @Activate
+    protected void activate(Config config) {
+        // Register with scheduler
+    }
+
+    @Override
+    public void run() {
+        // Task logic here
+    }
+}</pre>
+                    Scheduler ensures background tasks (e.g., cleanups, reports) run at defined times without manual triggers.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you secure REST APIs in AEM (token-based auth, ACLs, etc.)?</summary>
+                    <p>
+                        Securing REST APIs in AEM involves multiple layers of protection to prevent unauthorized access to data and resources.<br><br>
+                        <strong>Common Approaches:</strong>
+                    <ul>
+                        <li><strong>ACL-based Security:</strong> Use JCR permissions to restrict access to servlet paths or resources using user/group permissions (via CRXDE or Security console).</li>
+                        <li><strong>Token-based Authentication:</strong> Use OAuth2, Adobe IMS, or Bearer Tokens (JWTs) for external integrations or headless APIs. Validate tokens in servlet filters or Sling Authenticators.</li>
+                        <li><strong>Basic Auth over HTTPS:</strong> Simple method for internal tools. Requires securing endpoints via dispatcher rules and SSL.</li>
+                        <li><strong>Dispatcher Filters:</strong> Whitelist/blacklist API paths at the dispatcher level to block unauthorized access.</li>
+                        <li><strong>CORS & CSRF Config:</strong> Configure AEM's CORS headers and CSRF protection to control cross-origin access securely.</li>
+                    </ul>
+                    Combining servlet-level validation with ACLs and dispatcher filtering ensures robust protection for REST endpoints in AEM.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the purpose of using Environment Variables instead of hardcoded OSGi configs?</summary>
+                    <p>
+                        Using environment variables in AEM provides flexibility, security, and environment-specific behavior without code changes. Instead of hardcoding sensitive or environment-dependent values in OSGi configurations, you can externalize them.<br><br>
+                        <strong>Why use Environment Variables:</strong>
+                    <ul>
+                        <li><strong>Security:</strong> Keeps sensitive values like API keys, credentials, or secrets out of source code and version control.</li>
+                        <li><strong>Flexibility:</strong> Allows configuration to vary across dev, stage, and prod environments without creating multiple config files.</li>
+                        <li><strong>Cloud Readiness:</strong> Especially useful in AEM as a Cloud Service, where environment variables are the standard way to manage environment-specific settings.</li>
+                    </ul>
+                    AEM reads environment variables via the <code>@Value</code> annotation or Java system properties, and they can also be passed in through container configs or Adobe Cloud Manager.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does AEM integrate with external services like Salesforce or Razorpay?</summary>
+                    <p>
+                        AEM integrates with external services like Salesforce, Razorpay, or any REST-based system using custom services, APIs, and secure configurations.<br><br>
+                        <strong>Integration Approaches:</strong>
+                    <ul>
+                        <li><strong>OSGi Services:</strong> Create custom services that make HTTP requests to external APIs using Apache HttpClient or Adobe's HttpClientFactory.</li>
+                        <li><strong>Servlets:</strong> Use Sling servlets as API endpoints that act as middleware between the frontend and external service.</li>
+                        <li><strong>Authentication:</strong> Use OAuth2, JWT, or API keys stored securely in environment variables or OSGi configs.</li>
+                        <li><strong>Form Integrations:</strong> For payment gateways like Razorpay, integrate the JS SDK on frontend and use server-side verification via backend APIs.</li>
+                        <li><strong>Cloud Services (Salesforce):</strong> Adobe provides out-of-the-box connectors and cloud service configurations for common platforms like Salesforce.</li>
+                    </ul>
+                    Always apply proper authentication, error handling, and rate limiting when integrating external services with AEM.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you implement personalization and targeting in AEM?</summary>
+                    <p>
+                        Personalization in AEM allows you to tailor content to specific audiences based on behavior, location, or profile data. It can be achieved using built-in tools or by integrating with Adobe Target.<br><br>
+                        <strong>Personalization Options in AEM:</strong>
+                    <ul>
+                        <li><strong>ContextHub:</strong> A client-side framework for managing user context (geolocation, profile, browser, etc.). Used to define segments and deliver personalized content blocks.</li>
+                        <li><strong>Segments:</strong> Define audience rules (e.g., “returning visitors in India”) that trigger specific content variations.</li>
+                        <li><strong>Experience Fragments:</strong> Deliver variant content tied to different segments.</li>
+                        <li><strong>Adobe Target Integration:</strong> For advanced AI-based targeting and A/B testing. Configure via Adobe Launch or Cloud Services.</li>
+                    </ul>
+                    <strong>Example:</strong> Show a special banner to logged-in users from a specific region by mapping a segment to a personalized experience variant in the page editor.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What's the difference between AEM as a Cloud Service and AEM On-Premise?</summary>
+                    <p>
+                        AEM as a Cloud Service (AEMaaCS) is a modern, cloud-native version of AEM offered as a fully managed service by Adobe, whereas AEM On-Premise is a traditional deployment model where you install, maintain, and upgrade the software manually on your infrastructure.<br><br>
+                        <strong>Key Differences:</strong>
+                    <ul>
+                        <li><strong>Deployment:</strong> AEMaaCS is SaaS-like and managed by Adobe, while On-Prem requires manual setup and maintenance.</li>
+                        <li><strong>Scalability:</strong> AEMaaCS offers auto-scaling and auto-healing features; On-Prem requires manual scaling and clustering.</li>
+                        <li><strong>Upgrades:</strong> AEMaaCS is always up to date with continuous updates; On-Prem needs planned upgrades with downtime.</li>
+                        <li><strong>Development:</strong> AEMaaCS uses strict Git-based CI/CD via Cloud Manager; On-Prem supports custom deployment pipelines.</li>
+                        <li><strong>Run Modes & Configuration:</strong> AEMaaCS uses cloud configs and environment variables; On-Prem uses traditional run modes and OSGi config folders.</li>
+                    </ul>
+                    In short, AEMaaCS focuses on DevOps automation, scalability, and zero-downtime upgrades, making it suitable for enterprise agility.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Explain the AEM deployment architecture you've implemented in an enterprise project.</summary>
+                    <p>
+                        In a typical enterprise AEM project (On-Prem or Cloud), the deployment architecture includes multiple environments and a layered setup for reliability, scalability, and security.<br><br>
+                        <strong>Typical On-Premise Deployment:</strong>
+                    <ul>
+                        <li><strong>Author Tier:</strong> Single or clustered author instances behind a load balancer.</li>
+                        <li><strong>Publish Tier:</strong> Multiple publish instances for serving content, behind a load balancer or CDN.</li>
+                        <li><strong>Dispatcher:</strong> Apache HTTPD with Dispatcher module for caching, filtering requests, and protection.</li>
+                        <li><strong>Database:</strong> Optional external DB for commerce or analytics integrations.</li>
+                        <li><strong>CI/CD:</strong> Jenkins/GitLab pipelines with Maven builds and custom deployment scripts.</li>
+                    </ul>
+                    <strong>AEM as a Cloud Service Deployment:</strong>
+                    <ul>
+                        <li><strong>Immutable Infrastructure:</strong> Code is built and deployed via Cloud Manager to Adobe-managed environments.</li>
+                        <li><strong>Separate Pipelines:</strong> for non-prod (dev/stage) and prod with quality gates and performance checks.</li>
+                        <li><strong>Auto-scaling:</strong> Adobe automatically scales publish and preview services based on traffic.</li>
+                    </ul>
+                    The architecture depends on business needs, traffic patterns, and integration requirements.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How is AEM as a Cloud Service different from AEM 6.x On-Prem?</summary>
+                    <p>
+                        AEM as a Cloud Service is a major evolution over AEM 6.x On-Prem. It rearchitects how AEM is hosted, deployed, and updated by introducing cloud-native features.<br><br>
+                        <strong>Major Differences:</strong>
+                    <ul>
+                        <li><strong>Architecture:</strong> AEMaaCS uses microservices and container-based architecture; AEM 6.x is monolithic.</li>
+                        <li><strong>Repository:</strong> AEMaaCS uses a new <code>Oak Segment Tar</code> store optimized for cloud; AEM 6.x uses segment or document node store.</li>
+                        <li><strong>DevOps:</strong> AEMaaCS uses Cloud Manager and Git-based pipelines with no SSH access; AEM 6.x allows more manual control.</li>
+                        <li><strong>Maintenance:</strong> AEMaaCS is continuously updated by Adobe; AEM 6.x requires manual patching and upgrades.</li>
+                        <li><strong>Run Modes:</strong> AEMaaCS relies on container-level configs and runtime variables; AEM 6.x uses traditional runmode folders and OSGi files.</li>
+                    </ul>
+                    AEMaaCS brings agility, performance, and reduced operational overhead but may need rethinking of legacy implementations and dispatcher configs.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is Sling Model Exporter? How do you use it in a headless setup?</summary>
+                    <p>
+                        Sling Model Exporter is an extension of Sling Models that allows you to serialize model data into JSON using annotations like `@Exporter`. In a headless setup, it enables AEM components or content to be exposed as structured APIs without writing custom servlets. This is useful when integrating with frontend frameworks or mobile apps. Example:
+                        <br><code>@Exporter(name = "jackson", extensions = "json")</code>
+                        <br>Once configured, accessing a component via `.model.json` (e.g., `/content/site/page/jcr:content.component.model.json`) returns the serialized JSON representation.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is a Content Fragment Model and how is it used in headless AEM?</summary>
+                    <p>
+                        A Content Fragment Model (CFM) defines the structure and data types (text, date, enum, reference, etc.) for Content Fragments (CFs). CFMs are like schemas that dictate what fields authors must fill. In a headless AEM setup, CFs are queried via GraphQL or REST APIs to deliver structured content to SPA frontends, mobile apps, or external systems. They decouple content from presentation.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does AEM handle cache invalidation in Dispatcher and CDN layers?</summary>
+                    <p>
+                        AEM handles cache invalidation through statfiles and custom headers:
+                    <ul>
+                        <li><strong>Dispatcher:</strong> Uses `.stat` files and `statfileslevel` to track last modification. When content is activated, the statfile is updated, and any matching cached content is considered stale.</li>
+                        <li><strong>CDN (e.g., Cloudflare, Akamai):</strong> Invalidation is done via cache control headers (`Cache-Control`, `Surrogate-Control`) or API-based purge mechanisms. AEM can be configured to trigger CDN purging as part of the publishing workflow.</li>
+                    </ul>
+                    This dual-layer caching ensures performance with dynamic content freshness.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you configure custom Lucene indexing in AEMaaCS?</summary>
+                    <p>
+                        In AEM as a Cloud Service (AEMaaCS), custom Lucene indexes must be deployed via code using the repository structure:
+                        <br><code>/oak-index/index-name/.json</code>
+                        <br>You define custom index rules by placing them inside the <code>ui.content</code> module (e.g., <code>/apps/myproject/oak-index</code>) and embedding it through the content package.
+                        <br>
+                        Steps:
+                    <ul>
+                        <li>Create the index definition (JSON or Node structure).</li>
+                        <li>Include it under <code>/apps/your-project/oak-index</code>.</li>
+                        <li>Use <code>includePath</code> and <code>compatVersion</code> wisely.</li>
+                        <li>Deploy via Cloud Manager or local build.</li>
+                    </ul>
+                    Note: Do not modify OOTB indexes directly; always override or add new ones via code.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are some best practices for AEM Dispatcher configuration?</summary>
+                    <p>
+                        Key Dispatcher best practices:
+                    <ul>
+                        <li><strong>Whitelist filters:</strong> Only allow necessary paths using `/filter` rules. Block everything else.</li>
+                        <li><strong>Cache control:</strong> Set appropriate rules in `/cache`, enable `.stat` files and define `statfileslevel` correctly.</li>
+                        <li><strong>Use `/ignoreUrlParams`:</strong> Ignore URL parameters that don't affect content.</li>
+                        <li><strong>Block author instance:</strong> Never expose author URLs via Dispatcher.</li>
+                        <li><strong>Use SELinux/AppArmor rules & file system permissions:</strong> Secure access to Dispatcher directories.</li>
+                        <li><strong>Set security headers:</strong> Configure headers like `X-Content-Type-Options`, `Content-Security-Policy`, `Strict-Transport-Security` in vhosts.</li>
+                    </ul>
+                    Always test config locally before deploying to prod.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does AEM handle reverse replication in MSM/live copy environments?</summary>
+                    <p>
+                        Reverse replication was used in earlier AEM versions to send data (like user-generated content) from publish to author. However, in modern AEM (including AEMaaCS), reverse replication is largely deprecated.
+                        <br>
+                        In Multi Site Manager (MSM) or live copy setups:
+                    <ul>
+                        <li>Authoring typically happens on the author instance, and replication goes from author → publish.</li>
+                        <li>For UGC (user-generated content), Adobe recommends using external storage (e.g., Adobe I/O, Commerce, or GraphQL-enabled stores).</li>
+                        <li>For syncing content between live copies, rollouts (manual or event-based) are used, not reverse replication.</li>
+                    </ul>
+                    If reverse replication is still needed (legacy cases), it requires agents configured on publish pointing back to author, but it is discouraged in cloud environments.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What is the Oak Segment Store? How does it differ from Document Store?</summary>
+                    <p>
+                        Oak provides two types of persistence backends:
+                        <strong>Segment Store</strong> and <strong>Document Store</strong>.
+                        <br><br>
+                        <strong>Segment Store:</strong>
+                    <ul>
+                        <li>Stores data in segments (immutable files on disk).</li>
+                        <li>Used primarily in AEM On-Premise and older versions.</li>
+                        <li>Faster for single-node setups due to local disk access.</li>
+                        <li>Does not support horizontal scalability.</li>
+                    </ul>
+                    <strong>Document Store:</strong>
+                    <ul>
+                        <li>Stores data in a document database (MongoDB or TarMK Document).</li>
+                        <li>Designed for clustered/distributed environments.</li>
+                        <li>Supports high availability and scalability (AEM as a Cloud Service uses this model).</li>
+                        <li>Better suited for collaborative authoring in large environments.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How would you diagnose a slow-performing AEM instance?</summary>
+                    <p>
+                        Diagnosing AEM performance involves checking multiple layers:
+                    <ul>
+                        <li><strong>Heap usage:</strong> Monitor memory via JMX or tools like JConsole/VisualVM.</li>
+                        <li><strong>Thread dumps:</strong> Capture and analyze for deadlocks or long-running threads.</li>
+                        <li><strong>GC logs:</strong> Review garbage collection frequency and pause times.</li>
+                        <li><strong>Error and access logs:</strong> Look for recurring issues, long response times, or frequent 500 errors.</li>
+                        <li><strong>Sling Request Progress Logs:</strong> Track time taken per component and servlet.</li>
+                        <li><strong>Dispatcher caching:</strong> Ensure static content is properly cached and not hitting AEM backend often.</li>
+                        <li><strong>Custom code:</strong> Profile servlets, workflows, and Sling Models for expensive operations or infinite loops.</li>
+                    </ul>
+                    Tools like AEM Developer Console, APM, or New Relic can assist in deeper profiling.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are the different types of replication agents in AEM?</summary>
+                    <p>
+                        AEM supports several types of replication agents to handle content distribution:
+                    <ul>
+                        <li><strong>Default Replication Agent:</strong> Sends content from author to publish.</li>
+                        <li><strong>Reverse Replication Agent:</strong> (Deprecated) Sends content from publish back to author (e.g., UGC).</li>
+                        <li><strong>Dispatcher Flush Agent:</strong> Triggers cache invalidation at Dispatcher layer.</li>
+                        <li><strong>Static Agent:</strong> Writes replicated content to the file system instead of HTTP transfer.</li>
+                        <li><strong>Transport Users Agent:</strong> Used to sync users/groups between environments.</li>
+                        <li><strong>Custom Agent:</strong> Created using custom transport handlers for advanced use cases.</li>
+                    </ul>
+                    Each agent type has configurable parameters like transport URI, retries, trigger rules, etc.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you manage configuration for different environments in AEMaaCS?</summary>
+                    <p>
+                        In AEM as a Cloud Service (AEMaaCS), configurations are managed using the concept of 
+                        <strong>RunModes and Configuration Folders</strong> within the codebase:
+                    <ul>
+                        <li>
+                            Use the `/apps/your-project/osgiconfig/config.
+                            <env>
+                            ` folder structure, where `
+                            <env>
+                            ` could be `dev`, `stage`, `prod` etc.
+                        </li>
+                        <li>Leverage the <code>content-package-maven-plugin</code> to filter and embed environment-specific configs at build time.</li>
+                        <li>Configurations are defined as OSGi `.config` or `.cfg.json` files.</li>
+                        <li>Secrets and credentials should be managed via the Cloud Manager Secrets store (not hard-coded).</li>
+                        <li>You can also use context-aware configuration via AEM Context-Aware Configs for flexible content-level settings.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are the security best practices in AEM?</summary>
+                    <p>
+                        Security in AEM is multi-layered. Some key best practices include:
+                    <ul>
+                        <li><strong>Access Control:</strong> Use granular ACLs (Access Control Lists) to define permissions.</li>
+                        <li><strong>Disable CRXDE in Production:</strong> Prevents unauthorized changes to JCR.</li>
+                        <li><strong>Dispatcher Filters:</strong> Whitelist only essential URLs, deny everything else by default.</li>
+                        <li><strong>Secure Login:</strong> Enforce HTTPS, use secure passwords and limit admin access.</li>
+                        <li><strong>XSS and CSRF Protection:</strong> Use Sling XSS API and enable CSRF filters.</li>
+                        <li><strong>Remove Unused Bundles:</strong> Minimize the attack surface.</li>
+                        <li><strong>Audit Logs:</strong> Enable auditing for security events.</li>
+                        <li><strong>Keep AEM Up-to-Date:</strong> Apply service packs and hotfixes regularly.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you implement multi-region failover in AEM?</summary>
+                    <p>
+                        AEM as a Cloud Service supports high availability and disaster recovery by design. For multi-region failover:
+                    <ul>
+                        <li><strong>Author Tier:</strong> Generally remains in a single region to maintain consistency.</li>
+                        <li><strong>Publish Tier:</strong> Can be deployed in multiple regions to serve geo-specific traffic.</li>
+                        <li><strong>Dispatcher/CDN:</strong> Geo-aware routing (via Fastly, Akamai, etc.) can direct traffic to the nearest publish node.</li>
+                        <li><strong>Replication:</strong> Content is automatically replicated from the author to all publish regions.</li>
+                        <li><strong>Backup/Failover:</strong> Adobe maintains backups and infrastructure-level DR for AEMaaCS; no manual setup is required.</li>
+                    </ul>
+                    For on-prem or AMS-hosted environments, multi-region setup involves custom replication agents and global load balancers.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you migrate large content repositories between AEM environments?</summary>
+                    <p>
+                        Migrating large content repositories in AEM can be done using various methods depending on the environment size, consistency, and downtime constraints:
+                    <ul>
+                        <li><strong>Package Manager:</strong> Suitable for smaller content sets. Use filters to create specific packages. Can be automated with VLT or Jenkins.</li>
+                        <li><strong>vlt-rcp:</strong> A tool for transferring JCR content directly between two AEM instances. Useful for large repositories but requires both instances to be running.</li>
+                        <li><strong>Content Sync Tools:</strong> AEM Cloud Content Transfer Tool is designed specifically for AEMaaCS content migrations from AMS/on-prem setups.</li>
+                        <li><strong>Sling Content Distribution (SCD):</strong> Allows live sync of content across author/publish or environments (used more in complex, real-time scenarios).</li>
+                        <li><strong>Best Practices:</strong> Always test on a staging environment first, use content freeze windows if needed, and verify post-migration integrity.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you create a custom workflow step in AEM?</summary>
+                    <p>
+                        Creating a custom workflow step in AEM involves the following steps:
+                    <ol>
+                        <li>Create a Java class that implements <code>WorkflowProcess</code> or <code>WorkflowStep</code>.</li>
+                        <li>Annotate the class as an OSGi component with appropriate service and properties:</li>
+                        <pre>@Component(service = WorkflowProcess.class, property = {
+  "process.label=Custom Metadata Updater"
+})
+public class CustomMetadataUpdater implements WorkflowProcess {
+  public void execute(WorkItem item, WorkflowSession session, MetaDataMap args) {
+      // Custom logic here
+  }
+}</pre>
+                        <li>Deploy the bundle and add the step to a workflow model in AEM's Workflow Model Editor.</li>
+                        <li>Configure any process arguments via the model UI or XML.</li>
+                    </ol>
+                    This approach lets you automate content updates, asset tagging, integrations, and more.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you implement dynamic user/group permissions in AEM?</summary>
+                    <p>
+                        Dynamic permission handling in AEM can be implemented through:
+                    <ul>
+                        <li><strong>Granite API:</strong> Use <code>UserManager</code> and <code>AccessControlManager</code> in custom servlets or services to programmatically assign permissions based on business rules.</li>
+                        <li><strong>Sling Repository Initializer (Sling RepoInit):</strong> Define permission setup scripts during deployment, ideal for static config-based permission models.</li>
+                        <li><strong>Groups and ACLs:</strong> Structure users into groups (e.g., editors, reviewers, authors), then assign permissions at the group level.</li>
+                        <li><strong>Tag-based Access:</strong> Combine with content tagging and custom filters to control visibility dynamically.</li>
+                        <li><strong>Best Practice:</strong> Never assign permissions directly to individual users. Use group inheritance and policies.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does AEM support decoupled (headless) frontends like React/Vue?</summary>
+                    <p>
+                        AEM provides robust support for headless architectures that allow React, Vue, or any frontend framework to consume content:
+                    <ul>
+                        <li><strong>Content Fragment API:</strong> AEM exposes structured content via REST or GraphQL APIs using Content Fragments, ideal for headless delivery.</li>
+                        <li><strong>GraphQL APIs:</strong> Efficient for frontend developers, allows fetching only the needed fields and deeply nested data for pages or components.</li>
+                        <li><strong>SPA Editor:</strong> Offers in-context editing for React/Vue apps by mapping frontend components with AEM components using a model.json endpoint.</li>
+                        <li><strong>Content as a Service (CaaS):</strong> Enables delivery of content to multiple channels like web, mobile, kiosks, etc.</li>
+                        <li><strong>Use Case:</strong> Build your site/app in React, deploy to a CDN, and fetch content via GraphQL from AEM Cloud — content authors still work in AEM's editor UI.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you ensure content integrity across environments in AEM?</summary>
+                    <p>
+                        Ensuring content integrity across environments (e.g., Dev → QA → Prod) in AEM can be achieved by:
+                    <ul>
+                        <li><strong>Package Replication:</strong> Export/import specific pages or assets using AEM Packages. Validate filters to avoid missing dependencies.</li>
+                        <li><strong>Automated Content Sync:</strong> Use tools like AEM Content Transfer Tool (for AEMaaCS) or custom scripts using vlt-rcp or Sling Content Distribution.</li>
+                        <li><strong>Checksum Validation:</strong> Automate verification of JCR node differences using checksum comparison or content diff tools.</li>
+                        <li><strong>Audit Logs:</strong> Monitor changes via audit logs to track unauthorized or accidental modifications.</li>
+                        <li><strong>Governance Process:</strong> Have a clear promotion process with content freeze, QA, and approval stages before moving content.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>What are some pitfalls when upgrading from AEM 6.x to AEMaaCS?</summary>
+                    <p>
+                        Upgrading from AEM 6.x to AEM as a Cloud Service (AEMaaCS) involves a shift in architecture, operations, and development workflows. Key pitfalls include:
+                    <ul>
+                        <li><strong>Custom Code Incompatibility:</strong> Many legacy APIs (e.g., Classic UI, Coral 2, static templates) are deprecated. Code must follow Cloud-ready guidelines.</li>
+                        <li><strong>Repository Restructuring:</strong> /etc and other non-best-practice folders are disallowed. Content must follow new structure (e.g., /conf, /content/dam).</li>
+                        <li><strong>Dispatcher Changes:</strong> Dispatcher configurations must be migrated to Git-based repository and adhere to Cloud SDK's structure.</li>
+                        <li><strong>No Direct CRXDE Access:</strong> Developers must rely on CI/CD pipelines; CRXDE changes are discouraged or blocked.</li>
+                        <li><strong>Asset Migration:</strong> Assets in AEMaaCS are binary-less and use Asset Compute microservices. Re-indexing and reprocessing may be needed.</li>
+                        <li><strong>Performance Testing:</strong> You cannot resize the server — instead, Adobe auto-scales. Load testing strategies must be updated.</li>
+                    </ul>
+                    Planning, automated testing, and the use of the AEM Upgrade Assessment Tool are essential to mitigate these issues.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How would you structure code for a large multi-site AEM project?</summary>
+                    <p>
+                        Structuring code for a multi-site AEM project requires modularity, scalability, and maintainability. A recommended approach:
+                    <ul>
+                        <li>
+                            <strong>Core Structure:</strong> Use a multi-module Maven setup:
+                            <ul>
+                                <li><code>core</code> - All backend logic (Sling Models, services)</li>
+                                <li><code>ui.apps</code> - Component definitions, dialogs, templates, clientlibs</li>
+                                <li><code>ui.content</code> - Sample content, configurations</li>
+                                <li><code>ui.config</code> - OSGi/config files for different runmodes</li>
+                                <li><code>dispatcher</code> - Dispatcher configs (only in AEMaaCS projects)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Site Separation:</strong> Place each site's content under <code>/content/&lt;site-name&gt;</code>. Reuse templates and components wherever possible.</li>
+                        <li><strong>Component Sharing:</strong> Create site-agnostic components under a shared namespace like <code>/apps/global</code> and override per-site if needed.</li>
+                        <li><strong>i18n Support:</strong> Keep dictionary translations site-specific and under <code>/apps/&lt;project&gt;/i18n</code>.</li>
+                        <li><strong>Permissions:</strong> Manage access via user groups mapped to specific site paths.</li>
+                        <li><strong>Use MSM if Needed:</strong> Leverage Multi Site Manager for language copy, inheritance, and controlled rollout.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How does AEM handle large binary assets?</summary>
+                    <p>
+                        AEM handles large binaries using scalable, efficient mechanisms designed for performance and cloud compatibility:
+                    <ul>
+                        <li><strong>Binary-less Authoring (AEMaaCS):</strong> In Cloud Service, binaries are offloaded to external blob storage (e.g., Azure Blob) for scalability and faster uploads.</li>
+                        <li><strong>Asset Compute Service:</strong> A microservice architecture that offloads asset renditions (thumbnails, web-optimized, etc.) to Adobe I/O Runtime in AEMaaCS.</li>
+                        <li><strong>S3 Data Store (On-Prem/AMS):</strong> Binaries are stored outside the JCR in an Amazon S3-compatible DataStore (recommended for large assets).</li>
+                        <li><strong>Asynchronous Uploads:</strong> AEM uses chunked and async processing to reduce UI freeze and backend strain during large file uploads.</li>
+                        <li><strong>Rendition Control:</strong> Custom workflows or DAM Update Process can generate only needed renditions to reduce processing time.</li>
+                        <li><strong>Caching and Smart Tags:</strong> Smart content services can tag assets using AI, improving search without increasing processing load.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How would you prevent OOM errors in AEM Author instance?</summary>
+                    <p>
+                        Out of Memory (OOM) errors can degrade author experience or crash the instance. Key strategies to prevent them:
+                    <ul>
+                        <li><strong>Proper JVM Tuning:</strong> Allocate appropriate heap size (e.g., 4-8 GB) and tune GC settings (e.g., G1GC).</li>
+                        <li><strong>Asset Workflow Control:</strong> Disable or customize DAM Update workflows for large assets to reduce CPU/memory spikes.</li>
+                        <li><strong>Limit Large Queries:</strong> Avoid unbounded XPath/SQL2 queries that can load large result sets into memory.</li>
+                        <li><strong>Use Pagination & Lazy Loading:</strong> Especially in Touch UI consoles or custom components to avoid loading thousands of nodes.</li>
+                        <li><strong>Monitor with APM:</strong> Use tools like New Relic, Dynatrace, or Adobe Cloud Manager logs to detect memory leaks or GC thrashing.</li>
+                        <li><strong>Disable Unused Workflows:</strong> Reduce unnecessary process/resource consumption by disabling default workflows or reducing payload.</li>
+                        <li><strong>Regular Maintenance:</strong> Run repository compaction, cleanup versions, and purge audit logs to keep the repo size manageable.</li>
+                    </ul>
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>Explain the role of Cloud Manager.</summary>
+                    <p>
+                        Cloud Manager is a self-service portal provided by Adobe for managing AEM as a Cloud Service (AEMaaCS) environments. It allows developers and DevOps teams to automate CI/CD processes, manage deployment pipelines, monitor performance, and enforce best practices for code quality and security. Key roles of Cloud Manager include:
+                    <ul>
+                        <li>Automated build and deployment using Maven-based pipelines.</li>
+                        <li>Code quality scanning via SonarQube and Adobe's custom rules.</li>
+                        <li>Performance testing of Publish tiers before production deployment.</li>
+                        <li>Environment management (stage, dev, prod) and domain configuration.</li>
+                        <li>Integration with Git and API for pipeline and environment control.</li>
+                    </ul>
+                    Cloud Manager ensures faster, safer, and repeatable deployments in AEMaaCS, reducing the need for manual intervention.
+                    </p>
+                </details>
+                <details class="item">
+                    <summary>How do you automate testing in AEM pipelines?</summary>
+                    <p>
+                        Automated testing in AEM pipelines, particularly via Cloud Manager, is essential for maintaining deployment quality. It includes:
+                    <ul>
+                        <li><strong>Unit Testing:</strong> Performed using JUnit or Spock, usually during the build phase.</li>
+                        <li><strong>Static Code Analysis:</strong> Built-in quality gates from SonarQube detect code smells, bugs, and security issues.</li>
+                        <li><strong>Functional Tests:</strong> Selenium-based or Cypress-based tests for verifying UI and functionality. These can be integrated into custom steps post-deployment.</li>
+                        <li><strong>Performance Testing:</strong> Cloud Manager runs out-of-the-box performance tests simulating traffic on the publish tier to ensure site responsiveness and stability.</li>
+                        <li><strong>Integration/API Tests:</strong> REST API endpoints can be validated using frameworks like RestAssured or Postman collections.</li>
+                    </ul>
+                    Tests are triggered automatically during each pipeline execution and must pass all gates before code is promoted to production.
+                    </p>
+                </details>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>

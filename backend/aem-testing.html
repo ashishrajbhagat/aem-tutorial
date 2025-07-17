@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AEM Tutorial - AEM Testing Frameworks</title>
+        <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
+        <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
+        <meta name="author" content="Ashish Raj">
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <h2>AEM Tutorial</h2>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
+            </div>
+            <nav class="nav" id="sidebar-nav"></nav>
+            <div class="footer">
+                <p>&copy; 2025 AEM Tutorial</p>
+            </div>
+        </div>
+        <span class="hamburger" onclick="toggleMenu()">&#9776;</span>
+        <main class="content" id="content">
+            <h1>AEM Testing Frameworks</h1>
+            <section class="card">
+                <h2>Introduction to Testing in AEM</h2>
+                <p>Testing is a critical part of Adobe Experience Manager (AEM) development. It ensures that your code behaves as expected, is stable over time, and is free from regressions as new features are added or configurations change.</p>
+                <h3>Why Testing Is Important</h3>
+                <ul>
+                    <li>Ensures your components, services, and workflows function correctly across different environments.</li>
+                    <li>Reduces bugs before code reaches staging or production.</li>
+                    <li>Improves developer confidence when making changes or refactoring.</li>
+                    <li>Supports automated deployment workflows and Agile development practices.</li>
+                </ul>
+                <h3>Types of Testing in AEM</h3>
+                <ul>
+                    <li><strong>Unit Testing:</strong> Test individual components or services in isolation (e.g., Sling Models).</li>
+                    <li><strong>Integration Testing:</strong> Validate real interactions between components and OSGi services.</li>
+                    <li><strong>UI Testing:</strong> Simulate author or end-user actions in AEM's Touch UI using tools like Selenium.</li>
+                    <li><strong>Functional Testing:</strong> Test features from an end-user perspective (often overlaps with UI tests).</li>
+                    <li><strong>Performance Testing:</strong> Validate load behavior, response time, and resource usage under stress.</li>
+                </ul>
+                <h3>Benefits of Automated Testing in CI/CD</h3>
+                <ul>
+                    <li>Enables continuous integration pipelines (e.g., with Jenkins or Cloud Manager).</li>
+                    <li>Detects issues early and reduces manual QA effort.</li>
+                    <li>Improves deployment speed and confidence across multiple environments.</li>
+                    <li>Supports test coverage metrics and quality gates (e.g., with SonarQube, JaCoCo).</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Unit Testing with JUnit & AEM Mocks</h2>
+                <p>Unit testing in AEM focuses on testing individual components, such as Sling Models and services, in isolation from the rest of the system. The <strong>wcm.io AEM Mocks</strong> library is the most widely used framework to simulate the AEM runtime environment.</p>
+                <h3>JUnit Basics</h3>
+                <ul>
+                    <li>JUnit is the most commonly used testing framework in Java-based projects.</li>
+                    <li>JUnit 5 (preferred) or JUnit 4 can be used with AEM Mocks.</li>
+                    <li>Tests are executed using IDEs, Maven, or as part of CI pipelines (e.g., Cloud Manager).</li>
+                </ul>
+                <h3>Using AEM Mocks by wcm.io</h3>
+                <ul>
+                    <li><a href="https://wcm.io/testing/aem-mock/" target="_blank">AEM Mocks</a> simulate AEM runtime APIs like ResourceResolver, PageManager, Sling Models, etc.</li>
+                    <li>Supports both Classic and Touch UI testing contexts.</li>
+                    <li>Enables lightweight, fast-running unit tests without starting an AEM instance.</li>
+                </ul>
+                <h3>Mocking Common AEM Objects</h3>
+                <ul>
+                    <li><strong>ResourceResolver:</strong> Simulate accessing repository resources.</li>
+                    <li><strong>Pages:</strong> Mock pages using <code>PageManager</code> and <code>/content</code> structure.</li>
+                    <li><strong>ValueMap:</strong> Inject test properties into resources.</li>
+                    <li><strong>Sling Models:</strong> Adapt mocked resources to model classes using <code>context.request().adaptTo(MyModel.class)</code>.</li>
+                </ul>
+                <h3>Sample Sling Model Unit Test</h3>
+                <pre>
+@ExtendWith(AemContextExtension.class) // JUnit 5
+class MyModelTest {
+
+  private final AemContext context = new AemContext();
+
+  @BeforeEach
+  void setUp() {
+    context.addModelsForClasses(MyModel.class);
+    context.create().resource("/content/mypage", "jcr:title", "Test Title");
+  }
+
+  @Test
+  void testTitleProperty() {
+    Resource resource = context.resourceResolver().getResource("/content/mypage");
+    MyModel model = context.request().adaptTo(MyModel.class);
+    assertEquals("Test Title", model.getTitle());
+  }
+}</pre>
+                <h3>Common Annotations and Setup</h3>
+                <ul>
+                    <li><code>@ExtendWith(AemContextExtension.class)</code> - Registers AEM context for JUnit 5</li>
+                    <li><code>@BeforeEach</code>, <code>@AfterEach</code> - Setup and teardown methods</li>
+                    <li><code>context.create().resource()</code> - Creates in-memory test content</li>
+                    <li><code>context.addModelsForClasses()</code> - Registers Sling Models for testing</li>
+                </ul>
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Keep tests focused on one model or service at a time.</li>
+                    <li>Use descriptive method names (e.g., <code>testEmptyTitleReturnsFallback()</code>).</li>
+                    <li>Don't test AEM internal behavior—test only your logic.</li>
+                    <li>Avoid file system or network calls—mock dependencies instead.</li>
+                </ul>
+                <h3>Limitations</h3>
+                <ul>
+                    <li>Cannot simulate full servlet/filter chains (use integration testing for that).</li>
+                    <li>Some advanced OSGi service behaviors can't be tested via mocks alone.</li>
+                    <li>Granite UI dialogs and Touch UI rendering aren't testable with AEM Mocks.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Integration Testing</h2>
+                <p>Integration tests allow you to validate how different parts of your AEM application work together—such as servlets, services, and filters. These tests are more realistic than unit tests, often using actual OSGi components.</p>
+                <h3>Using Sling Testing Tools</h3>
+                <ul>
+                    <li><a href="https://sling.apache.org/documentation/development/sling-testing-tools.html" target="_blank">Sling Testing Tools</a> are part of the Apache Sling project.</li>
+                    <li>Used to test servlet behavior, OSGi service interaction, and request processing.</li>
+                    <li>Mocks the Sling HTTP request/response flow better than traditional AEM Mocks.</li>
+                </ul>
+                <h3>Working with AemContext</h3>
+                <ul>
+                    <li>Use <code>@Rule</code> in JUnit 4 or <code>@ExtendWith</code> in JUnit 5 for AemContext injection.</li>
+                    <li>Allows creation of a full simulated AEM request/response context.</li>
+                    <li>Supports Sling model injection, resource resolution, and servlet simulation.</li>
+                </ul>
+                <h3>Testing Common Scenarios</h3>
+                <ul>
+                    <li><strong>Servlets:</strong> Send mock HTTP requests and verify response behavior.</li>
+                    <li><strong>Filters:</strong> Validate how filters intercept and modify requests.</li>
+                    <li><strong>OSGi Services:</strong> Register and invoke services using context configuration.</li>
+                    <li><strong>Workflows:</strong> Trigger custom workflow steps and assert results.</li>
+                </ul>
+                <h3>When to Use Integration Tests</h3>
+                <ul>
+                    <li>When the logic depends on multiple services or components working together.</li>
+                    <li>If you need to simulate actual Sling requests or servlet chains.</li>
+                    <li>When verifying complex behaviors not easily mocked in isolation.</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>UI Testing</h2>
+                <p>UI Testing simulates real user behavior within the AEM author interface. It ensures your authoring experience—like editing dialogs, placing components, or publishing pages—works reliably across releases.</p>
+                <h3>Tools Used</h3>
+                <ul>
+                    <li><strong>Selenium WebDriver:</strong> Automates browser actions like clicks, form input, drag-and-drop.</li>
+                    <li><strong>Cypress:</strong> Modern JavaScript-based testing tool for fast and reliable UI automation.</li>
+                    <li><strong>Puppeteer:</strong> Headless Chrome automation for visual regression and performance testing.</li>
+                </ul>
+                <h3>Key UI Testing Scenarios</h3>
+                <ul>
+                    <li>Author login flow and authentication test</li>
+                    <li>Component insertion via side panel</li>
+                    <li>Opening and validating Touch UI dialogs</li>
+                    <li>Switching between preview and edit modes</li>
+                    <li>Drag-and-drop component placement</li>
+                </ul>
+                <h3>Touch UI (Granite UI) Selectors</h3>
+                <ul>
+                    <li>Use CSS or XPath selectors based on Coral UI or Granite UI component structure</li>
+                    <li>Common selectors: <code>coral-dialog</code>, <code>granite-autocomplete</code>, <code>cq-dialog-submit</code></li>
+                    <li>Leverage browser dev tools to locate test-friendly selectors</li>
+                </ul>
+                <h3>Handling Async and Dynamic Behavior</h3>
+                <ul>
+                    <li>Use <code>waitFor</code> or <code>cy.get().should()</code> to wait for DOM changes</li>
+                    <li>Ensure AEM is fully loaded before executing interactions</li>
+                    <li>Handle AJAX dialogs or dynamic dropdowns gracefully</li>
+                </ul>
+                <h3>CI Integration (Headless Execution)</h3>
+                <ul>
+                    <li>Run UI tests in CI tools like Jenkins or GitHub Actions using headless browsers</li>
+                    <li>Headless Chrome or Firefox can be run with Selenium Grid or Cypress CLI</li>
+                    <li>Use Docker containers or cloud runners for scalable test execution</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Test Coverage Tools</h2>
+                <p>Code coverage tools help measure how much of your source code is being exercised by your test suite. This provides insights into untested code paths and potential gaps in quality assurance.</p>
+                <h3>Using JaCoCo</h3>
+                <ul>
+                    <li>JaCoCo is a popular Java code coverage library used with Maven or Gradle builds.</li>
+                    <li>Generates coverage reports in HTML, XML, or CSV format.</li>
+                    <li>Integrates easily with CI tools and SonarQube for visualization.</li>
+                </ul>
+                <h3>Integrating with SonarQube</h3>
+                <ul>
+                    <li>Use the Sonar Maven plugin to upload coverage and quality metrics.</li>
+                    <li>Supports rules for minimum code coverage thresholds.</li>
+                    <li>Combines code smells, security issues, and test coverage in one dashboard.</li>
+                </ul>
+                <h3>Other Tools</h3>
+                <ul>
+                    <li>Cobertura (alternative to JaCoCo)</li>
+                    <li>IntelliJ IDEA built-in coverage runner for local test debugging</li>
+                </ul>
+            </section>
+            <section class="card">
+                <h2>Testing in Cloud Manager (AEMaaCS)</h2>
+                <p>When deploying code to AEM as a Cloud Service (AEMaaCS), Adobe Cloud Manager runs automated quality and performance tests as part of the pipeline process.</p>
+                <h3>Pipeline Testing Stages</h3>
+                <ul>
+                    <li><strong>Code Quality:</strong> Static analysis checks, unit test coverage, security rules</li>
+                    <li><strong>Build and Deploy:</strong> Your Maven project is built and deployed to a staging environment</li>
+                    <li><strong>Performance Testing:</strong> Synthetic load tests run against the publish tier</li>
+                    <li><strong>Security Testing:</strong> Checks for known vulnerabilities in dependencies (e.g., CVEs)</li>
+                </ul>
+                <h3>Key Features</h3>
+                <ul>
+                    <li>Approval gates between stages</li>
+                    <li>Fail-fast if code quality or test coverage doesn't meet thresholds</li>
+                    <li>Performance baselines help ensure consistent scalability</li>
+                </ul>
+                <p>📌 <em>Tip: Make sure to include unit and integration tests in your Cloud Manager-compatible Maven build.</em></p>
+            </section>
+            <section class="card">
+                <h2>Best Practices</h2>
+                <ul>
+                    <li><strong>Write small, isolated tests</strong> that focus on one unit of logic.</li>
+                    <li><strong>Use mocks</strong> for services, requests, and resources whenever possible.</li>
+                    <li><strong>Avoid testing internal AEM behavior</strong> (Granite UI internals, OSGi lifecycle).</li>
+                    <li><strong>Keep UI tests separate</strong> from backend logic to speed up feedback loops.</li>
+                    <li>Write tests for <strong>reusable components and services</strong> first.</li>
+                    <li><strong>Integrate tests into your build</strong> early and run them with every commit.</li>
+                    <li>Use <strong>descriptive test names</strong> to improve readability and reporting.</li>
+                    <li>Measure <strong>code coverage</strong>, but don't chase 100%—focus on meaningful scenarios.</li>
+                </ul>
+            </section>
+            <script src="https://utteranc.es/client.js" repo="ashishrajbhagat/aem-tutorial" issue-term="pathname" theme="github-light" crossorigin="anonymous" async></script>
+        </main>
+        <script src="/js/script.js"></script>
+    </body>
+</html>
