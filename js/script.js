@@ -338,7 +338,7 @@ sections.forEach((section, index) => {
     section.items.forEach(item => {
         const li = document.createElement("li");
         const a = document.createElement("a");
-        a.href = "/" + item.href;
+        a.href = "../" + item.href;
         a.className = "nav-link";
         a.textContent = item.text;
 
@@ -382,7 +382,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (currentIndex > 0) {
         const prev = document.createElement('a');
-        prev.href = "/" + flatMenuItems[currentIndex - 1].href;
+        prev.href = "../" + flatMenuItems[currentIndex - 1].href;
         prev.className = 'prev-link';
         prev.innerHTML = `← Previous: ${flatMenuItems[currentIndex - 1].text}`;
         paginationContainer.appendChild(prev);
@@ -390,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (currentIndex < flatMenuItems.length - 1) {
         const next = document.createElement('a');
-        next.href = "/" + flatMenuItems[currentIndex + 1].href;
+        next.href = "../" + flatMenuItems[currentIndex + 1].href;
         next.className = 'next-link';
         next.innerHTML = `Next: ${flatMenuItems[currentIndex + 1].text} →`;
         paginationContainer.appendChild(next);
