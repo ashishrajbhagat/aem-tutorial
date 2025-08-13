@@ -7,16 +7,16 @@
         <meta name="description" content="Master Adobe Experience Manager (AEM) with our in-depth tutorials, covering AEM components, workflows, servlets, models, Sling, OSGi services, Touch UI dialogs, CRXDE, and more. Perfect for beginners, advanced developers, and AEM architects looking to enhance their skills. Learn how to build scalable and efficient AEM solutions with best practices.">
         <meta name="keywords" content="AEM, Adobe Experience Manager, AEM Tutorial, AEM Training, AEM Components, AEM Workflows, AEM Servlets, AEM Models, AEM Sling, AEM OSGi, AEM Touch UI, AEM CRXDE, AEM DAM, AEM Metadata, AEM Content Fragments, AEM Experience Fragments, AEM Editable Templates, AEM Dispatcher, AEM Forms, AEM Sites, AEM Assets, AEM Cloud, AEM as a Cloud Service, AEM On-Premise, AEM SEO, AEM Best Practices, Learn AEM, AEM Course, AEM Development, AEM Headless, AEM SPA, AEM React, AEM Angular, AEM HTL, AEM Sightly, AEM Frontend, AEM Backend, AEM Workflow Development, AEM Performance Optimization, AEM Interview Questions">
         <meta name="author" content="Ashish Raj">
-		<link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="../images/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="../images/favicon/favicon-16x16.png">
         <link rel="manifest" href="/site.webmanifest">
         <link rel="stylesheet" href="../css/styles.css">
     </head>
     <body>
         <div class="sidebar" id="sidebar">
             <div class="logo">
-                <h2>AEM Tutorial</h2>
+                <h2><a href="/">AEM Tutorial</a></h2>
             </div>
             <div class="sidebar-search">
                 <input type="text" id="sidebarSearch" placeholder="🔍 Search..." />
@@ -225,43 +225,43 @@ use( function() {
                 <p>Understanding output contexts helps developers use HTL effectively while maintaining application security and integrity.</p>
             </section>
             <section class="card">
-            <h2>Conditionals and Iterations in HTL</h2>
-            <p>HTL provides clean, logic-less ways to add conditions and loops in your HTML templates. Common use cases include rendering content based on values and looping through arrays or lists of items dynamically.</p>
-            <h3>data-sly-test vs data-sly-if</h3>
-            <p>Both <code>data-sly-test</code> and <code>data-sly-if</code> are used for conditional rendering in HTL. However, there are subtle differences:</p>
-            <ul>
-                <li><strong>data-sly-test:</strong> Can assign the condition to a variable and reuse it multiple times within the block.</li>
-                <li><strong>data-sly-if:</strong> Directly checks a condition and renders the block if true.</li>
-                <li><strong>Example:</strong> <code>&lt;div data-sly-test.isVisible="${properties.show}"&gt;Visible if true&lt;/div&gt;</code></li>
-                <li><strong>Note:</strong> <code>data-sly-test</code> is preferred when the condition needs to be reused in the same block.</li>
-            </ul>
-            <h3>data-sly-list with index, count, first, last</h3>
-            <p><code>data-sly-list</code> is used to iterate over collections such as arrays or lists. HTL also provides helpful loop metadata within the loop:</p>
-            <ul>
-                <li><code>${itemList.index}</code> - Zero-based index of the current item.</li>
-                <li><code>${itemList.count}</code> - One-based index.</li>
-                <li><code>${itemList.first}</code> - Returns <code>true</code> if it's the first item.</li>
-                <li><code>${itemList.last}</code> - Returns <code>true</code> if it's the last item.</li>
-            </ul>
-            <p><strong>Example:</strong></p>
-            <pre>&lt;ul data-sly-list.item="${properties.items}"&gt;
+                <h2>Conditionals and Iterations in HTL</h2>
+                <p>HTL provides clean, logic-less ways to add conditions and loops in your HTML templates. Common use cases include rendering content based on values and looping through arrays or lists of items dynamically.</p>
+                <h3>data-sly-test vs data-sly-if</h3>
+                <p>Both <code>data-sly-test</code> and <code>data-sly-if</code> are used for conditional rendering in HTL. However, there are subtle differences:</p>
+                <ul>
+                    <li><strong>data-sly-test:</strong> Can assign the condition to a variable and reuse it multiple times within the block.</li>
+                    <li><strong>data-sly-if:</strong> Directly checks a condition and renders the block if true.</li>
+                    <li><strong>Example:</strong> <code>&lt;div data-sly-test.isVisible="${properties.show}"&gt;Visible if true&lt;/div&gt;</code></li>
+                    <li><strong>Note:</strong> <code>data-sly-test</code> is preferred when the condition needs to be reused in the same block.</li>
+                </ul>
+                <h3>data-sly-list with index, count, first, last</h3>
+                <p><code>data-sly-list</code> is used to iterate over collections such as arrays or lists. HTL also provides helpful loop metadata within the loop:</p>
+                <ul>
+                    <li><code>${itemList.index}</code> - Zero-based index of the current item.</li>
+                    <li><code>${itemList.count}</code> - One-based index.</li>
+                    <li><code>${itemList.first}</code> - Returns <code>true</code> if it's the first item.</li>
+                    <li><code>${itemList.last}</code> - Returns <code>true</code> if it's the last item.</li>
+                </ul>
+                <p><strong>Example:</strong></p>
+                <pre>&lt;ul data-sly-list.item="${properties.items}"&gt;
     &lt;li&gt;${item} (Index: ${itemList.index})&lt;/li&gt;
 &lt;/ul&gt;</pre>
-            <h3>Using empty or else blocks for fallback content</h3>
-            <p>HTL supports fallback content if a list is empty or a condition is not met using <code>data-sly-else</code> or checking for empty values.</p>
-            <ul>
-                <li><strong>data-sly-else:</strong> Used with <code>data-sly-test</code> or <code>data-sly-if</code> to define alternate content.</li>
-                <li><strong>Empty check:</strong> <code>data-sly-test="${!properties.items}"</code> - Checks if the list is empty.</li>
-                <li><strong>Example:</strong></li>
-            </ul>
-            <pre>&lt;div data-sly-test="${properties.items}"&gt;
+                <h3>Using empty or else blocks for fallback content</h3>
+                <p>HTL supports fallback content if a list is empty or a condition is not met using <code>data-sly-else</code> or checking for empty values.</p>
+                <ul>
+                    <li><strong>data-sly-else:</strong> Used with <code>data-sly-test</code> or <code>data-sly-if</code> to define alternate content.</li>
+                    <li><strong>Empty check:</strong> <code>data-sly-test="${!properties.items}"</code> - Checks if the list is empty.</li>
+                    <li><strong>Example:</strong></li>
+                </ul>
+                <pre>&lt;div data-sly-test="${properties.items}"&gt;
     &lt;p&gt;List has content.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div data-sly-else&gt;
     &lt;p&gt;No items found.&lt;/p&gt;
 &lt;/div&gt;</pre>
-            <p>These conditional techniques make HTL powerful and efficient for dynamic content rendering without mixing in business logic.</p>
-            </div>
+                <p>These conditional techniques make HTL powerful and efficient for dynamic content rendering without mixing in business logic.</p>
+            </section>
             <section class="card">
                 <h2>URI Manipulation in Sightly (HTL)</h2>
                 <p>URI manipulation can be performed by adding any of the following options to an expression to modify different parts of the URI dynamically:</p>

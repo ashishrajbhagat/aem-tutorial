@@ -9,6 +9,24 @@ body {
 	height: 100vh;
 	margin: 0;
 	padding: 0;
+	word-break: break-word;
+}
+
+/* ===========================
+   Hamburger for Mobile
+=========================== */
+.hamburger {
+	background-color: #333;
+	border: none;
+	border-radius: 10px;
+	color: #f0f0f0;
+	cursor: pointer;
+	display: none;
+	font-size: 30px;
+	padding: 10px;
+	position: fixed;
+	top: 10px;
+	left: 10px;
 }
 
 /* ===========================
@@ -30,6 +48,10 @@ body {
 	font-size: 32px;
 	margin: 20px 0;
 	text-align: center;
+}
+
+.logo h2 a {
+	color: #fff;
 }
 
 .sidebar-search {
@@ -104,23 +126,6 @@ body {
 }
 
 /* ===========================
-   Hamburger for Mobile
-=========================== */
-.hamburger {
-	background-color: #333;
-	border: none;
-	border-radius: 10px;
-	color: #f0f0f0;
-	cursor: pointer;
-	display: none;
-	font-size: 30px;
-	padding: 10px;
-	position: fixed;
-	top: 10px;
-	left: 10px;
-}
-
-/* ===========================
    Content Area
 =========================== */
 .content {
@@ -171,7 +176,6 @@ h1 {
 .card ul,
 .card ol {
 	padding-left: 20px;
-	word-wrap: break-word;
 }
 
 .card a {
@@ -228,7 +232,6 @@ h1 {
 	padding: 2px 5px;
 	border-radius: 4px;
 	font-family: "Courier New", Courier, monospace;
-	word-break: break-word;
 }
 
 /* ===========================
@@ -346,7 +349,6 @@ tr:hover {
 	padding: 2px 5px;
 	border-radius: 4px;
 	font-family: "Courier New", Courier, monospace;
-	word-break: break-word;
 }
 
 /* ===========================
@@ -416,6 +418,11 @@ tr:hover {
 	.card ul,
 	.card ol {
 		font-size: 15px;
+	}
+
+	.card .two-col img {
+		width: 100%;
+		height: auto;
 	}
 
 	.simple-pagination {

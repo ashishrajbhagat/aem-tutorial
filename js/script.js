@@ -342,7 +342,7 @@ sections.forEach((section, index) => {
         a.className = "nav-link";
         a.textContent = item.text;
 
-        if (currentUrl === "/" + item.href) {
+        if (currentUrl.endsWith(item.href)) {
             a.classList.add("active");
             containsActive = true;
         }
